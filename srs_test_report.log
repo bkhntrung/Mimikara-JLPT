@@ -1,0 +1,138 @@
+================================================================================
+           MIMIKARA JLPT - HYBRID FSRS-SM2 ENGINE VERIFICATION REPORT
+================================================================================
+Timestamp: 2026-11-10T10:45:00Z
+Node Runtime: Node.js v24.20.0
+Test Runner: node:test & node:assert/strict
+Target Workspace: e:\Antigravity\Mimikara
+Source Modules:
+  - src/utils/srs.js (Hybrid FSRS-SM2 Core Algorithm Engine)
+  - src/components/FlashcardDeck.jsx (Dynamic Real-time Intervals & SRS Priority)
+  - src/components/StatsModal.jsx (FSRS Scientific Analytics & 7-Day Forecast)
+  - src/App.jsx (SRS Priority Queue State & Cross-Level Persistence)
+Test Suite: tests/srs.test.js
+
+--------------------------------------------------------------------------------
+1. ALGORITHM ARCHITECTURE: HYBRID FSRS-SM2 (Three-Component Model of Memory)
+--------------------------------------------------------------------------------
+The algorithm incorporates modern Free Spaced Repetition Scheduler (FSRS v4.5)
+memory dynamics with classic SuperMemo SM-2 usability and backwards compatibility.
+
+1.1. Three-Component Model of Memory:
+  - Retrievability R(t, S): Current probability that the learner successfully recalls
+    the vocabulary item at elapsed time t (in days) since the last review.
+    Formula: R(t, S) = (1 + (19/81) * (t / S))^(-0.5)
+    Proof of Boundary Constraints:
+      * At t = 0 (immediately after review):
+        R(0, S) = (1 + 0)^(-0.5) = 1.0 (100% recall probability)
+      * At t = S (elapsed days equal stability S):
+        R(S, S) = (1 + 19/81)^(-0.5) = (100/81)^(-0.5) = 9/10 = 0.90 (90% target retention)
+      * As t -> infinity: R strictly monotonically decreases towards 0.
+
+  - Stability S: Memory trace strength quantified as the number of days required
+    for recall probability R to decay from 100% to 90%.
+
+  - Intrinsic Difficulty D in [1.0, 10.0]:
+    Card difficulty reflects the inherent cognitive friction of memorizing the kanji/collocation.
+    Mean Reversion to 5.0 (Bayesian shrinkage prevents extreme runaway):
+      D_next = (D + deltaD) * 0.9 + 5.0 * 0.1
+      * Rating 1 (Again): deltaD = +1.2 (Increases difficulty)
+      * Rating 2 (Hard):  deltaD = +0.5 (Slight difficulty increase)
+      * Rating 3 (Good):  deltaD =  0.0 (Preserves stability or mean reverts)
+      * Rating 4 (Easy):  deltaD = -0.8 (Decreases difficulty)
+
+1.2. Lapse Recovery with Prior Interval (Anti-Amnesia Penalty):
+  Traditional SM-2 brutally resets any lapsed card to 1 day, causing excessive review
+  fatigue for previously well-known words.
+  Hybrid FSRS-SM2 preserves 40% of the previous interval:
+    priorInterval = Math.max(1, Math.round(interval * 0.4))
+    Upon subsequent successful recall (Rating 3 / Good) in relearning state,
+    the card recovers its priorInterval immediately rather than starting from day 1.
+
+1.3. Leech Detection:
+  Cards with lapses >= 4 are automatically flagged as `isLeech = true` to alert the user
+  with visual indicators ("⚠️ Hay quên (X lần)") for specialized mnemonic attention.
+
+1.4. Overdue Bonus:
+  If a student reviews later than scheduled (t > interval) and still successfully remembers
+  (Rating >= 3), they are rewarded with an effective interval bonus:
+    I_eff = Math.max(interval, (interval + t) / 2)
+
+1.5. Cognitive Priority Smart Study Queue (getSmartStudyQueue):
+  Prioritizes review order to minimize memory loss and cognitive load:
+    Tier 1: Due relearning / short-term learning cards (state in ['learning', 'relearning'] & nextReview <= now)
+    Tier 2: Due review cards sorted ascending by Retrievability R (lowest R first -> rescue fading memories!)
+    Tier 3: New unstudied cards (state === 'new' or unrecorded)
+    Tier 4: Future not-due cards sorted ascending by nextReview
+
+--------------------------------------------------------------------------------
+2. TEST SUITE EXECUTION RESULTS
+--------------------------------------------------------------------------------
+Command: node --test tests/srs.test.js
+
+▶ Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite
+  ✔ Test 1: Storage keys generation and isolation for N1, N2, N3 (1.3854ms)
+  ✔ Test 2: Storage persistence and isolation across JLPT levels (1.1364ms)
+  ✔ Test 3: Retrievability R(t, S) formula mathematical precision (1.3387ms)
+  ✔ Test 4: Retrievability edge cases (unlearned card, missing stability, zero interval) (0.1890ms)
+  ✔ Test 5: New card initial grading - Rating 1 (Again) (0.4451ms)
+  ✔ Test 6: New card initial grading - Rating 2 (Hard) (0.2052ms)
+  ✔ Test 7: New card initial grading - Rating 3 (Good) (0.1664ms)
+  ✔ Test 8: New card initial grading - Rating 4 (Easy) (0.1588ms)
+  ✔ Test 9: Multi-step Good (3) progression (0.2492ms)
+  ✔ Test 10: Multi-step Easy (4) progression (0.2901ms)
+  ✔ Test 11: EaseFactor bounds constraints (1.3 <= EF <= 3.0) (1.2269ms)
+  ✔ Test 12: Difficulty bounds (1.0 <= D <= 10.0) and mean reversion (0.3264ms)
+  ✔ Test 13: Lapse and Relearning preservation of priorInterval (40% recovery) (0.1766ms)
+  ✔ Test 14: Leech detection mechanism (lapses >= 4) (0.1621ms)
+  ✔ Test 15: Overdue bonus calculation (0.1786ms)
+  ✔ Test 16: Review history tracking (max 20 records) (0.2490ms)
+  ✔ Test 17: formatIntervalLabel formatting rules in Vietnamese (0.1849ms)
+  ✔ Test 18: previewNextIntervals outputs valid formatted preview strings (0.1566ms)
+  ✔ Test 19: getDueWords accurately identifies due cards (0.1994ms)
+  ✔ Test 20: getSmartStudyQueue cognitive priority ordering (0.3213ms)
+  ✔ Test 21: getSRSAnalytics statistical metrics calculation (1.2190ms)
+  ✔ Test 22: getSRSAnalytics 7-day review forecast distribution (0.3621ms)
+✔ Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite (12.5078ms)
+
+SUMMARY:
+  Total Test Cases : 22
+  Passed           : 22 (100%)
+  Failed           : 0 (0%)
+  Skipped          : 0 (0%)
+  Execution Time   : ~12.5ms
+
+--------------------------------------------------------------------------------
+3. BUILD VERIFICATION (VITE PRODUCTION BUNDLE)
+--------------------------------------------------------------------------------
+Command: npm run build
+Result:
+  vite v6.4.5 building for production...
+  ✓ 2083 modules transformed.
+  dist/index.html                     1.09 kB │ gzip:     0.65 kB
+  dist/assets/index-h7obRlN1.css     46.78 kB │ gzip:     8.02 kB
+  dist/assets/index-CKekOMcJ.js   6,676.64 kB │ gzip: 1,321.31 kB
+  ✓ built in 7.12s
+Status: PASS (Zero compiler errors, zero syntax errors, zero broken imports)
+
+--------------------------------------------------------------------------------
+4. SCIENTIFIC & USER EXPERIENCE EVALUATION
+--------------------------------------------------------------------------------
+- Real-time Interval Previews:
+  Instead of generic static labels (+1 ngày, +3 ngày), students immediately see exact
+  adaptive intervals computed by FSRS (e.g., 10 phút, 6 ngày, 1.5 tháng) tailored
+  to the specific word's difficulty and their personal memory strength.
+
+- Active Memory Diagnostics:
+  Learners can observe their real-time retrievability R% decay on the card header
+  (e.g., "🧠 Nhớ: 94% • Chu kỳ: 7 ngày"), providing transparent metacognitive awareness.
+
+- Smart Study Sorting:
+  The "🔥 Ưu tiên SRS" button reorganizes flashcard decks on the fly to prioritize words
+  slipping from memory (lowest R%) before new words are introduced, maximizing learning
+  efficiency and preventing the forgetting curve from taking hold.
+
+- 7-Day Review Forecast:
+  The visual bar chart in the progress modal delivers actionable workload planning,
+  enabling learners to anticipate review spikes and maintain daily learning streaks.
+================================================================================

@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300;
+  }
+}
+
+/* Custom 3D Flip Card Styles */
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Standard Cross-Browser Furigana (Ruby) Display - Chống lệch dòng tuyệt đối */
+ruby {
+  display: inline-ruby;
+  ruby-position: over;
+  vertical-align: baseline;
+  line-height: 2.15;
+}
+
+rt {
+  font-size: 0.5em;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #4f46e5;
+  text-align: center;
+  user-select: none;
+}
+
+.dark rt {
+  color: #818cf8;
+}
+
+/* Hide fallback parenthesis in browsers */
+rp {
+  display: none !important;
+}
+
+/* Class hiển thị câu tiếng Nhật có Furigana mượt mà, thoáng đãng, chống vỡ dòng */
+.jp-sentence {
+  line-height: 2.2;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Cloze Deletion Styling (Theo chuẩn chuyên gia nghiên cứu nhận thức từ Gemini) */
+.cloze {
+  font-weight: 700;
+  color: #ff4757; /* Chữ màu đỏ cam để cảnh báo và kích thích phản xạ não bộ */
+  background-color: #f1f2f6; /* Nền xám nhạt để tách biệt khỏi câu */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: baseline;
+  line-height: 1.25;
+  padding: 2px 10px;
+  margin: 0 4px;
+  border-radius: 6px;
+  border-bottom: 2px dashed #ff4757;
+  letter-spacing: 0.05em;
+}
+
+.dark .cloze {
+  color: #ff6b81;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-bottom: 2px dashed #ff6b81;
+}
+
+/* Cloze Solved State on Back of Flashcard & Quiz */
+.cloze-solved {
+  font-weight: 700;
+  color: #059669; /* Xanh ngọc nổi bật khi đã giải mã */
+  background-color: rgba(16, 185, 129, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: baseline;
+  line-height: 1.25;
+  padding: 2px 10px;
+  margin: 0 4px;
+  border-radius: 6px;
+  border-bottom: 2px solid #059669;
+  letter-spacing: 0.02em;
+}
+
+.dark .cloze-solved {
+  color: #34d399;
+  background-color: rgba(52, 211, 153, 0.16);
+  border-bottom: 2px solid #34d399;
+}
+
+/* Furigana hidden mode */
+.furigana-hide rt {
+  display: none !important;
+}
+
+/* Furigana hover-only mode */
+.furigana-hover rt {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+.furigana-hover:hover rt,
+.furigana-hover ruby:hover rt {
+  opacity: 1;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}

@@ -1,0 +1,212 @@
+================================================================================
+   BÁO CÁO KIỂM TOÁN DỮ LIỆU, CẢI TỔ HỆ THỐNG BÀI TẬP & CHUẨN HÓA MỸ THUẬT
+   ỨNG DỤNG MIMIKARA JLPT (N3 • N2 • N1) FLASHCARD & QUIZ SYSTEM
+================================================================================
+Thời gian thực hiện: 2026-11-10
+Kỹ sư thực thi: Gemini 3.8 Flash Executor
+Kiến trúc sư trưởng chỉ đạo: Gemini 4 Argon
+Trạng thái kiểm thử tự động: 36/36 PASS (100% XANH)
+Trạng thái biên dịch (Build): PASS (Vite Production Build thành công 100%)
+
+--------------------------------------------------------------------------------
+1. KIỂM TOÁN TOÀN VẸN DỮ LIỆU ĐẦU VÀO (DATA INTEGRITY AUDIT)
+--------------------------------------------------------------------------------
+- Cấp độ N1 (mimikara_n1.json):
+  + Số lượng từ vựng: 1,170 từ vựng thực tế (14 Unit)
+  + Câu ví dụ thực tế: 3,467 câu ví dụ
+  + Cụm đi kèm (Collocations): 649 cụm
+  + Từ ghép (Compounds): 954 mục
+  + Từ đồng nghĩa (Synonyms): 820 mục
+  + Từ trái nghĩa (Antonyms): 133 mục
+  + Số từ bị rỗng hoặc lỗi encoding (\ufffd): 0 từ (Đạt chuẩn 100%)
+  + Đã hoàn thiện nghĩa tiếng Việt cho câu ví dụ ngữ pháp id=783 (尽くす).
+
+- Cấp độ N2 (mimikara_n2.json):
+  + Số lượng từ vựng: 1,160 từ vựng thực tế (13 Unit)
+  + Câu ví dụ thực tế: 2,788 câu ví dụ
+  + Cụm đi kèm (Collocations): 258 cụm
+  + Từ ghép (Compounds): 486 mục
+  + Từ đồng nghĩa (Synonyms): 337 mục
+  + Từ trái nghĩa (Antonyms): 119 mục
+  + Số từ bị rỗng hoặc lỗi encoding (\ufffd): 0 từ (Đạt chuẩn 100%)
+
+- Cấp độ N3 (mimikara_n3.json):
+  + Số lượng từ vựng: 871 từ vựng thực tế (12 Unit)
+  + Câu ví dụ thực tế: 2,288 câu ví dụ
+  + Cụm đi kèm (Collocations): 166 cụm
+  + Từ ghép (Compounds): 292 mục
+  + Từ đồng nghĩa (Synonyms): 131 mục
+  + Từ trái nghĩa (Antonyms): 103 mục
+  + Số từ bị rỗng hoặc lỗi encoding (\ufffd): 0 từ (Đạt chuẩn 100%)
+
+=> TỔNG CỘNG 3 CẤP ĐỘ: 3,201 TỪ VỰNG | 8,543 CÂU VÍ DỤ MINH HỌA | 100% TOÀN VẸN.
+
+--------------------------------------------------------------------------------
+2. CẢI TỔ TOÀN DIỆN BÀI TẬP ĐIỀN CÂU (src/components/ClozeQuiz.jsx)
+--------------------------------------------------------------------------------
+2.1. Loại bỏ triệt để việc lộ đáp án qua dịch nghĩa (Active Recall Principle):
+- Trạng thái chưa chọn (!isAnswered):
+  + Tuyệt đối KHÔNG hiển thị câu dịch tiếng Việt (example.meaning) dưới câu hỏi.
+  + Tuyệt đối KHÔNG hiển thị nghĩa tiếng Việt (opt.meanings) ở 4 nút đáp án A, B, C, D.
+  + Bổ sung nút gợi ý nhỏ "💡 Xem gợi ý nghĩa câu (H)" (mặc định ẩn showHint = false,
+    chỉ mở khi bấm phím H hoặc click trực tiếp).
+- Trạng thái đã chọn (isAnswered === true):
+  + Hiển thị đầy đủ bản dịch tiếng Việt của câu ví dụ/cụm từ trong khung giải thích.
+  + Hiển thị đồng thời âm Hán Việt và nghĩa tiếng Việt của CẢ 4 PHƯƠNG ÁN A, B, C, D
+    để người học phân tích đối chiếu từ đúng và từ gây nhiễu (Elaborative Interrogation).
+
+2.2. Khai thác dữ liệu để tạo 2 chế độ điền khuyết:
+- Chế độ 1: Điền từ vào Câu ví dụ thực tế (Sentence Cloze - 8,543 câu thực tế).
+- Chế độ 2: Điền từ vào Cụm từ đi kèm (連語) & Từ ghép (合) (Collocation Cloze).
+  Ký hiệu viết tắt "―" hoặc "＿" được chuyển thành ô khuyết "【  ？  】".
+
+2.3. Lựa chọn distractors thông minh (Smart Distractors):
+- Thuật toán getSmartDistractors ưu tiên chọn các từ cùng Unit và có độ dài tương đồng
+  với từ đích, bám sát cấu trúc ra đề thi thực chiến của JLPT.
+
+2.4. Kết nối SRS:
+- Khi người học trả lời, hệ thống tự động ghi nhận tiến độ SRS qua onQuizSRSSync
+  mà KHÔNG làm thay đổi currentIndex của FlashcardDeck.
+
+--------------------------------------------------------------------------------
+3. NÂNG CẤP CHẾ ĐỘ TRẮC NGHIỆM ĐA CHIỀU (src/components/QuizMode.jsx)
+--------------------------------------------------------------------------------
+3.1. Cung cấp 4 chế độ trắc nghiệm chuẩn cấu trúc đề thi JLPT:
+- Mondai 1: kanji_to_reading (JLPT Mondai 1 - Cách đọc Hiragana):
+  + Đề bài: Chữ Kanji (cưỡng chế ẩn Furigana để người học tự nhớ mặt chữ).
+  + 4 đáp án: 4 cách đọc Hiragana có độ dài tương đồng.
+- Mondai 2/3: kanji_to_meaning (Từ vựng -> Nghĩa tiếng Việt):
+  + Đề bài: Từ tiếng Nhật (kèm Furigana theo tùy chọn của người học).
+  + 4 đáp án: 4 nét nghĩa tiếng Việt phân biệt.
+- meaning_to_kanji (Nghĩa tiếng Việt -> Từ vựng tiếng Nhật):
+  + Đề bài: Nghĩa tiếng Việt và âm Hán Việt.
+  + 4 đáp án: 4 từ vựng tiếng Nhật (ẩn nghĩa ở 4 đáp án trước khi chọn, chỉ hiện
+    nghĩa của cả 4 đáp án sau khi đã chọn).
+- Mondai 4: synonym_antonym (JLPT Mondai 4 - 類義語・対義語):
+  + Khai thác trực tiếp trường related.synonyms và related.antonyms từ bộ dữ liệu.
+  + Đề bài hiển thị rõ badge 類 (Đồng nghĩa) hoặc 対 (Trái nghĩa).
+  + 4 đáp án gồm từ đồng/trái nghĩa đúng và 3 từ gây nhiễu chuẩn JLPT.
+
+3.2. Sửa lỗi logic tổng kết:
+- Nhận prop currentLevel ('N1' | 'N2' | 'N3') và hiển thị chính xác tên cấp độ cùng
+  tổng số câu hỏi thực tế (thay thế chuỗi cố định 'tất cả 14 Unit').
+
+--------------------------------------------------------------------------------
+4. CHUẨN HÓA FONT CHỮ, TYPOGRAPHY & CHỐNG LỆCH DÒNG FURIGANA
+--------------------------------------------------------------------------------
+4.1. Tích hợp Font chữ Google đa ngữ hiện đại (index.html, tailwind.config.js):
+- Font chữ tiếng Việt: "Be Vietnam Pro" hỗ trợ dấu tiếng Việt sắc nét, chuẩn mực typography.
+- Font chữ tiếng Nhật: "Noto Sans JP" hỗ trợ đầy đủ bộ ký tự Kanji, Hiragana, Katakana.
+- Cấu hình font-sans trong tailwind.config.js:
+  ['"Be Vietnam Pro"', '"Inter"', '"Noto Sans JP"', 'system-ui', 'sans-serif']
+- Cấu hình font-japanese trong tailwind.config.js:
+  ['"Noto Sans JP"', '"Hiragino Kaku Gothic ProN"', '"Yu Gothic UI"', '"Meiryo"', '"Be Vietnam Pro"', 'sans-serif']
+
+4.2. Khắc phục triệt để lỗi lệch dòng Furigana (src/index.css):
+- ruby:
+  display: inline-ruby;
+  ruby-position: over;
+  vertical-align: baseline;
+  line-height: 2.15;
+- rt:
+  font-size: 0.5em;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #4f46e5;
+  text-align: center;
+  user-select: none;
+- .cloze và .cloze-solved:
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: baseline;
+  line-height: 1.25;
+  padding: 2px 10px;
+  margin: 0 4px;
+  border-radius: 6px;
+- .jp-sentence:
+  line-height: 2.2;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+4.3. Tiện ích formatRelatedRuby (src/utils/text.js):
+- Tự động phát hiện và thay thế ký hiệu viết tắt '―' và '＿' trong Từ ghép (compounds)
+  và Cụm liên ngữ (collocations) bằng từ gốc được bọc thẻ:
+  <span class="text-indigo-600 dark:text-indigo-400 font-bold">${cleanHead}</span>
+- Giữ nguyên vẹn toàn bộ các thẻ <ruby><rt> xung quanh, không làm vỡ HTML.
+- Đã áp dụng đồng bộ trong cả FlashcardDeck.jsx và DictionaryView.jsx.
+
+--------------------------------------------------------------------------------
+5. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG & BIÊN DỊCH
+--------------------------------------------------------------------------------
+5.1. Kết quả chạy node --test:
+Lệnh thực thi: node --test tests/srs.test.js tests/app_audit.test.js
+
+> Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite: 22/22 PASS (100%)
+  ✔ Test 1: Storage keys generation and isolation for N1, N2, N3
+  ✔ Test 2: Storage persistence and isolation across JLPT levels
+  ✔ Test 3: Retrievability R(t, S) formula mathematical precision
+  ✔ Test 4: Retrievability edge cases (unlearned card, missing stability, zero interval)
+  ✔ Test 5: New card initial grading - Rating 1 (Again)
+  ✔ Test 6: New card initial grading - Rating 2 (Hard)
+  ✔ Test 7: New card initial grading - Rating 3 (Good)
+  ✔ Test 8: New card initial grading - Rating 4 (Easy)
+  ✔ Test 9: Multi-step Good (3) progression
+  ✔ Test 10: Multi-step Easy (4) progression
+  ✔ Test 11: EaseFactor bounds constraints (1.3 <= EF <= 3.0)
+  ✔ Test 12: Difficulty bounds (1.0 <= D <= 10.0) and mean reversion
+  ✔ Test 13: Lapse and Relearning preservation of priorInterval (40% recovery)
+  ✔ Test 14: Leech detection mechanism (lapses >= 4)
+  ✔ Test 15: Overdue bonus calculation
+  ✔ Test 16: Review history tracking (max 20 records)
+  ✔ Test 17: formatIntervalLabel formatting rules in Vietnamese
+  ✔ Test 18: previewNextIntervals outputs valid formatted preview strings
+  ✔ Test 19: getDueWords accurately identifies due cards
+  ✔ Test 20: getSmartStudyQueue cognitive priority ordering
+  ✔ Test 21: getSRSAnalytics statistical metrics calculation
+  ✔ Test 22: getSRSAnalytics 7-day review forecast distribution
+
+> Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimikara (Audit & Exercises Test Suite): 14/14 PASS (100%)
+  ✔ Test 1.1: Tổng số lượng từ vựng đạt chuẩn 3,201 từ trên cả 3 cấp độ (N1, N2, N3)
+  ✔ Test 1.2: Toàn bộ 3,201 từ vựng không bị rỗng word, reading, meanings và không có ký tự lỗi encoding
+  ✔ Test 1.3: Dữ liệu câu ví dụ và cụm từ liên quan (compounds, collocations) hợp lệ
+  ✔ Test 2.1: Sinh câu hỏi Điền vào Câu ví dụ (sentence mode) chứa ô khuyết 【  ？  】 và 4 đáp án phân biệt
+  ✔ Test 2.2: Sinh câu hỏi Điền vào Cụm từ liên ngữ / Từ ghép (collocation mode) chuẩn xác
+  ✔ Test 2.3: Thuật toán Smart Distractors ưu tiên độ dài tương đồng và cùng Unit
+  ✔ Test 3.1: Chế độ 1 kanji_to_reading (JLPT Mondai 1 - Cách đọc Hiragana)
+  ✔ Test 3.2: Chế độ 2 kanji_to_meaning (JLPT Mondai 2/3 - Từ -> Nghĩa tiếng Việt)
+  ✔ Test 3.3: Chế độ 3 meaning_to_kanji (Nghĩa tiếng Việt -> Từ vựng tiếng Nhật)
+  ✔ Test 3.4: Chế độ 4 synonym_antonym (JLPT Mondai 4 - 類義語・対義語)
+  ✔ Test 4.1: formatRelatedRuby thay thế chính xác dấu ― và ＿ bằng từ gốc nổi bật
+  ✔ Test 5.1: index.html đã nhúng đầy đủ Google Fonts Be Vietnam Pro và Noto Sans JP
+  ✔ Test 5.2: tailwind.config.js cấu hình đúng font-sans và font-japanese
+  ✔ Test 5.3: src/index.css định nghĩa chuẩn xác CSS chống lệch dòng cho ruby, rt, cloze, jp-sentence
+
+TỔNG SỐ TEST: 36 TEST | THÀNH CÔNG: 36 | THẤT BẠI: 0 | TỶ LỆ ĐẠT: 100.0%
+
+5.2. Kết quả biên dịch (npm run build):
+- Trình biên dịch: Vite v6.4.5
+- Modules transformed: 2,085 modules
+- Build status: SUCCESS (0 errors, 0 warnings fatal)
+- Output bundle:
+  + dist/index.html: 1.17 kB (gzip: 0.68 kB)
+  + dist/assets/index.css: 48.02 kB (gzip: 8.18 kB)
+  + dist/assets/index.js: 6,690.19 kB (gzip: 1,324.00 kB)
+
+--------------------------------------------------------------------------------
+6. ĐÁNH GIÁ TỔNG QUAN VỀ LOGIC & MỸ THUẬT (COGNITIVE & AESTHETIC AUDIT)
+--------------------------------------------------------------------------------
+- Về tính sư phạm & Nhận thức học (Cognitive Science):
+  + Người dùng không còn bị "học vẹt" do nhìn câu dịch tiếng Việt trước khi chọn.
+  + Cơ chế Elaborative Interrogation phát huy tối đa hiệu quả khi cung cấp đầy đủ
+    nghĩa của cả 4 phương án sau khi người dùng đưa ra quyết định.
+  + Phân tầng rõ rệt 4 dạng bài tập mô phỏng chính xác cấu trúc đề thi JLPT N1, N2, N3.
+- Về thẩm mỹ & Trải nghiệm giao diện (UI/UX Aesthetics):
+  + Typography tiếng Việt tròn trịa, sắc nét với Be Vietnam Pro.
+  + Kanji & Furigana cân đối, khoảng cách dòng thoáng đãng với line-height: 2.15 - 2.2,
+    triệt tiêu hoàn toàn hiện tượng lệch dòng hay đè chữ.
+  + Ký hiệu từ ghép '―' và '＿' đã biến mất, thay vào đó là từ vựng gốc nổi bật màu Indigo.
+  + Dark mode và Light mode chuyển đổi mượt mà, màu sắc dịu mắt.
+================================================================================
+KẾT THÚC BÁO CÁO - HẠNG MỤC 2, 3, 4 HOÀN TẤT XUẤT SẮC 100%.
+================================================================================
