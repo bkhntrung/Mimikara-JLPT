@@ -6,8 +6,18 @@
  * mở nhiều tab / cửa sổ trình duyệt cùng lúc.
  */
 
-// Sinh định danh tab duy nhất
+// Sinh định danh tab duy nhất (bảo toàn theo sessionStorage của mỗi tab trình duyệt)
 export function generateTabId() {
+  if (typeof sessionStorage !== 'undefined') {
+    try {
+      let id = sessionStorage.getItem('mimikara_tab_id');
+      if (!id) {
+        id = `tab_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+        sessionStorage.setItem('mimikara_tab_id', id);
+      }
+      return id;
+    } catch (e) {}
+  }
   return `tab_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 

@@ -64,8 +64,14 @@ export default function App() {
   // Multi-tab Conflict Prevention State
   const [isTabLocked, setIsTabLocked] = useState(false);
   const tabSyncRef = useRef(null);
+  const currentLevelRef = useRef(currentLevel);
+
+  useEffect(() => {
+    currentLevelRef.current = currentLevel;
+  }, [currentLevel]);
 
   // Initialize TabSyncManager for Multi-tab Conflict Prevention & Real-time Sync
+  // Khởi tạo một lần duy nhất cho vòng đời của tab trình duyệt này (không hủy tạo lại khi chuyển N1, N2, N3)
   useEffect(() => {
     const manager = new TabSyncManager({
       onLockChange: (locked) => {
@@ -73,9 +79,10 @@ export default function App() {
       },
       onRemoteDataUpdate: ({ level }) => {
         // Tự động đồng bộ state nếu tab khác vừa thay đổi dữ liệu cấp độ này
-        if (!level || level === currentLevel) {
-          setSrsRecords(loadSRSRecords(currentLevel));
-          setStarredSet(loadStarredWords(currentLevel));
+        const curLvl = currentLevelRef.current;
+        if (!level || level === curLvl) {
+          setSrsRecords(loadSRSRecords(curLvl));
+          setStarredSet(loadStarredWords(curLvl));
         }
       }
     });
@@ -85,7 +92,7 @@ export default function App() {
     return () => {
       manager.destroy();
     };
-  }, [currentLevel]);
+  }, []);
 
   // Sync dark mode class
   useEffect(() => {
