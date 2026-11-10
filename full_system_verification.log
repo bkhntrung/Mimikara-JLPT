@@ -1,0 +1,128 @@
+================================================================================
+BÁO CÁO TOÀN DIỆN KIỂM TOÁN HỆ THỐNG MIMIKARA JLPT (N3 • N2 • N1)
+Phiên bản kiến trúc: Argon 4 Core Engine
+Người thực thi: Gemini 3.8 Flash Executor
+Thời gian thẩm định: 2026-11-10T13:34:30+09:00
+Trạng thái tổng thể: 100% PASS (43/43 Tests XANH - Vite Build 0 Lỗi - Dual-stack Active)
+================================================================================
+
+PHẦN 1: HẠNG MỤC 1 - SAO LƯU & ĐỒNG BỘ DỮ LIỆU TOÀN DIỆN (N3 • N2 • N1)
+--------------------------------------------------------------------------------
+1. Thiết kế Module srs.js (exportAllUserData / importAllUserData):
+   - Đạt chuẩn Schema Version 2 với scope: 'ALL_LEVELS'.
+   - Thu thập đồng thời toàn bộ lịch sử Spaced Repetition (SRS) và tập hợp yêu thích (Starred) của cả 3 cấp độ:
+     + Khóa N3: 871 từ vựng (mimikara_n3_srs_records, mimikara_n3_starred)
+     + Khóa N2: 1,160 từ vựng (mimikara_n2_srs_records, mimikara_n2_starred)
+     + Khóa N1: 1,170 từ vựng (mimikara_n1_srs_records, mimikara_n1_starred)
+     + Cài đặt giao diện: currentLevel, darkMode.
+   - Cơ chế nạp dữ liệu thông minh 2 chế độ:
+     + Gộp thông minh (merge: true - Mặc định):
+       * Bảo toàn toàn bộ từ vựng đã học trên máy.
+       * Tự động bổ sung các từ mới có trong file sao lưu.
+       * Khi trùng từ, so sánh mốc thời gian lastReviewed: ưu tiên bản ghi mới hơn (hoặc số lần ôn tập reps cao hơn).
+       * Hợp nhất danh sách Starred (Union of Sets).
+     + Ghi đè toàn bộ (merge: false): Phục vụ kịch bản cài mới hoàn toàn.
+     + Tương thích ngược 100% với file sao lưu Version 1 (chỉ chứa 1 cấp độ).
+   - Hàm getAllUserDataSummary() cung cấp tức thì số liệu tổng hợp cho UI.
+
+2. Giao diện StatsModal.jsx:
+   - Thêm bảng tóm tắt 3 khóa N3 • N2 • N1 với màu sắc phân biệt đặc trưng:
+     * N3: Emerald
+     * N2: Indigo
+     * N1: Rose
+   - Nút "Xuất Sao Lưu Toàn Bộ (N3•N2•N1 .json)" xuất file định danh mimikara_backup_all_YYYY-MM-DD.json.
+   - Bộ chọn Radio chế độ: "Gộp thông minh (Khuyên dùng)" và "Ghi đè toàn bộ".
+   - Tùy chọn xuất riêng lẻ cấp độ hiện tại để phục vụ nhu cầu tối giản.
+
+--------------------------------------------------------------------------------
+PHẦN 2: HẠNG MỤC 2 - CHỐNG XUNG ĐỘT ĐA CỬA SỔ (MULTI-TAB CONFLICT & REALTIME SYNC)
+--------------------------------------------------------------------------------
+1. Module src/utils/tabSync.js:
+   - Single Active Tab Lock:
+     * Sinh UUID/tabId duy nhất cho mỗi phiên duyệt.
+     * Cơ chế Heartbeat định kỳ 1500ms qua localStorage và kênh BroadcastChannel (mimikara_tab_channel).
+     * Phát hiện tab thứ 2 mở trùng lặp: Tự động chuyển tab mới sang trạng thái isTabLocked = true.
+     * Cơ chế Chiếm quyền phiên (claimActiveSession): Bắn tín hiệu TAKEOVER_SESSION, tab cũ lập tức khóa nghỉ, tab hiện tại nạp lại dữ liệu mới nhất và tiếp tục học liền mạch.
+   - Real-time Storage Sync:
+     * Lắng nghe sự kiện window storage. Khi tab active học bài làm thay đổi SRS/Starred, các tab khác tự động cập nhật state nền mà không cần F5.
+
+2. Component TabConflictModal.jsx & Tích hợp App.jsx:
+   - Hiển thị Modal toàn màn hình với thiết kế cảnh báo chuyên nghiệp:
+     * Tiêu đề: "Phát hiện cửa sổ học trùng lặp!"
+     * Huy hiệu: "Bảo vệ tiến độ học tập • Multi-Tab Lock"
+     * Nút 1: "Học tiếp tại cửa sổ này (Tạm dừng tab kia)" -> Kích hoạt takeover session.
+     * Nút 2: "Tải lại dữ liệu mới nhất từ máy" -> Đồng bộ tức thời.
+   - Toàn bộ phím tắt bàn phím (Space, 1-4, Arrow, v.v.) tự động bị vô hiệu hóa khi tab đang bị khóa, loại bỏ hoàn toàn nguy cơ bấm nhầm.
+
+--------------------------------------------------------------------------------
+PHẦN 3: KẾT QUẢ KIỂM THỬ TỰ ĐỘNG TOÀN HỆ THỐNG (43/43 TESTS PASS)
+--------------------------------------------------------------------------------
+Command: node --test tests/srs.test.js tests/app_audit.test.js
+Thời gian chạy: 698ms
+
+[SUITE 1] Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite:
+  ✔ Test 1: Storage keys generation and isolation for N1, N2, N3
+  ✔ Test 2: Storage persistence and isolation across JLPT levels
+  ✔ Test 3: Retrievability R(t, S) formula mathematical precision
+  ✔ Test 4: Retrievability edge cases (unlearned card, missing stability, zero interval)
+  ✔ Test 5: New card initial grading - Rating 1 (Again)
+  ✔ Test 6: New card initial grading - Rating 2 (Hard)
+  ✔ Test 7: New card initial grading - Rating 3 (Good)
+  ✔ Test 8: New card initial grading - Rating 4 (Easy)
+  ✔ Test 9: Multi-step Good (3) progression
+  ✔ Test 10: Multi-step Easy (4) progression
+  ✔ Test 11: EaseFactor bounds constraints (1.3 <= EF <= 3.0)
+  ✔ Test 12: Difficulty bounds (1.0 <= D <= 10.0) and mean reversion
+  ✔ Test 13: Lapse and Relearning preservation of priorInterval (40% recovery)
+  ✔ Test 14: Leech detection mechanism (lapses >= 4)
+  ✔ Test 15: Overdue bonus calculation
+  ✔ Test 16: Review history tracking (max 20 records)
+  ✔ Test 17: formatIntervalLabel formatting rules in Vietnamese
+  ✔ Test 18: previewNextIntervals outputs valid formatted preview strings
+  ✔ Test 19: getDueWords accurately identifies due cards
+  ✔ Test 20: getSmartStudyQueue cognitive priority ordering
+  ✔ Test 21: getSRSAnalytics statistical metrics calculation
+  ✔ Test 22: getSRSAnalytics 7-day review forecast distribution
+  ✔ Test 23: exportAllUserData và getAllUserDataSummary cho cả 3 cấp độ N3, N2, N1
+  ✔ Test 24: importAllUserData với merge: true (Gộp thông minh - bảo toàn từ cũ, ưu tiên bản ghi mới hơn, gộp sao)
+  ✔ Test 25: importAllUserData với merge: false (Ghi đè) và tương thích ngược Version 1
+
+[SUITE 2] Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimikara:
+  ✔ Test 1.1: Tổng số lượng từ vựng đạt chuẩn 3,201 từ trên cả 3 cấp độ (N1, N2, N3)
+  ✔ Test 1.2: Toàn bộ 3,201 từ vựng không bị rỗng word, reading, meanings và không có ký tự lỗi encoding
+  ✔ Test 1.3: Dữ liệu câu ví dụ và cụm từ liên quan (compounds, collocations) hợp lệ
+  ✔ Test 2.1: Sinh câu hỏi Điền vào Câu ví dụ (sentence mode) chứa ô khuyết 【  ？  】 và 4 đáp án phân biệt
+  ✔ Test 2.2: Sinh câu hỏi Điền vào Cụm từ liên ngữ / Từ ghép (collocation mode) chuẩn xác
+  ✔ Test 2.3: Thuật toán Smart Distractors ưu tiên độ dài tương đồng và cùng Unit
+  ✔ Test 3.1: Chế độ 1 kanji_to_reading (JLPT Mondai 1 - Cách đọc Hiragana)
+  ✔ Test 3.2: Chế độ 2 kanji_to_meaning (JLPT Mondai 2/3 - Từ -> Nghĩa tiếng Việt)
+  ✔ Test 3.3: Chế độ 3 meaning_to_kanji (Nghĩa tiếng Việt -> Từ vựng tiếng Nhật)
+  ✔ Test 3.4: Chế độ 4 synonym_antonym (JLPT Mondai 4 - 類義語・対義語)
+  ✔ Test 4.1: formatRelatedRuby thay thế chính xác dấu ― và ＿ bằng từ gốc nổi bật
+  ✔ Test 4.2: makeRubyCloze bảo toàn 100% thẻ <ruby> xung quanh và thay thế trọn vẹn từ đích thành ô cloze
+  ✔ Test 5.1: index.html đã nhúng đầy đủ Google Fonts Be Vietnam Pro và Noto Sans JP
+  ✔ Test 5.2: tailwind.config.js cấu hình đúng font-sans và font-japanese
+  ✔ Test 5.3: src/index.css định nghĩa chuẩn xác CSS chống lệch dòng cho ruby, rt, cloze, jp-sentence
+  ✔ Test 5.4: Kiểm toán tính năng Nâng cấp QuizMode, Header Progress và Backup/Restore
+  ✔ Test 5.5: Kiểm toán chống hồi quy Modal - Đóng khi click backdrop và conditional rendering
+  ✔ Test 5.6: Kiểm toán module tabSync, TabConflictModal và Sao lưu hợp nhất N3•N2•N1
+
+--------------------------------------------------------------------------------
+PHẦN 4: KẾT QUẢ BIÊN DỊCH VITE PRODUCTION BUILD
+--------------------------------------------------------------------------------
+Command: vite build
+Kết quả:
+  ✓ 2087 modules transformed.
+  dist/index.html                     1.17 kB │ gzip:     0.68 kB
+  dist/assets/index-CR6Is6E-.css     50.00 kB │ gzip:     8.42 kB
+  dist/assets/index-T3VQCOQT.js   6,714.99 kB │ gzip: 1,330.43 kB
+  Built in 8.08s
+  0 Errors, 0 Syntax Warnings.
+
+--------------------------------------------------------------------------------
+PHẦN 5: ĐÁNH GIÁ KỸ THUẬT & TRẠNG THÁI MÁY CHỦ
+--------------------------------------------------------------------------------
+- Máy chủ Node.js serve.cjs: Đang hoạt động trên cổng 4173 dual-stack (IPv4 0.0.0.0 & IPv6 ::).
+- Khi người dùng vô tình mở thêm instance của serve.cjs, hệ thống giữ nguyên cổng 4173, mở trình duyệt và tự thoát an toàn, bảo vệ 100% Origin của localStorage.
+- Hệ thống đã sẵn sàng đưa vào vận hành thực tế cho người học JLPT toàn diện.
+================================================================================

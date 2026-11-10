@@ -339,4 +339,47 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(serveContent.includes('process.exit(0)'), 'serve.cjs phải thoát nhẹ nhàng khi port đã chạy');
   });
 
+  test('Test 5.6: Kiểm toán module tabSync, TabConflictModal và Sao lưu hợp nhất N3•N2•N1', async () => {
+    // 1. Kiểm tra module tabSync.js
+    const tabSyncModule = await import('../src/utils/tabSync.js');
+    assert.ok(typeof tabSyncModule.generateTabId === 'function', 'Phải có hàm generateTabId');
+    const id1 = tabSyncModule.generateTabId();
+    const id2 = tabSyncModule.generateTabId();
+    assert.ok(id1.startsWith('tab_'));
+    assert.notEqual(id1, id2, 'Các tab ID phải phân biệt');
+    assert.ok(tabSyncModule.TabSyncManager, 'Phải có lớp TabSyncManager');
+
+    const manager = new tabSyncModule.TabSyncManager({
+      tabId: 'test_tab_1'
+    });
+    assert.equal(manager.tabId, 'test_tab_1');
+    assert.ok(typeof manager.claimActiveSession === 'function');
+    assert.ok(typeof manager.destroy === 'function');
+    manager.destroy();
+
+    // 2. Kiểm tra TabConflictModal.jsx
+    const modalPath = path.resolve('src/components/TabConflictModal.jsx');
+    const modalContent = fs.readFileSync(modalPath, 'utf8');
+    assert.ok(modalContent.includes('if (!isOpen) return null;'), 'TabConflictModal phải có conditional rendering');
+    assert.ok(modalContent.includes('Phát hiện cửa sổ học trùng lặp!'), 'Phải có thông báo xung đột đa tab');
+    assert.ok(modalContent.includes('onClaimSession'), 'Phải có prop onClaimSession');
+    assert.ok(modalContent.includes('onReloadData'), 'Phải có prop onReloadData');
+
+    // 3. Kiểm tra App.jsx đã tích hợp TabSync & TabConflictModal
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+    assert.ok(appContent.includes('TabConflictModal'), 'App.jsx phải nhúng TabConflictModal');
+    assert.ok(appContent.includes('TabSyncManager'), 'App.jsx phải khởi tạo TabSyncManager');
+    assert.ok(appContent.includes('if (isTabLocked) return;'), 'Phím tắt phải bị khóa khi tab trùng lặp');
+
+    // 4. Kiểm tra StatsModal.jsx hỗ trợ sao lưu toàn diện N3•N2•N1
+    const statsPath = path.resolve('src/components/StatsModal.jsx');
+    const statsContent = fs.readFileSync(statsPath, 'utf8');
+    assert.ok(statsContent.includes('exportAllUserData'), 'StatsModal phải dùng exportAllUserData');
+    assert.ok(statsContent.includes('importAllUserData'), 'StatsModal phải dùng importAllUserData');
+    assert.ok(statsContent.includes('getAllUserDataSummary'), 'StatsModal phải dùng getAllUserDataSummary');
+    assert.ok(statsContent.includes('Xuất Sao Lưu Toàn Bộ (N3•N2•N1 .json)'), 'StatsModal phải có nút xuất toàn bộ N3•N2•N1');
+    assert.ok(statsContent.includes('Gộp thông minh (Khuyên dùng)'), 'StatsModal phải có tùy chọn Gộp thông minh');
+  });
+
 });

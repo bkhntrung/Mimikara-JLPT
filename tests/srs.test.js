@@ -14,7 +14,10 @@ import {
   previewNextIntervals,
   getDueWords,
   getSmartStudyQueue,
-  getSRSAnalytics
+  getSRSAnalytics,
+  exportAllUserData,
+  importAllUserData,
+  getAllUserDataSummary
 } from '../src/utils/srs.js';
 
 describe('Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite', () => {
@@ -525,6 +528,129 @@ describe('Hybrid FSRS-SM2 Spaced Repetition Engine Test Suite', () => {
     assert.equal(forecast[4].count, 0);
     assert.equal(forecast[5].count, 0);
     assert.equal(forecast[6].count, 0);
+  });
+
+  test('Test 23: exportAllUserData và getAllUserDataSummary cho cả 3 cấp độ N3, N2, N1', () => {
+    // Chuẩn bị dữ liệu mẫu cho cả 3 cấp độ
+    saveSRSRecords({ 301: { stage: 'good', reps: 2 } }, 'N3');
+    saveStarredWords(new Set([301, 302]), 'N3');
+
+    saveSRSRecords({ 201: { stage: 'easy', reps: 5 } }, 'N2');
+    saveStarredWords(new Set([201]), 'N2');
+
+    saveSRSRecords({ 101: { stage: 'hard', reps: 1 }, 102: { stage: 'good', reps: 3 } }, 'N1');
+    saveStarredWords(new Set([101, 102, 103]), 'N1');
+
+    // 1. Kiểm tra getAllUserDataSummary
+    const summary = getAllUserDataSummary();
+    assert.equal(summary.N3.srsCount, 1);
+    assert.equal(summary.N3.starredCount, 2);
+    assert.equal(summary.N2.srsCount, 1);
+    assert.equal(summary.N2.starredCount, 1);
+    assert.equal(summary.N1.srsCount, 2);
+    assert.equal(summary.N1.starredCount, 3);
+    assert.equal(summary.totalSRS, 4);
+    assert.equal(summary.totalStarred, 6);
+
+    // 2. Kiểm tra exportAllUserData
+    const exported = exportAllUserData();
+    assert.equal(exported.version, 2);
+    assert.equal(exported.scope, 'ALL_LEVELS');
+    assert.ok(exported.backupDate);
+    assert.ok(exported.levels.N3.srsRecords[301]);
+    assert.deepEqual(exported.levels.N3.starredList.sort(), [301, 302]);
+    assert.ok(exported.levels.N2.srsRecords[201]);
+    assert.deepEqual(exported.levels.N2.starredList, [201]);
+    assert.ok(exported.levels.N1.srsRecords[101]);
+    assert.ok(exported.levels.N1.srsRecords[102]);
+    assert.deepEqual(exported.levels.N1.starredList.sort(), [101, 102, 103]);
+  });
+
+  test('Test 24: importAllUserData với merge: true (Gộp thông minh - bảo toàn từ cũ, ưu tiên bản ghi mới hơn, gộp sao)', () => {
+    // Dữ liệu hiện có trên máy cho N1
+    saveSRSRecords({
+      101: { stage: 'good', reps: 2, lastReviewed: '2026-11-01T10:00:00Z' }, // Sẽ bị ghi đè vì backup mới hơn
+      102: { stage: 'easy', reps: 6, lastReviewed: '2026-11-10T12:00:00Z' }  // Sẽ được giữ lại vì máy mới hơn backup
+    }, 'N1');
+    saveStarredWords(new Set([101, 105]), 'N1');
+
+    // Dữ liệu trong file backup nạp vào
+    const backupData = {
+      version: 2,
+      scope: 'ALL_LEVELS',
+      levels: {
+        N1: {
+          srsRecords: {
+            101: { stage: 'easy', reps: 4, lastReviewed: '2026-11-05T10:00:00Z' }, // Mới hơn ngày 01 -> Nhận bản này
+            102: { stage: 'hard', reps: 1, lastReviewed: '2026-11-02T10:00:00Z' }, // Cũ hơn ngày 10 -> Giữ bản máy
+            103: { stage: 'good', reps: 3, lastReviewed: '2026-11-04T10:00:00Z' }  // Từ mới chưa có trên máy -> Thêm mới
+          },
+          starredList: [101, 106]
+        }
+      }
+    };
+
+    const res = importAllUserData(backupData, { merge: true });
+    assert.equal(res.success, true);
+    assert.equal(res.merge, true);
+
+    const mergedN1 = loadSRSRecords('N1');
+    assert.equal(mergedN1[101].stage, 'easy', 'Từ 101 phải lấy bản ghi mới hơn từ backup');
+    assert.equal(mergedN1[101].reps, 4);
+
+    assert.equal(mergedN1[102].stage, 'easy', 'Từ 102 phải giữ bản ghi mới hơn trên máy');
+    assert.equal(mergedN1[102].reps, 6);
+
+    assert.ok(mergedN1[103], 'Từ 103 phải được thêm mới vào');
+    assert.equal(mergedN1[103].reps, 3);
+
+    const mergedStarred = loadStarredWords('N1');
+    assert.equal(mergedStarred.size, 3, 'Starred phải là hợp của [101, 105] và [101, 106]');
+    assert.ok(mergedStarred.has(101));
+    assert.ok(mergedStarred.has(105));
+    assert.ok(mergedStarred.has(106));
+  });
+
+  test('Test 25: importAllUserData với merge: false (Ghi đè) và tương thích ngược Version 1', () => {
+    // 1. Kiểm tra Ghi đè toàn bộ (merge: false)
+    saveSRSRecords({ 201: { stage: 'good' }, 202: { stage: 'easy' } }, 'N2');
+    saveStarredWords(new Set([201, 202]), 'N2');
+
+    const overwriteData = {
+      version: 2,
+      scope: 'ALL_LEVELS',
+      levels: {
+        N2: {
+          srsRecords: { 203: { stage: 'hard' } },
+          starredList: [203]
+        }
+      }
+    };
+
+    importAllUserData(overwriteData, { merge: false });
+    const finalN2SRS = loadSRSRecords('N2');
+    assert.equal(Object.keys(finalN2SRS).length, 1);
+    assert.ok(finalN2SRS[203]);
+    assert.equal(finalN2SRS[201], undefined);
+
+    const finalN2Star = loadStarredWords('N2');
+    assert.equal(finalN2Star.size, 1);
+    assert.ok(finalN2Star.has(203));
+
+    // 2. Kiểm tra tương thích ngược Version 1 (single level N3)
+    const v1Data = {
+      version: 1,
+      app: 'Mimikara Oboeru JLPT',
+      level: 'N3',
+      srsRecords: { 301: { stage: 'easy', reps: 5 } },
+      starredList: [301]
+    };
+
+    const resV1 = importAllUserData(v1Data, { merge: true });
+    assert.equal(resV1.success, true);
+    const n3SRS = loadSRSRecords('N3');
+    assert.ok(n3SRS[301]);
+    assert.equal(n3SRS[301].stage, 'easy');
   });
 
 });

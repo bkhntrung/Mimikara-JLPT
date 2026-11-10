@@ -1,52 +1,38 @@
 ================================================================================
-BÁO CÁO THỰC THI & KIỂM THỬ HỆ THỐNG MIMIKARA JLPT
+BÁO CÁO SỬA LỖI KHẨN CẤP & BẢO TOÀN ORIGIN SERVER MIMIKARA JLPT
 Người thực thi: Gemini 3.8 Flash Executor
 Người nhận: Kiến trúc sư trưởng Gemini 4 Argon
-Thời gian: 2026-11-10T12:06:00+09:00
-Trạng thái: HOÀN THÀNH XUẤT SẮC (38/38 Tests PASS - Build 100% SUCCESS)
+Thời gian: 2026-11-10T13:14:30+09:00
+Trạng thái: HOÀN TẤT XUẤT SẮC (39/39 Tests PASS - Build SUCCESS - Pushed to GitHub)
 ================================================================================
 
-1. NÂNG CẤP CỠ CHỮ & FONT CHỮ TRONG KHUNG GIẢI THÍCH (QuizMode.jsx & index.css):
+1. KHẮC PHỤC LỖI KHÓA CỨNG GIAO DIỆN TẠI StatsModal.jsx:
 --------------------------------------------------------------------------------
-- Tệp: `src/components/QuizMode.jsx`:
-  + Đã nâng cấp câu ví dụ tiếng Nhật từ `text-xs` lên:
-    `text-base sm:text-lg font-japanese font-semibold text-slate-800 dark:text-slate-100 leading-relaxed`
-  + Đã bổ sung nút loa phát âm âm thanh câu ví dụ với tooltip trực quan:
-    `onClick={() => speakJapanese(target.examples[0].japanese, soundSpeed)}`
-  + Bản dịch tiếng Việt được định dạng rõ nét:
-    `text-sm text-slate-600 dark:text-slate-300 italic mt-1.5`
-  + Khung giải thích mở rộng padding lên `p-3.5 sm:p-4 rounded-2xl` thoáng đãng, sắc nét.
-- Tệp: `src/index.css`:
-  + Tinh chỉnh `rt`: tăng `font-size: 0.58em`, `font-weight: 600`, `line-height: 1.15`, màu indigo sắc nét `#4f46e5` (dark: `#a5b4fc`). Furigana không còn bị nhòe hay bé tí hon trên mọi thiết bị.
+- File: `src/components/StatsModal.jsx`:
+  + Đã thêm `if (!isOpen) return null;` tại dòng 165 (ngay trước lệnh `return (`, sau tất cả các hook React: useState, useRef, useMemo). Tuân thủ 100% Rules of Hooks.
+  + Thêm `onClick={onClose}` vào thẻ backdrop ngoài cùng (`fixed inset-0 z-50 ...`), giữ nguyên `onClick={(e) => e.stopPropagation()}` tại thẻ con chứa nội dung để người dùng có thể nhấp chuột ra ngoài nền mờ để đóng modal thuận tiện.
+- File: `src/components/ShortcutModal.jsx`:
+  + Bổ sung `onClick={onClose}` vào thẻ backdrop ngoài cùng để đồng bộ hành vi UX trên toàn bộ hệ sinh thái modal.
 
-2. CẢI TIẾN HIỂN THỊ TIẾN ĐỘ THỰC TẾ & CHỐNG STALE CLOSURE SRS:
+2. NÂNG CẤP serve.cjs HỖ TRỢ DUAL-STACK & BẢO TOÀN ORIGIN CỔNG 4173:
 --------------------------------------------------------------------------------
-- Tệp: `src/components/Header.jsx`:
-  + Xử lý triệt để "ảo giác mất dữ liệu": Khi học những từ đầu tiên (ví dụ 1/1170), nút tiến độ hiển thị trực tiếp:
-    `${learnedCount} từ (${percentLearned}%)` trên Desktop và `${learnedCount} từ` trên Mobile.
-  + Tooltip chi tiết: `Đã thuộc ${learnedCount}/${totalWordsCount} từ (${percentLearned}%) - Bấm xem chi tiết SRS`.
-- Tệp: `src/App.jsx`:
-  + Cập nhật cả `handleQuizSRSSync` và `handleRateSRS` để đọc bản ghi hiện tại từ `prev[wordId]` bên trong hàm cập nhật state `setSrsRecords(prev => ...)`. Loại bỏ hoàn toàn lỗi stale closure khi trả lời nhanh liên tiếp.
+- File: `serve.cjs`:
+  + Chuyển `server.listen(port, 'localhost', ...)` sang `server.listen(port, ...)` để Node.js lắng nghe đồng thời cả IPv4 (`0.0.0.0`) và IPv6 (`::`), giải quyết hoàn toàn lỗi kết nối khác biệt giữa các hệ điều hành hoặc trình duyệt ưu tiên IPv6.
+  + Khi gặp lỗi `EADDRINUSE` (cổng 4173 đã có tiến trình chạy trước đó):
+    * Giữ nguyên Origin `http://localhost:4173/`, không tự động nhảy sang 4174 (tránh làm phân mảnh dữ liệu `localStorage` của người dùng).
+    * In thông báo trực quan trên console xác nhận máy chủ đã sẵn sàng.
+    * Kích hoạt tự động mở lại tab trình duyệt vào cổng 4173 và thoát nhẹ nhàng với `process.exit(0)`.
 
-3. TÍNH NĂNG SAO LƯU & KHÔI PHỤC DỮ LIỆU ĐĨA CỨNG (JSON BACKUP / EXPORT & IMPORT):
+3. KIỂM THỬ CHỐNG HỒI QUY (Regression Test):
 --------------------------------------------------------------------------------
-- Tệp: `src/components/StatsModal.jsx`:
-  + Thêm khối "Sao lưu & Đồng bộ Dữ liệu Cá nhân ({currentLevel})":
-    * Nút "📥 Xuất file sao lưu (.json)": Tự động sinh file JSON chứa version, timestamp, SRS records và Starred list dạng `mimikara_backup_${currentLevel.toLowerCase()}_YYYY-MM-DD.json`.
-    * Nút "📤 Khôi phục từ file (.json)": Cho phép chọn file JSON backup để khôi phục tức thì toàn bộ lịch sử học tập.
-    * Thông báo trực quan (xanh khi thành công, đỏ khi file sai định dạng) với tự động ẩn sau 4-5s.
-- Tệp: `src/App.jsx`:
-  + Cung cấp hàm `handleRestoreData` đồng bộ vào `localStorage` và cập nhật trực tiếp `srsRecords`, `starredSet` của cấp độ tương ứng.
+- File: `tests/app_audit.test.js`:
+  + Bổ sung Test 5.5: Kiểm toán chống hồi quy Modal và dual-stack server.
+  + Chạy `npm test`: **39/39 tests PASS (100% XANH)**.
+  + Chạy `npm run build`: Vite build thành công gói production bundle mới nhất.
 
-4. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG & BIÊN DỊCH:
+4. TRIỂN KHAI VÀ GITHUB SYNC:
 --------------------------------------------------------------------------------
-- Kiểm thử: `node --test tests/srs.test.js tests/app_audit.test.js`
-  + Tổng cộng: 38/38 tests PASS (100% XANH)
-  + Thời gian chạy: ~560ms
-- Biên dịch: `npm run build` (Vite v6.4.5)
-  + Kết quả: Built thành công trong 6.05s
-  + 0 lỗi biên dịch, 0 warning cú pháp.
-
-================================================================================
-KẾT LUẬN: Đã bàn giao đầy đủ toàn bộ yêu cầu kỹ thuật và thẩm mỹ.
+- Khởi động lại server sản xuất trên cổng 4173 (PID 27232 đang lắng nghe dual-stack 0.0.0.0:4173 và [::]:4173).
+- Commit: `aca9b28 fix(modal): restore conditional rendering in StatsModal, enable backdrop click close and dual-stack server support`
+- Push: Đã đồng bộ thành công lên nhánh `main` tại GitHub repository `bkhntrung/Mimikara-JLPT`.
 ================================================================================

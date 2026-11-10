@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import mimikaraN1 from './data/mimikara_n1.json';
 import mimikaraN2 from './data/mimikara_n2.json';
 import mimikaraN3 from './data/mimikara_n3.json';
@@ -9,6 +9,7 @@ import ClozeQuiz from './components/ClozeQuiz';
 import DictionaryView from './components/DictionaryView';
 import StatsModal from './components/StatsModal';
 import ShortcutModal from './components/ShortcutModal';
+import TabConflictModal from './components/TabConflictModal';
 import { 
   loadSRSRecords, 
   saveSRSRecords, 
@@ -18,6 +19,7 @@ import {
   getSmartStudyQueue
 } from './utils/srs';
 import { speakJapanese } from './utils/audio';
+import { TabSyncManager } from './utils/tabSync';
 
 const DATASETS = {
   N1: mimikaraN1,
@@ -58,6 +60,32 @@ export default function App() {
   // Modals
   const [isShortcutOpen, setIsShortcutOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
+
+  // Multi-tab Conflict Prevention State
+  const [isTabLocked, setIsTabLocked] = useState(false);
+  const tabSyncRef = useRef(null);
+
+  // Initialize TabSyncManager for Multi-tab Conflict Prevention & Real-time Sync
+  useEffect(() => {
+    const manager = new TabSyncManager({
+      onLockChange: (locked) => {
+        setIsTabLocked(locked);
+      },
+      onRemoteDataUpdate: ({ level }) => {
+        // Tự động đồng bộ state nếu tab khác vừa thay đổi dữ liệu cấp độ này
+        if (!level || level === currentLevel) {
+          setSrsRecords(loadSRSRecords(currentLevel));
+          setStarredSet(loadStarredWords(currentLevel));
+        }
+      }
+    });
+
+    tabSyncRef.current = manager;
+
+    return () => {
+      manager.destroy();
+    };
+  }, [currentLevel]);
 
   // Sync dark mode class
   useEffect(() => {
@@ -175,20 +203,50 @@ export default function App() {
     });
   }, [currentLevel]);
 
-  // Restore SRS and Starred data from backup file
-  const handleRestoreData = useCallback(({ level, srsRecords: restoredSRS, starredList: restoredStarred }) => {
-    const targetLvl = level || currentLevel;
-    if (restoredSRS) {
-      saveSRSRecords(restoredSRS, targetLvl);
+  // Restore SRS and Starred data from backup file (Hỗ trợ cả v2 summary và v1)
+  const handleRestoreData = useCallback((restoreResult) => {
+    // 1. Luôn nạp lại state mới nhất từ storage cho cấp độ đang mở
+    setSrsRecords(loadSRSRecords(currentLevel));
+    setStarredSet(loadStarredWords(currentLevel));
+
+    // 2. Nếu file sao lưu có chứa thông tin settings
+    if (restoreResult?.settings?.currentLevel && restoreResult.settings.currentLevel !== currentLevel) {
+      handleSelectLevel(restoreResult.settings.currentLevel);
     }
-    if (Array.isArray(restoredStarred)) {
-      const newStarredSet = new Set(restoredStarred);
-      saveStarredWords(newStarredSet, targetLvl);
+    if (restoreResult?.settings?.darkMode !== undefined) {
+      setDarkMode(restoreResult.settings.darkMode);
     }
-    if (targetLvl === currentLevel) {
-      if (restoredSRS) setSrsRecords(restoredSRS);
-      if (Array.isArray(restoredStarred)) setStarredSet(new Set(restoredStarred));
+
+    // 3. Tương thích ngược với object đơn lẻ { level, srsRecords, starredList }
+    if (restoreResult?.srsRecords && restoreResult?.level) {
+      const lvl = restoreResult.level;
+      saveSRSRecords(restoreResult.srsRecords, lvl);
+      if (Array.isArray(restoreResult.starredList)) {
+        saveStarredWords(new Set(restoreResult.starredList), lvl);
+      }
+      if (lvl === currentLevel) {
+        setSrsRecords(restoreResult.srsRecords);
+        if (Array.isArray(restoreResult.starredList)) {
+          setStarredSet(new Set(restoreResult.starredList));
+        }
+      }
     }
+
+    // 4. Phát tín hiệu đồng bộ cho các tab khác
+    tabSyncRef.current?.broadcastDataUpdate(currentLevel, 'restore');
+  }, [currentLevel, handleSelectLevel]);
+
+  // Tab Conflict session handlers
+  const handleClaimTabSession = useCallback(() => {
+    tabSyncRef.current?.claimActiveSession();
+    setIsTabLocked(false);
+    setSrsRecords(loadSRSRecords(currentLevel));
+    setStarredSet(loadStarredWords(currentLevel));
+  }, [currentLevel]);
+
+  const handleReloadData = useCallback(() => {
+    setSrsRecords(loadSRSRecords(currentLevel));
+    setStarredSet(loadStarredWords(currentLevel));
   }, [currentLevel]);
 
   // Navigation handler
@@ -212,6 +270,9 @@ export default function App() {
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Vô hiệu hóa phím tắt khi tab đang bị khóa chống xung đột đa cửa sổ
+      if (isTabLocked) return;
+
       // Ignore if user is typing in an input
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
 
@@ -256,7 +317,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeWords, currentIndex, soundSpeed, studyMode, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS]);
+  }, [activeWords, currentIndex, soundSpeed, studyMode, isTabLocked, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS]);
 
   // Learned count
   const learnedCount = useMemo(() => {
@@ -359,6 +420,12 @@ export default function App() {
         srsRecords={srsRecords}
         starredSet={starredSet}
         onRestoreData={handleRestoreData}
+      />
+
+      <TabConflictModal
+        isOpen={isTabLocked}
+        onClaimSession={handleClaimTabSession}
+        onReloadData={handleReloadData}
       />
 
       {/* Footer */}

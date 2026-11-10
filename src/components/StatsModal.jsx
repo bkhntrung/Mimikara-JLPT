@@ -12,9 +12,17 @@ import {
   Upload,
   Database,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  FileSpreadsheet,
+  Layers,
+  Sparkles
 } from 'lucide-react';
-import { getSRSAnalytics } from '../utils/srs';
+import { 
+  getSRSAnalytics, 
+  exportAllUserData, 
+  importAllUserData, 
+  getAllUserDataSummary 
+} from '../utils/srs';
 
 export default function StatsModal({
   isOpen,
@@ -27,11 +35,17 @@ export default function StatsModal({
   onRestoreData
 }) {
   const [backupStatus, setBackupStatus] = useState(null);
+  const [mergeMode, setMergeMode] = useState(true); // true: Gộp thông minh, false: Ghi đè
   const fileInputRef = useRef(null);
 
   const analytics = useMemo(() => {
     return getSRSAnalytics(allWords, srsRecords);
   }, [allWords, srsRecords]);
+
+  // Thống kê tổng hợp toàn bộ 3 cấp độ N3 + N2 + N1
+  const allLevelsSummary = useMemo(() => {
+    return getAllUserDataSummary();
+  }, [srsRecords, starredSet, isOpen]);
 
   const {
     total,
@@ -53,8 +67,41 @@ export default function StatsModal({
   // Find max count in 7-day forecast for bar heights normalization
   const maxForecastCount = Math.max(1, ...forecast7Days.map(f => f.count));
 
-  // Export JSON Backup
-  const handleExportBackup = () => {
+  // Export JSON Backup toàn bộ 3 cấp độ (N3 + N2 + N1) Version 2
+  const handleExportBackupAll = () => {
+    try {
+      const backupData = exportAllUserData();
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const fileName = `mimikara_backup_all_${dateStr}.json`;
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      setBackupStatus({
+        type: 'success',
+        message: `Đã xuất thành công file sao lưu toàn diện ${fileName} (${backupData.summary.totalSRS} từ SRS, ${backupData.summary.totalStarred} từ ⭐)!`
+      });
+      setTimeout(() => setBackupStatus(null), 5000);
+    } catch (err) {
+      console.error('Export error:', err);
+      setBackupStatus({
+        type: 'error',
+        message: 'Có lỗi xảy ra khi tạo file sao lưu: ' + err.message
+      });
+      setTimeout(() => setBackupStatus(null), 5000);
+    }
+  };
+
+  // Export JSON Backup riêng cấp độ hiện tại (Tương thích Version 1)
+  const handleExportBackupCurrentLevel = () => {
     try {
       const backupData = {
         version: 1,
@@ -101,7 +148,7 @@ export default function StatsModal({
     fileInputRef.current?.click();
   };
 
-  // Handle uploaded JSON file
+  // Xử lý nạp file JSON (Hỗ trợ v2 đa cấp độ & v1, tôn trọng mergeMode)
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -110,42 +157,23 @@ export default function StatsModal({
     reader.onload = (event) => {
       try {
         const text = event.target?.result;
-        const data = JSON.parse(text);
-
-        if (!data || typeof data !== 'object') {
-          throw new Error('Dữ liệu không hợp lệ');
-        }
-
-        const restoredSRS = data.srsRecords || {};
-        const restoredStarred = Array.isArray(data.starredList)
-          ? data.starredList
-          : Array.isArray(data.starred)
-          ? data.starred
-          : [];
-
-        const targetLvl = data.level || currentLevel;
+        const result = importAllUserData(text, { merge: mergeMode });
 
         if (onRestoreData) {
-          onRestoreData({
-            level: targetLvl,
-            srsRecords: restoredSRS,
-            starredList: restoredStarred
-          });
+          onRestoreData(result);
         }
 
-        const countSRS = Object.keys(restoredSRS).length;
-        const countStarred = restoredStarred.length;
-
+        const modeText = mergeMode ? 'Gộp thông minh' : 'Ghi đè toàn bộ';
         setBackupStatus({
           type: 'success',
-          message: `Khôi phục thành công cấp độ ${targetLvl}: ${countSRS} bản ghi SRS và ${countStarred} từ yêu thích!`
+          message: `Khôi phục thành công (${modeText})! N3: ${result.summary.N3.srsCount} từ | N2: ${result.summary.N2.srsCount} từ | N1: ${result.summary.N1.srsCount} từ.`
         });
-        setTimeout(() => setBackupStatus(null), 5000);
+        setTimeout(() => setBackupStatus(null), 6000);
       } catch (err) {
         console.error('Import error:', err);
         setBackupStatus({
           type: 'error',
-          message: 'Không thể đọc file sao lưu. Vui lòng kiểm tra định dạng file .json!'
+          message: 'Không thể đọc file sao lưu. Vui lòng kiểm tra định dạng file .json! (' + err.message + ')'
         });
         setTimeout(() => setBackupStatus(null), 5000);
       }
@@ -440,21 +468,80 @@ export default function StatsModal({
           </div>
         </div>
 
-        {/* Backup & Restore Section */}
-        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-3">
+        {/* Backup & Restore Section (N3 • N2 • N1 All Levels) */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Database className="w-4 h-4 text-indigo-500" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                Sao lưu & Đồng bộ Dữ liệu Cá nhân ({currentLevel})
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+                Sao lưu & Đồng bộ Toàn diện (N3 • N2 • N1)
               </h3>
             </div>
-            <span className="text-[11px] text-slate-400">Lưu vĩnh viễn trên máy</span>
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+              <Sparkles className="w-3 h-3" />
+              Lưu vĩnh viễn
+            </span>
+          </div>
+
+          {/* All Levels Summary Card */}
+          <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/60 text-center">
+            <div className="p-1.5 rounded-lg bg-emerald-50/60 dark:bg-emerald-950/30">
+              <div className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Khóa N3</div>
+              <div className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100">
+                {allLevelsSummary.N3.srsCount} <span className="text-[10px] font-normal text-slate-400">từ</span>
+              </div>
+              <div className="text-[10px] text-slate-400">{allLevelsSummary.N3.starredCount} ⭐</div>
+            </div>
+
+            <div className="p-1.5 rounded-lg bg-indigo-50/60 dark:bg-indigo-950/30">
+              <div className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase">Khóa N2</div>
+              <div className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100">
+                {allLevelsSummary.N2.srsCount} <span className="text-[10px] font-normal text-slate-400">từ</span>
+              </div>
+              <div className="text-[10px] text-slate-400">{allLevelsSummary.N2.starredCount} ⭐</div>
+            </div>
+
+            <div className="p-1.5 rounded-lg bg-rose-50/60 dark:bg-rose-950/30">
+              <div className="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase">Khóa N1</div>
+              <div className="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100">
+                {allLevelsSummary.N1.srsCount} <span className="text-[10px] font-normal text-slate-400">từ</span>
+              </div>
+              <div className="text-[10px] text-slate-400">{allLevelsSummary.N1.starredCount} ⭐</div>
+            </div>
           </div>
 
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            Toàn bộ tiến độ học SRS và danh sách từ yêu thích được lưu tự động trên trình duyệt. Bạn có thể xuất file sao lưu JSON về ổ đĩa bất cứ lúc nào để không bao giờ sợ mất dữ liệu hoặc chuyển qua máy khác học tiếp.
+            Hệ thống tự động gói trọn toàn bộ tiến độ Spaced Repetition (SRS) và danh sách yêu thích của <b>cả 3 khóa N3, N2, N1</b> vào 1 file sao lưu duy nhất. Bạn có thể lưu trữ vĩnh viễn trên máy tính hoặc chuyển sang thiết bị khác học tiếp.
           </p>
+
+          {/* Import Merge Mode Options */}
+          <div className="space-y-1.5 p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800 text-xs">
+            <div className="font-semibold text-slate-700 dark:text-slate-300 text-[11px] uppercase tracking-wide">
+              Chế độ khi nạp file sao lưu:
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 pt-0.5">
+              <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 dark:text-slate-300">
+                <input
+                  type="radio"
+                  name="mergeMode"
+                  checked={mergeMode === true}
+                  onChange={() => setMergeMode(true)}
+                  className="text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                />
+                <span className="font-medium">Gộp thông minh (Khuyên dùng)</span>
+              </label>
+              <label className="flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400">
+                <input
+                  type="radio"
+                  name="mergeMode"
+                  checked={mergeMode === false}
+                  onChange={() => setMergeMode(false)}
+                  className="text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                />
+                <span>Ghi đè toàn bộ</span>
+              </label>
+            </div>
+          </div>
 
           {backupStatus && (
             <div className={`p-2.5 rounded-xl text-xs flex items-center gap-2 transition-all animate-fadeIn ${
@@ -471,23 +558,24 @@ export default function StatsModal({
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch gap-2.5 pt-1">
             <button
               type="button"
-              onClick={handleExportBackup}
-              className="w-full sm:flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              onClick={handleExportBackupAll}
+              className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-md shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download className="w-4 h-4" />
-              <span>📥 Xuất file sao lưu (.json)</span>
+              <span>📥 Xuất Sao Lưu Toàn Bộ (N3•N2•N1 .json)</span>
             </button>
 
             <button
               type="button"
               onClick={handleImportClick}
-              className="w-full sm:flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Upload className="w-4 h-4 text-indigo-500" />
-              <span>📤 Khôi phục từ file (.json)</span>
+              <span>📤 Nhập Dữ Liệu Từ File (.json)</span>
             </button>
 
             <input
@@ -497,6 +585,16 @@ export default function StatsModal({
               accept=".json"
               className="hidden"
             />
+          </div>
+
+          <div className="text-center pt-1">
+            <button
+              type="button"
+              onClick={handleExportBackupCurrentLevel}
+              className="text-[11px] text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 underline underline-offset-2 transition-colors"
+            >
+              Hoặc chỉ xuất riêng file sao lưu cho cấp độ {currentLevel} (.json)
+            </button>
           </div>
         </div>
 

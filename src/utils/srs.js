@@ -76,6 +76,242 @@ export function saveStarredWords(starredSet, level = 'N1') {
 }
 
 /**
+ * Lấy tóm tắt dữ liệu SRS & Starred của cả 3 cấp độ (N3, N2, N1)
+ */
+export function getAllUserDataSummary() {
+  const levels = ['N3', 'N2', 'N1'];
+  const summary = {
+    totalSRS: 0,
+    totalStarred: 0
+  };
+
+  levels.forEach(lvl => {
+    const srs = loadSRSRecords(lvl);
+    const starred = loadStarredWords(lvl);
+    const srsCount = Object.keys(srs).length;
+    const starredCount = starred.size;
+
+    summary[lvl] = {
+      srsCount,
+      starredCount
+    };
+    summary.totalSRS += srsCount;
+    summary.totalStarred += starredCount;
+  });
+
+  return summary;
+}
+
+/**
+ * Xuất toàn bộ dữ liệu người dùng (SRS + Starred + Cài đặt) cho cả 3 cấp độ N3, N2, N1
+ * Chuẩn định dạng Version 2 (scope: 'ALL_LEVELS')
+ */
+export function exportAllUserData() {
+  const levels = ['N3', 'N2', 'N1'];
+  const levelsData = {};
+  const summary = {
+    totalSRS: 0,
+    totalStarred: 0
+  };
+
+  levels.forEach(lvl => {
+    const srs = loadSRSRecords(lvl);
+    const starred = Array.from(loadStarredWords(lvl));
+    const srsCount = Object.keys(srs).length;
+    const starredCount = starred.length;
+
+    levelsData[lvl] = {
+      srsRecords: srs,
+      starredList: starred
+    };
+    summary[lvl] = {
+      srsCount,
+      starredCount
+    };
+    summary.totalSRS += srsCount;
+    summary.totalStarred += starredCount;
+  });
+
+  let currentLevel = 'N1';
+  let darkMode = true;
+  try {
+    const storedLvl = getStorage().getItem('mimikara_level');
+    if (storedLvl) currentLevel = storedLvl;
+    const storedDark = getStorage().getItem('mimikara_dark_mode');
+    if (storedDark !== null) darkMode = storedDark === 'true';
+  } catch (e) {}
+
+  return {
+    version: 2,
+    app: 'Mimikara Oboeru JLPT',
+    scope: 'ALL_LEVELS',
+    backupDate: new Date().toISOString(),
+    settings: {
+      currentLevel,
+      darkMode
+    },
+    summary,
+    levels: levelsData
+  };
+}
+
+/**
+ * Khôi phục / Nhập dữ liệu người dùng từ file JSON
+ * Hỗ trợ định dạng v2 (ALL_LEVELS đa cấp độ) và tương thích ngược v1 (đơn cấp độ).
+ * Hỗ trợ 2 chế độ:
+ *  - merge: true (mặc định - Gộp thông minh, ưu tiên bản ghi mới hơn, gộp sao)
+ *  - merge: false (Ghi đè hoàn toàn dữ liệu)
+ * 
+ * @param {string|Object} rawJsonOrObj
+ * @param {Object} [options={ merge: true }]
+ * @returns {Object} Kết quả import kèm summary
+ */
+export function importAllUserData(rawJsonOrObj, options = { merge: true }) {
+  const shouldMerge = options && options.merge !== false;
+
+  let data = rawJsonOrObj;
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      throw new Error('Dữ liệu JSON không hợp lệ: ' + e.message);
+    }
+  }
+
+  if (!data || typeof data !== 'object') {
+    throw new Error('Định dạng dữ liệu sao lưu không hợp lệ');
+  }
+
+  // Chuẩn bị danh sách cấp độ cần cập nhật
+  const levelsToProcess = {};
+  const standardLevels = ['N3', 'N2', 'N1'];
+
+  if (data.scope === 'ALL_LEVELS' && data.levels && typeof data.levels === 'object') {
+    // Định dạng Version 2: Đa cấp độ
+    standardLevels.forEach(lvl => {
+      if (data.levels[lvl]) {
+        levelsToProcess[lvl] = {
+          srsRecords: data.levels[lvl].srsRecords || {},
+          starredList: Array.isArray(data.levels[lvl].starredList)
+            ? data.levels[lvl].starredList
+            : Array.isArray(data.levels[lvl].starred)
+            ? data.levels[lvl].starred
+            : []
+        };
+      }
+    });
+  } else {
+    // Định dạng Version 1 (tương thích ngược) hoặc file 1 cấp độ
+    const singleLevel = (data.level && ['N1', 'N2', 'N3'].includes(String(data.level).toUpperCase()))
+      ? String(data.level).toUpperCase()
+      : 'N1';
+
+    levelsToProcess[singleLevel] = {
+      srsRecords: data.srsRecords || {},
+      starredList: Array.isArray(data.starredList)
+        ? data.starredList
+        : Array.isArray(data.starred)
+        ? data.starred
+        : []
+    };
+  }
+
+  const resultSummary = {
+    totalSRS: 0,
+    totalStarred: 0
+  };
+
+  standardLevels.forEach(lvl => {
+    const incoming = levelsToProcess[lvl];
+    if (!incoming) {
+      // Nếu cấp độ này không có trong file backup
+      const currentSRS = loadSRSRecords(lvl);
+      const currentStarred = loadStarredWords(lvl);
+      resultSummary[lvl] = {
+        srsCount: Object.keys(currentSRS).length,
+        starredCount: currentStarred.size,
+        updated: false
+      };
+      resultSummary.totalSRS += resultSummary[lvl].srsCount;
+      resultSummary.totalStarred += resultSummary[lvl].starredCount;
+      return;
+    }
+
+    let finalSRS = {};
+    let finalStarred = new Set();
+
+    if (shouldMerge) {
+      // 1. Merge SRS thông minh
+      const currentSRS = loadSRSRecords(lvl);
+      finalSRS = { ...currentSRS };
+
+      for (const [wordId, incRecord] of Object.entries(incoming.srsRecords || {})) {
+        const curRecord = finalSRS[wordId];
+        if (!curRecord) {
+          finalSRS[wordId] = incRecord;
+        } else {
+          // So sánh lastReviewed hoặc reps
+          const curTime = curRecord.lastReviewed ? new Date(curRecord.lastReviewed).getTime() : 0;
+          const incTime = incRecord.lastReviewed ? new Date(incRecord.lastReviewed).getTime() : 0;
+
+          if (incTime > curTime) {
+            finalSRS[wordId] = incRecord;
+          } else if (incTime === curTime) {
+            const curReps = curRecord.reps || 0;
+            const incReps = incRecord.reps || 0;
+            finalSRS[wordId] = incReps >= curReps ? incRecord : curRecord;
+          }
+          // Ngược lại giữ nguyên curRecord
+        }
+      }
+
+      // 2. Merge Starred thông minh (Hợp 2 tập hợp)
+      const currentStarred = loadStarredWords(lvl);
+      finalStarred = new Set([...currentStarred, ...(incoming.starredList || [])]);
+    } else {
+      // Ghi đè toàn bộ (Overwrite)
+      finalSRS = { ...(incoming.srsRecords || {}) };
+      finalStarred = new Set(incoming.starredList || []);
+    }
+
+    // Lưu xuống storage
+    saveSRSRecords(finalSRS, lvl);
+    saveStarredWords(finalStarred, lvl);
+
+    const srsCount = Object.keys(finalSRS).length;
+    const starredCount = finalStarred.size;
+
+    resultSummary[lvl] = {
+      srsCount,
+      starredCount,
+      updated: true
+    };
+    resultSummary.totalSRS += srsCount;
+    resultSummary.totalStarred += starredCount;
+  });
+
+  // Khôi phục cài đặt nếu có
+  if (data.settings && typeof data.settings === 'object') {
+    try {
+      if (data.settings.currentLevel && ['N1', 'N2', 'N3'].includes(data.settings.currentLevel)) {
+        getStorage().setItem('mimikara_level', data.settings.currentLevel);
+      }
+      if (data.settings.darkMode !== undefined) {
+        getStorage().setItem('mimikara_dark_mode', String(data.settings.darkMode));
+      }
+    } catch (e) {}
+  }
+
+  return {
+    success: true,
+    merge: shouldMerge,
+    summary: resultSummary,
+    settings: data.settings || null,
+    levels: levelsToProcess
+  };
+}
+
+/**
  * Calculate current memory retrievability probability R(t, S)
  * Based on FSRS v4.5 forgetting curve power model:
  * R(t, S) = (1 + (19/81) * (t / S))^(-0.5)
