@@ -316,4 +316,27 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(statsContent.includes('mimikara_backup_'), 'StatsModal phải định dạng tên file mimikara_backup_');
   });
 
+  test('Test 5.5: Kiểm toán chống hồi quy Modal - Đóng khi click backdrop và conditional rendering', () => {
+    // 1. Kiểm tra StatsModal.jsx
+    const statsPath = path.resolve('src/components/StatsModal.jsx');
+    const statsContent = fs.readFileSync(statsPath, 'utf8');
+    assert.ok(statsContent.includes('if (!isOpen) return null;'), 'StatsModal phải có if (!isOpen) return null;');
+    assert.ok(statsContent.includes('onClick={onClose}'), 'StatsModal backdrop phải có onClick={onClose}');
+    assert.ok(statsContent.includes('e.stopPropagation()'), 'StatsModal modal box phải chặn nổi bọt sự kiện');
+
+    // 2. Kiểm tra ShortcutModal.jsx
+    const shortcutPath = path.resolve('src/components/ShortcutModal.jsx');
+    const shortcutContent = fs.readFileSync(shortcutPath, 'utf8');
+    assert.ok(shortcutContent.includes('if (!isOpen) return null;'), 'ShortcutModal phải có if (!isOpen) return null;');
+    assert.ok(shortcutContent.includes('onClick={onClose}'), 'ShortcutModal backdrop phải có onClick={onClose}');
+    assert.ok(shortcutContent.includes('e.stopPropagation()'), 'ShortcutModal modal box phải chặn nổi bọt sự kiện');
+
+    // 3. Kiểm tra serve.cjs hỗ trợ dual-stack IPv4/IPv6 và bảo toàn Origin cổng 4173
+    const servePath = path.resolve('serve.cjs');
+    const serveContent = fs.readFileSync(servePath, 'utf8');
+    assert.ok(serveContent.includes('server.listen(port, () => {'), 'serve.cjs phải listen dual-stack không truyền chuỗi localhost');
+    assert.ok(serveContent.includes('err.code === \'EADDRINUSE\''), 'serve.cjs phải bắt lỗi EADDRINUSE');
+    assert.ok(serveContent.includes('process.exit(0)'), 'serve.cjs phải thoát nhẹ nhàng khi port đã chạy');
+  });
+
 });

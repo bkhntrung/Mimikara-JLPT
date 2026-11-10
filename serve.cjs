@@ -64,15 +64,23 @@ function startServer(port) {
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`[*] Cổng ${port} đang bận, đang chuyển sang cổng ${port + 1}...`);
-      startServer(port + 1);
+      const url = `http://localhost:${port}/`;
+      console.log('===============================================================');
+      console.log(`[*] May chu Mimikara da dang chay san tai: ${url}`);
+      console.log(`[*] Giu nguyen Origin ${url} de bao toan lich su hoc SRS & Starred.`);
+      console.log('[*] Dang tu dong mo lai trinh duyet web...');
+      console.log('===============================================================');
+      openBrowser(url);
+      setTimeout(() => {
+        process.exit(0);
+      }, 1000);
     } else {
       console.error('[!] Lỗi máy chủ:', err.message);
       process.exit(1);
     }
   });
 
-  server.listen(port, 'localhost', () => {
+  server.listen(port, () => {
     const url = `http://localhost:${port}/`;
     console.log('===============================================================');
     console.log('    MIMIKARA OBOERU JLPT (N3 - N2 - N1) FLASHCARD');
