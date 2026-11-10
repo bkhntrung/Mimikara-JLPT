@@ -35,16 +35,16 @@ ruby {
 }
 
 rt {
-  font-size: 0.5em;
+  font-size: 0.58em; /* Tăng từ 0.5em lên 0.58em để chữ Furigana rõ nét, không bị nhòe */
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.15;
   color: #4f46e5;
   text-align: center;
   user-select: none;
 }
 
 .dark rt {
-  color: #818cf8;
+  color: #a5b4fc;
 }
 
 /* Hide fallback parenthesis in browsers */

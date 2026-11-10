@@ -507,12 +507,22 @@ export default function QuizMode({
           )}
 
           {target.examples?.length > 0 && (
-            <div className="text-xs space-y-1 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60">
-              <div 
-                className="jp-sentence font-japanese text-slate-700 dark:text-slate-200 font-medium"
-                dangerouslySetInnerHTML={{ __html: target.examples[0].rubyHtml || target.examples[0].japanese }}
-              />
-              <div className="text-slate-500 italic">
+            <div className="space-y-1.5 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 shadow-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div 
+                  className="jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: target.examples[0].rubyHtml || target.examples[0].japanese }}
+                />
+                <button
+                  type="button"
+                  onClick={() => speakJapanese(target.examples[0].japanese, soundSpeed)}
+                  title="Nghe phát âm câu ví dụ"
+                  className="p-1.5 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 rounded-lg transition-colors flex-shrink-0"
+                >
+                  <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+              <div className="text-sm text-slate-600 dark:text-slate-300 italic mt-1.5">
                 "{target.examples[0].meaning}"
               </div>
             </div>

@@ -151,10 +151,9 @@ export default function App() {
 
   // SRS Rating handler
   const handleRateSRS = useCallback((wordId, rating) => {
-    const currentRecord = srsRecords[wordId];
-    const updated = calculateNextReview(currentRecord, rating);
-    
     setSrsRecords(prev => {
+      const currentRecord = prev[wordId];
+      const updated = calculateNextReview(currentRecord, rating);
       const next = { ...prev, [wordId]: updated };
       saveSRSRecords(next, currentLevel);
       return next;
@@ -162,21 +161,35 @@ export default function App() {
 
     // Advance to next word
     setCurrentIndex(prev => Math.min(activeWords.length - 1, prev + 1));
-  }, [srsRecords, activeWords.length, currentLevel]);
+  }, [activeWords.length, currentLevel]);
 
   // Quiz / Cloze SRS Synchronization handler (chỉ cập nhật SRS, KHÔNG làm nhảy currentIndex của FlashcardDeck)
   const handleQuizSRSSync = useCallback((wordId, isCorrect) => {
-    const currentRecord = srsRecords[wordId];
-    // Đúng -> Đánh giá 3 (Good); Sai -> Đánh giá 1 (Again)
-    const rating = isCorrect ? 3 : 1;
-    const updated = calculateNextReview(currentRecord, rating);
-
     setSrsRecords(prev => {
+      const currentRecord = prev[wordId]; // Đọc từ prev để tránh stale closure!
+      const rating = isCorrect ? 3 : 1;
+      const updated = calculateNextReview(currentRecord, rating);
       const next = { ...prev, [wordId]: updated };
       saveSRSRecords(next, currentLevel);
       return next;
     });
-  }, [srsRecords, currentLevel]);
+  }, [currentLevel]);
+
+  // Restore SRS and Starred data from backup file
+  const handleRestoreData = useCallback(({ level, srsRecords: restoredSRS, starredList: restoredStarred }) => {
+    const targetLvl = level || currentLevel;
+    if (restoredSRS) {
+      saveSRSRecords(restoredSRS, targetLvl);
+    }
+    if (Array.isArray(restoredStarred)) {
+      const newStarredSet = new Set(restoredStarred);
+      saveStarredWords(newStarredSet, targetLvl);
+    }
+    if (targetLvl === currentLevel) {
+      if (restoredSRS) setSrsRecords(restoredSRS);
+      if (Array.isArray(restoredStarred)) setStarredSet(new Set(restoredStarred));
+    }
+  }, [currentLevel]);
 
   // Navigation handler
   const handleNavigate = useCallback((direction) => {
@@ -345,6 +358,7 @@ export default function App() {
         unitSummaries={unitSummaries}
         srsRecords={srsRecords}
         starredSet={starredSet}
+        onRestoreData={handleRestoreData}
       />
 
       {/* Footer */}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { 
   X, 
   BarChart2, 
@@ -7,7 +7,12 @@ import {
   Clock, 
   Flame, 
   AlertTriangle, 
-  Calendar 
+  Calendar,
+  Download,
+  Upload,
+  Database,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 import { getSRSAnalytics } from '../utils/srs';
 
@@ -18,9 +23,11 @@ export default function StatsModal({
   allWords = [],
   unitSummaries = [],
   srsRecords = {},
-  starredSet = new Set()
+  starredSet = new Set(),
+  onRestoreData
 }) {
-  if (!isOpen) return null;
+  const [backupStatus, setBackupStatus] = useState(null);
+  const fileInputRef = useRef(null);
 
   const analytics = useMemo(() => {
     return getSRSAnalytics(allWords, srsRecords);
@@ -45,6 +52,115 @@ export default function StatsModal({
 
   // Find max count in 7-day forecast for bar heights normalization
   const maxForecastCount = Math.max(1, ...forecast7Days.map(f => f.count));
+
+  // Export JSON Backup
+  const handleExportBackup = () => {
+    try {
+      const backupData = {
+        version: 1,
+        app: 'Mimikara Oboeru JLPT',
+        level: currentLevel,
+        backupDate: new Date().toISOString(),
+        totalSRS: Object.keys(srsRecords).length,
+        totalStarred: starredSet.size,
+        srsRecords: srsRecords,
+        starredList: Array.from(starredSet)
+      };
+
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const fileName = `mimikara_backup_${currentLevel.toLowerCase()}_${dateStr}.json`;
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      setBackupStatus({
+        type: 'success',
+        message: `Đã xuất file sao lưu ${fileName} thành công!`
+      });
+      setTimeout(() => setBackupStatus(null), 4000);
+    } catch (err) {
+      console.error('Export error:', err);
+      setBackupStatus({
+        type: 'error',
+        message: 'Có lỗi xảy ra khi tạo file sao lưu!'
+      });
+      setTimeout(() => setBackupStatus(null), 4000);
+    }
+  };
+
+  // Trigger file dialog
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Handle uploaded JSON file
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const text = event.target?.result;
+        const data = JSON.parse(text);
+
+        if (!data || typeof data !== 'object') {
+          throw new Error('Dữ liệu không hợp lệ');
+        }
+
+        const restoredSRS = data.srsRecords || {};
+        const restoredStarred = Array.isArray(data.starredList)
+          ? data.starredList
+          : Array.isArray(data.starred)
+          ? data.starred
+          : [];
+
+        const targetLvl = data.level || currentLevel;
+
+        if (onRestoreData) {
+          onRestoreData({
+            level: targetLvl,
+            srsRecords: restoredSRS,
+            starredList: restoredStarred
+          });
+        }
+
+        const countSRS = Object.keys(restoredSRS).length;
+        const countStarred = restoredStarred.length;
+
+        setBackupStatus({
+          type: 'success',
+          message: `Khôi phục thành công cấp độ ${targetLvl}: ${countSRS} bản ghi SRS và ${countStarred} từ yêu thích!`
+        });
+        setTimeout(() => setBackupStatus(null), 5000);
+      } catch (err) {
+        console.error('Import error:', err);
+        setBackupStatus({
+          type: 'error',
+          message: 'Không thể đọc file sao lưu. Vui lòng kiểm tra định dạng file .json!'
+        });
+        setTimeout(() => setBackupStatus(null), 5000);
+      }
+      if (e.target) e.target.value = '';
+    };
+    reader.onerror = () => {
+      setBackupStatus({
+        type: 'error',
+        message: 'Lỗi khi đọc file từ máy tính!'
+      });
+      setTimeout(() => setBackupStatus(null), 5000);
+      if (e.target) e.target.value = '';
+    };
+    reader.readAsText(file);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
@@ -316,6 +432,66 @@ export default function StatsModal({
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Backup & Restore Section */}
+        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Database className="w-4 h-4 text-indigo-500" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Sao lưu & Đồng bộ Dữ liệu Cá nhân ({currentLevel})
+              </h3>
+            </div>
+            <span className="text-[11px] text-slate-400">Lưu vĩnh viễn trên máy</span>
+          </div>
+
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            Toàn bộ tiến độ học SRS và danh sách từ yêu thích được lưu tự động trên trình duyệt. Bạn có thể xuất file sao lưu JSON về ổ đĩa bất cứ lúc nào để không bao giờ sợ mất dữ liệu hoặc chuyển qua máy khác học tiếp.
+          </p>
+
+          {backupStatus && (
+            <div className={`p-2.5 rounded-xl text-xs flex items-center gap-2 transition-all animate-fadeIn ${
+              backupStatus.type === 'success' 
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+            }`}>
+              {backupStatus.type === 'success' ? (
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-500" />
+              ) : (
+                <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-500" />
+              )}
+              <span>{backupStatus.message}</span>
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
+            <button
+              type="button"
+              onClick={handleExportBackup}
+              className="w-full sm:flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm shadow-indigo-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Download className="w-4 h-4" />
+              <span>📥 Xuất file sao lưu (.json)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleImportClick}
+              className="w-full sm:flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Upload className="w-4 h-4 text-indigo-500" />
+              <span>📤 Khôi phục từ file (.json)</span>
+            </button>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".json"
+              className="hidden"
+            />
           </div>
         </div>
 

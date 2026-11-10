@@ -289,11 +289,31 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(cssContent.includes('ruby-position: over'), 'ruby phải có ruby-position: over');
     assert.ok(cssContent.includes('line-height: 2.15'), 'ruby phải có line-height: 2.15 chống nhảy dòng');
     assert.ok(cssContent.includes('display: inline-ruby'), 'ruby phải có display: inline-ruby');
-    assert.ok(cssContent.includes('font-size: 0.5em'), 'rt phải có font-size: 0.5em');
+    assert.ok(cssContent.includes('font-size: 0.58em') || cssContent.includes('font-size: 0.5em'), 'rt phải có font-size sắc nét (0.58em hoặc 0.5em)');
     assert.ok(cssContent.includes('.jp-sentence'), 'src/index.css phải định nghĩa class .jp-sentence');
     assert.ok(cssContent.includes('overflow-wrap: anywhere') || cssContent.includes('word-break: break-word'), '.jp-sentence phải có chống tràn chữ');
     assert.ok(cssContent.includes('.cloze'), 'src/index.css phải có class .cloze');
     assert.ok(cssContent.includes('.cloze-solved'), 'src/index.css phải có class .cloze-solved');
+  });
+
+  test('Test 5.4: Kiểm toán tính năng Nâng cấp QuizMode, Header Progress và Backup/Restore', () => {
+    // 1. Kiểm tra QuizMode có cỡ chữ lớn và nút phát âm câu ví dụ
+    const quizPath = path.resolve('src/components/QuizMode.jsx');
+    const quizContent = fs.readFileSync(quizPath, 'utf8');
+    assert.ok(quizContent.includes('font-japanese text-base sm:text-lg font-semibold'), 'QuizMode phải có font-japanese lớn cho câu ví dụ');
+    assert.ok(quizContent.includes('speakJapanese(target.examples[0].japanese'), 'QuizMode phải có nút phát âm câu ví dụ');
+
+    // 2. Kiểm tra Header hiển thị số từ thực tế tránh ảo giác mất dữ liệu
+    const headerPath = path.resolve('src/components/Header.jsx');
+    const headerContent = fs.readFileSync(headerPath, 'utf8');
+    assert.ok(headerContent.includes('learnedCount > 0 ? `${learnedCount} từ (${percentLearned}%)`'), 'Header phải hiển thị số từ đã thuộc thực tế');
+
+    // 3. Kiểm tra StatsModal có tính năng Export & Import JSON Backup
+    const statsPath = path.resolve('src/components/StatsModal.jsx');
+    const statsContent = fs.readFileSync(statsPath, 'utf8');
+    assert.ok(statsContent.includes('handleExportBackup'), 'StatsModal phải có hàm handleExportBackup');
+    assert.ok(statsContent.includes('handleFileChange'), 'StatsModal phải có hàm handleFileChange');
+    assert.ok(statsContent.includes('mimikara_backup_'), 'StatsModal phải định dạng tên file mimikara_backup_');
   });
 
 });

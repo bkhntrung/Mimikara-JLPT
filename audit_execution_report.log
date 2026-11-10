@@ -1,0 +1,52 @@
+================================================================================
+BÁO CÁO THỰC THI & KIỂM THỬ HỆ THỐNG MIMIKARA JLPT
+Người thực thi: Gemini 3.8 Flash Executor
+Người nhận: Kiến trúc sư trưởng Gemini 4 Argon
+Thời gian: 2026-11-10T12:06:00+09:00
+Trạng thái: HOÀN THÀNH XUẤT SẮC (38/38 Tests PASS - Build 100% SUCCESS)
+================================================================================
+
+1. NÂNG CẤP CỠ CHỮ & FONT CHỮ TRONG KHUNG GIẢI THÍCH (QuizMode.jsx & index.css):
+--------------------------------------------------------------------------------
+- Tệp: `src/components/QuizMode.jsx`:
+  + Đã nâng cấp câu ví dụ tiếng Nhật từ `text-xs` lên:
+    `text-base sm:text-lg font-japanese font-semibold text-slate-800 dark:text-slate-100 leading-relaxed`
+  + Đã bổ sung nút loa phát âm âm thanh câu ví dụ với tooltip trực quan:
+    `onClick={() => speakJapanese(target.examples[0].japanese, soundSpeed)}`
+  + Bản dịch tiếng Việt được định dạng rõ nét:
+    `text-sm text-slate-600 dark:text-slate-300 italic mt-1.5`
+  + Khung giải thích mở rộng padding lên `p-3.5 sm:p-4 rounded-2xl` thoáng đãng, sắc nét.
+- Tệp: `src/index.css`:
+  + Tinh chỉnh `rt`: tăng `font-size: 0.58em`, `font-weight: 600`, `line-height: 1.15`, màu indigo sắc nét `#4f46e5` (dark: `#a5b4fc`). Furigana không còn bị nhòe hay bé tí hon trên mọi thiết bị.
+
+2. CẢI TIẾN HIỂN THỊ TIẾN ĐỘ THỰC TẾ & CHỐNG STALE CLOSURE SRS:
+--------------------------------------------------------------------------------
+- Tệp: `src/components/Header.jsx`:
+  + Xử lý triệt để "ảo giác mất dữ liệu": Khi học những từ đầu tiên (ví dụ 1/1170), nút tiến độ hiển thị trực tiếp:
+    `${learnedCount} từ (${percentLearned}%)` trên Desktop và `${learnedCount} từ` trên Mobile.
+  + Tooltip chi tiết: `Đã thuộc ${learnedCount}/${totalWordsCount} từ (${percentLearned}%) - Bấm xem chi tiết SRS`.
+- Tệp: `src/App.jsx`:
+  + Cập nhật cả `handleQuizSRSSync` và `handleRateSRS` để đọc bản ghi hiện tại từ `prev[wordId]` bên trong hàm cập nhật state `setSrsRecords(prev => ...)`. Loại bỏ hoàn toàn lỗi stale closure khi trả lời nhanh liên tiếp.
+
+3. TÍNH NĂNG SAO LƯU & KHÔI PHỤC DỮ LIỆU ĐĨA CỨNG (JSON BACKUP / EXPORT & IMPORT):
+--------------------------------------------------------------------------------
+- Tệp: `src/components/StatsModal.jsx`:
+  + Thêm khối "Sao lưu & Đồng bộ Dữ liệu Cá nhân ({currentLevel})":
+    * Nút "📥 Xuất file sao lưu (.json)": Tự động sinh file JSON chứa version, timestamp, SRS records và Starred list dạng `mimikara_backup_${currentLevel.toLowerCase()}_YYYY-MM-DD.json`.
+    * Nút "📤 Khôi phục từ file (.json)": Cho phép chọn file JSON backup để khôi phục tức thì toàn bộ lịch sử học tập.
+    * Thông báo trực quan (xanh khi thành công, đỏ khi file sai định dạng) với tự động ẩn sau 4-5s.
+- Tệp: `src/App.jsx`:
+  + Cung cấp hàm `handleRestoreData` đồng bộ vào `localStorage` và cập nhật trực tiếp `srsRecords`, `starredSet` của cấp độ tương ứng.
+
+4. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG & BIÊN DỊCH:
+--------------------------------------------------------------------------------
+- Kiểm thử: `node --test tests/srs.test.js tests/app_audit.test.js`
+  + Tổng cộng: 38/38 tests PASS (100% XANH)
+  + Thời gian chạy: ~560ms
+- Biên dịch: `npm run build` (Vite v6.4.5)
+  + Kết quả: Built thành công trong 6.05s
+  + 0 lỗi biên dịch, 0 warning cú pháp.
+
+================================================================================
+KẾT LUẬN: Đã bàn giao đầy đủ toàn bộ yêu cầu kỹ thuật và thẩm mỹ.
+================================================================================

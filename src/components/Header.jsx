@@ -168,11 +168,16 @@ export default function Header({
             {/* Stats Button */}
             <button
               onClick={onOpenStats}
-              title="Xem tiến độ học tập (SRS)"
+              title={`Đã thuộc ${learnedCount}/${totalWordsCount} từ (${percentLearned}%) - Bấm xem chi tiết SRS`}
               className="relative px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors"
             >
               <BarChart3 className="w-3.5 h-3.5 text-emerald-500" />
-              <span className="hidden sm:inline font-semibold">{percentLearned}%</span>
+              <span className="hidden sm:inline font-semibold">
+                {learnedCount > 0 ? `${learnedCount} từ (${percentLearned}%)` : `${percentLearned}%`}
+              </span>
+              <span className="sm:hidden font-semibold">
+                {learnedCount > 0 ? `${learnedCount} từ` : '0%'}
+              </span>
             </button>
 
             {/* Shortcuts Help Modal Button */}
