@@ -228,3 +228,50 @@ export function makeRubyCloze(rubyHtml, plainJp, word, reading) {
     hasMatch: true
   };
 }
+
+/**
+ * Giải mã an toàn toàn bộ HTML entities còn sót lại trong chuỗi văn bản
+ * 
+ * @param {string} str - Chuỗi cần làm sạch
+ * @returns {string} Chuỗi văn bản thuần túy không chứa HTML entities
+ */
+export function cleanDisplayText(str) {
+  if (!str || typeof str !== 'string') return '';
+
+  return str
+    .replace(/&lt;=&gt;/g, '⇔')
+    .replace(/<=>/g, '⇔')
+    .replace(/&lt;-&gt;/g, '⇔')
+    .replace(/<->/g, '⇔')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&#039;/g, "'")
+    .replace(/&#038;/g, '&')
+    .replace(/&amp;/g, '&')
+    .replace(/&#49;/g, '1')
+    .replace(/&#48;/g, '0')
+    .replace(/&lt;/g, '〈')
+    .replace(/&gt;/g, '〉');
+}
+
+/**
+ * Định dạng câu dịch nghĩa của ví dụ minh họa
+ * Nếu câu dịch đã bắt đầu bằng dấu ngoặc kép (", “, 「) thì giữ nguyên, không bọc thêm "" lặp lại.
+ * Nếu chưa có thì mới bọc vào dấu ngoặc kép "..." trang nhã.
+ * 
+ * @param {string} str - Câu dịch thô
+ * @returns {string} Chuỗi hiển thị hoàn hảo
+ */
+export function formatExampleMeaning(str) {
+  if (!str || typeof str !== 'string') return '';
+  const cleaned = cleanDisplayText(str).trim();
+  if (!cleaned) return '';
+
+  // Kiểm tra nếu đã bắt đầu bằng dấu ngoặc kép
+  const startsWithQuote = /^["'“‘「『]/.test(cleaned);
+  if (startsWithQuote) {
+    return cleaned;
+  }
+
+  return `"${cleaned}"`;
+}

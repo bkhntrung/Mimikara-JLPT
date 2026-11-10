@@ -12,7 +12,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { speakJapanese } from '../utils/audio';
-import { formatRelatedRuby } from '../utils/text';
+import { formatRelatedRuby, formatExampleMeaning } from '../utils/text';
 
 export default function DictionaryView({
   allWords,
@@ -264,7 +264,7 @@ export default function DictionaryView({
                                 </button>
                               </div>
                               <p className="text-xs text-slate-500 italic">
-                                {ex.meaning}
+                                {formatExampleMeaning(ex.meaning)}
                               </p>
                             </div>
                           ))}

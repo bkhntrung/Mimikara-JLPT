@@ -20,6 +20,7 @@ import {
   buildClozeSentenceQuestions, 
   buildClozeCollocationQuestions 
 } from '../utils/quizHelper';
+import { formatExampleMeaning } from '../utils/text';
 
 export default function ClozeQuiz({
   allWords,
@@ -308,14 +309,14 @@ export default function ClozeQuiz({
           {/* Gợi ý nghĩa (Chỉ hiện khi chưa trả lời nếu bấm bật H) */}
           {!isAnswered && showHint && sentenceMeaning && (
             <div className="mt-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs text-amber-800 dark:text-amber-200 italic animate-fadeIn">
-              💡 Gợi ý nghĩa: "{sentenceMeaning}"
+              💡 Gợi ý nghĩa: {formatExampleMeaning(sentenceMeaning)}
             </div>
           )}
 
           {/* Sau khi đã chọn: LUÔN hiển thị bản dịch tiếng Việt đầy đủ */}
           {isAnswered && sentenceMeaning && (
             <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 text-sm text-slate-600 dark:text-slate-300 italic animate-fadeIn">
-              "{sentenceMeaning}"
+              {formatExampleMeaning(sentenceMeaning)}
             </div>
           )}
         </div>

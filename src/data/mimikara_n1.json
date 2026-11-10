@@ -395,7 +395,7 @@
           {
             "text": "＿が狭い⇔広い",
             "rubyHtml": "＿が<ruby>狭<rp>（</rp><rt>せま</rt><rp>）</rp></ruby>い⇔<ruby>広<rp>（</rp><rt>ひろ</rt><rp>）</rp></ruby>い",
-            "meaning": "Mối quan hệ xã hội hẹp &lt;=&gt; rộng",
+            "meaning": "Mối quan hệ xã hội hẹp ⇔ rộng",
             "badge": "連"
           }
         ],
@@ -785,7 +785,7 @@
           {
             "text": "＿がいい⇔悪い",
             "rubyHtml": "＿がいい⇔<ruby>悪<rp>（</rp><rt>わる</rt><rp>）</rp></ruby>い",
-            "meaning": "Ăn mặc chỉnh chu &lt;=&gt; luộm thuộm",
+            "meaning": "Ăn mặc chỉnh chu ⇔ luộm thuộm",
             "badge": "連"
           },
           {
@@ -1451,7 +1451,7 @@
           "seq": 1,
           "japanese": "「玄関が北にあるのは、縁起が悪いんだって」　「そんなの迷信だよ。」",
           "rubyHtml": "「<ruby>玄関<rp>（</rp><rt>げんかん</rt><rp>）</rp></ruby>が<ruby>北<rp>（</rp><rt>きた</rt><rp>）</rp></ruby>にあるのは、<ruby>縁起<rp>（</rp><rt>えんぎ</rt><rp>）</rp></ruby>が<ruby>悪<rp>（</rp><rt>わる</rt><rp>）</rp></ruby>いんだって」　「そんなの<ruby>迷信<rp>（</rp><rt>めいしん</rt><rp>）</rp></ruby>だよ。」",
-          "meaning": "&quot;Cửa chính quay hướng Bắc thì vận may không tốt.&quot; &quot;Chuyện đó chỉ là mê tín mà thôi.&quot;"
+          "meaning": "\"Cửa chính quay hướng Bắc thì vận may không tốt.\" \"Chuyện đó chỉ là mê tín mà thôi.\""
         }
       ],
       "related": {
@@ -1487,7 +1487,7 @@
           "seq": 1,
           "japanese": "「またお会いしましたね。ご縁がありますね。」",
           "rubyHtml": "「またお<ruby>会<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>いしましたね。ご<ruby>縁<rp>（</rp><rt>えん</rt><rp>）</rp></ruby>がありますね。」",
-          "meaning": "&quot;Chúng ta lại gặp nhau rồi. Có duyên đấy nhỉ.&quot;"
+          "meaning": "\"Chúng ta lại gặp nhau rồi. Có duyên đấy nhỉ.\""
         },
         {
           "seq": 2,
@@ -1505,7 +1505,7 @@
           "seq": 15,
           "japanese": "「もし手術が失敗したら．．．」「縁起でもないこと、言わないで」",
           "rubyHtml": "「もし<ruby>手術<rp>（</rp><rt>しゅじゅつ</rt><rp>）</rp></ruby>が<ruby>失敗<rp>（</rp><rt>しっぱい</rt><rp>）</rp></ruby>したら．．．」「<ruby>縁起<rp>（</rp><rt>えんぎ</rt><rp>）</rp></ruby>でもないこと、<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>わないで」",
-          "meaning": "&quot;Nếu như mà ca phẫu thuật thất bại…&quot; &quot;Đừng có nói những chuyện không tốt lành vậy.&quot;"
+          "meaning": "\"Nếu như mà ca phẫu thuật thất bại…\" \"Đừng có nói những chuyện không tốt lành vậy.\""
         },
         {
           "seq": 16,
@@ -1563,7 +1563,7 @@
           {
             "text": "①②＿がある⇔ない",
             "rubyHtml": "①②＿がある⇔ない",
-            "meaning": "Có duyên &lt;=&gt; Không có duyên",
+            "meaning": "Có duyên ⇔ Không có duyên",
             "badge": "連"
           },
           {
@@ -1575,7 +1575,7 @@
           {
             "text": "＿がいい⇔悪い",
             "rubyHtml": "＿がいい⇔<ruby>悪<rp>（</rp><rt>わる</rt><rp>）</rp></ruby>い",
-            "meaning": "Điềm lành &lt;=&gt; Điềm xấu",
+            "meaning": "Điềm lành ⇔ Điềm xấu",
             "badge": "連"
           },
           {
@@ -1798,7 +1798,7 @@
           {
             "text": "＿が多い⇔少ない",
             "rubyHtml": "＿が<ruby>多<rp>（</rp><rt>おお</rt><rp>）</rp></ruby>い⇔<ruby>少<rp>（</rp><rt>すく</rt><rp>）</rp></ruby>ない",
-            "meaning": "Chi tiêu nhiều &lt;=&gt; Chi tiêu ít",
+            "meaning": "Chi tiêu nhiều ⇔ Chi tiêu ít",
             "badge": "連"
           },
           {
@@ -1952,7 +1952,7 @@
           {
             "text": "＿が高い⇔低い",
             "rubyHtml": "＿が<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い⇔<ruby>低<rp>（</rp><rt>ひく</rt><rp>）</rp></ruby>い",
-            "meaning": "Thu nhập cao &lt;=&gt; thấp",
+            "meaning": "Thu nhập cao ⇔ thấp",
             "badge": "連"
           }
         ],
@@ -2072,7 +2072,7 @@
       "wordHtml": "<ruby>雇用<rp>（</rp><rt>こよう</rt><rp>）</rp></ruby>",
       "hanviet": "CỐ DỤNG",
       "meanings": [
-        "Việc làm; tuyển &amp; sử dụng lao động (employment)"
+        "Việc làm; tuyển & sử dụng lao động (employment)"
       ],
       "examples": [
         {
@@ -2905,7 +2905,7 @@
           {
             "text": "＿にない＋【名詞】、＿になく＋【形容詞など】",
             "rubyHtml": "＿にない＋【<ruby>名詞<rp>（</rp><rt>めいし</rt><rp>）</rp></ruby>】、＿になく＋【<ruby>形容詞<rp>（</rp><rt>けいようし</rt><rp>）</rp></ruby>など】",
-            "meaning": "N/A +“chưa từng thấy&quot;",
+            "meaning": "N/A +“chưa từng thấy\"",
             "badge": "連"
           }
         ],
@@ -4645,7 +4645,7 @@
           {
             "text": "「感染される」とは言わない",
             "rubyHtml": "「<ruby>感染<rp>（</rp><rt>かんせん</rt><rp>）</rp></ruby>される」とは<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>わない",
-            "meaning": "Không nói &quot;感染される&quot;",
+            "meaning": "Không nói \"感染される\"",
             "badge": "※"
           }
         ]
@@ -6278,7 +6278,7 @@
           {
             "text": "＿を拡大する　⇔　縮小する",
             "rubyHtml": "＿を<ruby>拡大<rp>（</rp><rt>かくだい</rt><rp>）</rp></ruby>する　⇔　<ruby>縮小<rp>（</rp><rt>しゅくしょう</rt><rp>）</rp></ruby>する",
-            "meaning": "Mở rộng &lt;=&gt; Thu hẹp quy mô",
+            "meaning": "Mở rộng ⇔ Thu hẹp quy mô",
             "badge": "連"
           },
           {
@@ -6714,7 +6714,7 @@
           {
             "text": "ヲかい＿　（例．「要点をかいつまんでお話します。」）",
             "rubyHtml": "ヲかい＿　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．「<ruby>要点<rp>（</rp><rt>ようてん</rt><rp>）</rp></ruby>をかいつまんでお<ruby>話<rp>（</rp><rt>はなし</rt><rp>）</rp></ruby>します。」）",
-            "meaning": "Tóm lược (Ví dụ: &quot;Xin phép nói tóm tắt những điểm chính.&quot;)",
+            "meaning": "Tóm lược (Ví dụ: \"Xin phép nói tóm tắt những điểm chính.\")",
             "badge": "合"
           }
         ],
@@ -6973,7 +6973,7 @@
           {
             "text": "「ひねる」より「ねじる」の方が、力が必要。また、両端を逆方向に回す、あるいは一方が固定されている場合によく使う。",
             "rubyHtml": "「ひねる」より「ねじる」の<ruby>方<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>が、<ruby>力<rp>（</rp><rt>ちから</rt><rp>）</rp></ruby>が<ruby>必要<rp>（</rp><rt>ひつよう</rt><rp>）</rp></ruby>。また、<ruby>両端<rp>（</rp><rt>りょうはし</rt><rp>）</rp></ruby>を<ruby>逆方向<rp>（</rp><rt>ぎゃくほうこう</rt><rp>）</rp></ruby>に<ruby>回<rp>（</rp><rt>まわ</rt><rp>）</rp></ruby>す、あるいは<ruby>一方<rp>（</rp><rt>いっぽう</rt><rp>）</rp></ruby>が<ruby>固定<rp>（</rp><rt>こてい</rt><rp>）</rp></ruby>されている<ruby>場合<rp>（</rp><rt>ばあい</rt><rp>）</rp></ruby>によく<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>う。",
-            "meaning": "&quot;ねじる&quot; cần sức mạnh hơn &quot;ひねる&quot;.　Ngoài ra, nó còn thường được sử dụng khi xoay hai đầu theo hướng ngược nhau, hoặc khi một đầu được cố định.",
+            "meaning": "\"ねじる\" cần sức mạnh hơn \"ひねる\".　Ngoài ra, nó còn thường được sử dụng khi xoay hai đầu theo hướng ngược nhau, hoặc khi một đầu được cố định.",
             "badge": "※"
           }
         ]
@@ -7577,7 +7577,7 @@
           "seq": 1,
           "japanese": "「ちょっと来て」と田中さんが耳元でささやいた。",
           "rubyHtml": "「ちょっと<ruby>来<rp>（</rp><rt>き</rt><rp>）</rp></ruby>て」と<ruby>田中<rp>（</rp><rt>たなか</rt><rp>）</rp></ruby>さんが<ruby>耳元<rp>（</rp><rt>みみもと</rt><rp>）</rp></ruby>でささやいた。",
-          "meaning": "Anh Tanaka thì thầm bên tai tôi: &quot;Lại đây một chút&quot;."
+          "meaning": "Anh Tanaka thì thầm bên tai tôi: \"Lại đây một chút\"."
         },
         {
           "seq": 2,
@@ -7616,7 +7616,7 @@
           {
             "text": "「つぶやく」は独り言に、「ささやく」は相手に向かって言うときに使う。",
             "rubyHtml": "「つぶやく」は<ruby>独<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>り<ruby>言<rp>（</rp><rt>ごと</rt><rp>）</rp></ruby>に、「ささやく」は<ruby>相手<rp>（</rp><rt>あいて</rt><rp>）</rp></ruby>に<ruby>向<rp>（</rp><rt>む</rt><rp>）</rp></ruby>かって<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>うときに<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>う。",
-            "meaning": "&quot;つぶやく&quot; là lẩm bẩm một mình, &quot;ささやく&quot; là thì thầm với người khác.",
+            "meaning": "\"つぶやく\" là lẩm bẩm một mình, \"ささやく\" là thì thầm với người khác.",
             "badge": "※"
           },
           {
@@ -8138,7 +8138,7 @@
           {
             "text": "「歩く」より文学的で、抽象的な意味で使うことが多い。",
             "rubyHtml": "「<ruby>歩<rp>（</rp><rt>ある</rt><rp>）</rp></ruby>く」より<ruby>文学的<rp>（</rp><rt>ぶんがくてき</rt><rp>）</rp></ruby>で、<ruby>抽象的<rp>（</rp><rt>ちゅうしょうてき</rt><rp>）</rp></ruby>な<ruby>意味<rp>（</rp><rt>いみ</rt><rp>）</rp></ruby>で<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>うことが<ruby>多<rp>（</rp><rt>おお</rt><rp>）</rp></ruby>い。",
-            "meaning": "&quot;歩む&quot; mang sắc thái văn học, thường sử dụng mang tính trừu tượng hơn &quot;歩く&quot;.",
+            "meaning": "\"歩む\" mang sắc thái văn học, thường sử dụng mang tính trừu tượng hơn \"歩く\".",
             "badge": "※"
           },
           {
@@ -8800,7 +8800,7 @@
             "text": "ヲ垂らす　（例．｛髪／釣り糸／よだれ／鼻水．．．｝を垂らす。）",
             "rubyHtml": "ヲ<ruby>垂<rp>（</rp><rt>た</rt><rp>）</rp></ruby>らす　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．｛<ruby>髪<rp>（</rp><rt>かみ</rt><rp>）</rp></ruby>／<ruby>釣<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>り<ruby>糸<rp>（</rp><rt>いと</rt><rp>）</rp></ruby>／よだれ／<ruby>鼻水<rp>（</rp><rt>はなみず</rt><rp>）</rp></ruby>．．．｝を<ruby>垂<rp>（</rp><rt>た</rt><rp>）</rp></ruby>らす。）",
             "meaning": "Làm cho rủ xuống.(VD: Thả tóc, thả dây câu, chảy nước dãi,  nước mũi chảy ra...)",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -8926,7 +8926,7 @@
             "text": "ガ生きる",
             "rubyHtml": "ガ<ruby>生<rp>（</rp><rt>い</rt><rp>）</rp></ruby>きる",
             "meaning": "Sống, phát triển.",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -8986,7 +8986,7 @@
           {
             "text": "「拒む」の方がかたい表現で、意味も強い。",
             "rubyHtml": "「<ruby>拒<rp>（</rp><rt>こば</rt><rp>）</rp></ruby>む」の<ruby>方<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>がかたい<ruby>表現<rp>（</rp><rt>ひょうげん</rt><rp>）</rp></ruby>で、<ruby>意味<rp>（</rp><rt>いみ</rt><rp>）</rp></ruby>も<ruby>強<rp>（</rp><rt>つよ</rt><rp>）</rp></ruby>い。",
-            "meaning": "&quot;拒む&quot; là cách diễn đạt trang trọng hơn, ý nghĩa cũng mạnh mẽ hơn.",
+            "meaning": "\"拒む\" là cách diễn đạt trang trọng hơn, ý nghĩa cũng mạnh mẽ hơn.",
             "badge": "※"
           }
         ]
@@ -9103,7 +9103,7 @@
           {
             "text": "古くは「禁ず／禁ずる」。",
             "rubyHtml": "<ruby>古<rp>（</rp><rt>ふる</rt><rp>）</rp></ruby>くは「<ruby>禁<rp>（</rp><rt>きん</rt><rp>）</rp></ruby>ず／<ruby>禁<rp>（</rp><rt>きん</rt><rp>）</rp></ruby>ずる」。",
-            "meaning": "Thời xưa dùng &quot;禁ず／禁ずる&quot;.",
+            "meaning": "Thời xưa dùng \"禁ず／禁ずる\".",
             "badge": "※"
           }
         ]
@@ -9235,7 +9235,7 @@
             "text": "ガ負ける",
             "rubyHtml": "ガ<ruby>負<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>ける",
             "meaning": "Thua cuộc.",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -9332,7 +9332,7 @@
             "text": "ヲ励ます",
             "rubyHtml": "ヲ<ruby>励<rp>（</rp><rt>はげ</rt><rp>）</rp></ruby>ます",
             "meaning": "Động viên, cổ vũ.",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -9974,7 +9974,7 @@
           {
             "text": "「交わる」は1対１の付き合いには使わない。",
             "rubyHtml": "「<ruby>交<rp>（</rp><rt>まじ</rt><rp>）</rp></ruby>わる」は1<ruby>対<rp>（</rp><rt>たい</rt><rp>）</rp></ruby>１の<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>いには<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>わない。",
-            "meaning": "&quot;交わる&quot; không dùng cho giao tiếp cá nhân (1 đối 1).",
+            "meaning": "\"交わる\" không dùng cho giao tiếp cá nhân (1 đối 1).",
             "badge": "※"
           },
           {
@@ -10074,7 +10074,7 @@
           "seq": 3,
           "japanese": "（目の前の相手に） 「それをこっちへよこせ　（＝渡せ）」",
           "rubyHtml": "（<ruby>目<rp>（</rp><rt>め</rt><rp>）</rp></ruby>の<ruby>前<rp>（</rp><rt>まえ</rt><rp>）</rp></ruby>の<ruby>相手<rp>（</rp><rt>あいて</rt><rp>）</rp></ruby>に） 「それをこっちへよこせ　（＝<ruby>渡<rp>（</rp><rt>わた</rt><rp>）</rp></ruby>せ）」",
-          "meaning": "(Nói với người đối diện) &quot;Đưa cái đó đây!&quot;"
+          "meaning": "(Nói với người đối diện) \"Đưa cái đó đây!\""
         }
       ],
       "related": {
@@ -10170,7 +10170,7 @@
           "seq": 1,
           "japanese": "外出しようとする母親は、小さい子供を「早く早く」とせかした。",
           "rubyHtml": "<ruby>外出<rp>（</rp><rt>がいしゅつ</rt><rp>）</rp></ruby>しようとする<ruby>母親<rp>（</rp><rt>ははおや</rt><rp>）</rp></ruby>は、<ruby>小<rp>（</rp><rt>ちい</rt><rp>）</rp></ruby>さい<ruby>子供<rp>（</rp><rt>こども</rt><rp>）</rp></ruby>を「<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>く<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>く」とせかした。",
-          "meaning": "Mẹ chuẩn bị đi ra ngoài, liên tục giục đứa bé &quot;Nhanh lên, nhanh lên!&quot;."
+          "meaning": "Mẹ chuẩn bị đi ra ngoài, liên tục giục đứa bé \"Nhanh lên, nhanh lên!\"."
         },
         {
           "seq": 2,
@@ -10243,7 +10243,7 @@
           "seq": 4,
           "japanese": "ロケット「はやぶさ」は、度重なるアクシデントに耐えて地球に戻ってきた。",
           "rubyHtml": "ロケット「はやぶさ」は、<ruby>度重<rp>（</rp><rt>たびかさ</rt><rp>）</rp></ruby>なるアクシデントに<ruby>耐<rp>（</rp><rt>た</rt><rp>）</rp></ruby>えて<ruby>地球<rp>（</rp><rt>ちきゅう</rt><rp>）</rp></ruby>に<ruby>戻<rp>（</rp><rt>もど</rt><rp>）</rp></ruby>ってきた。",
-          "meaning": "Tàu vũ trụ &quot;Hayabusa&quot; đã kiên cường vượt qua biết bao sự cố để quay trở về Trái Đất."
+          "meaning": "Tàu vũ trụ \"Hayabusa\" đã kiên cường vượt qua biết bao sự cố để quay trở về Trái Đất."
         }
       ],
       "related": {
@@ -10722,7 +10722,7 @@
           {
             "text": "「試みる」の方がかたい言葉。",
             "rubyHtml": "「<ruby>試<rp>（</rp><rt>こころ</rt><rp>）</rp></ruby>みる」の<ruby>方<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>がかたい<ruby>言葉<rp>（</rp><rt>ことば</rt><rp>）</rp></ruby>。",
-            "meaning": "&quot;試みる&quot; là cách nói trang trọng.",
+            "meaning": "\"試みる\" là cách nói trang trọng.",
             "badge": "※"
           },
           {
@@ -10985,7 +10985,7 @@
             "text": "ヲぼやかす",
             "rubyHtml": "ヲぼやかす",
             "meaning": "Làm mờ đi, làm cho không rõ ràng.",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -11081,7 +11081,7 @@
           {
             "text": "「老いる」は、本当に年をとった場合に使う。",
             "rubyHtml": "「<ruby>老<rp>（</rp><rt>お</rt><rp>）</rp></ruby>いる」は、<ruby>本当<rp>（</rp><rt>ほんとう</rt><rp>）</rp></ruby>に<ruby>年<rp>（</rp><rt>とし</rt><rp>）</rp></ruby>をとった<ruby>場合<rp>（</rp><rt>ばあい</rt><rp>）</rp></ruby>に<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>う。",
-            "meaning": "&quot;老いる&quot; được dùng khi ai đó thực sự lớn tuổi.",
+            "meaning": "\"老いる\" được dùng khi ai đó thực sự lớn tuổi.",
             "badge": "※"
           }
         ]
@@ -11354,7 +11354,7 @@
           "seq": 3,
           "japanese": "（けんかをしている人に）　「よしなさい！」",
           "rubyHtml": "（けんかをしている<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>に）　「よしなさい！」",
-          "meaning": "(Nói với người đang cãi nhau) &quot;Dừng lại ngay!&quot;"
+          "meaning": "(Nói với người đang cãi nhau) \"Dừng lại ngay!\""
         }
       ],
       "related": {
@@ -11465,7 +11465,7 @@
           {
             "text": "他動詞「にぎわす」のテ形「にぎわして」も使う。",
             "rubyHtml": "<ruby>他動詞<rp>（</rp><rt>たどうし</rt><rp>）</rp></ruby>「にぎわす」のテ<ruby>形<rp>（</rp><rt>けい</rt><rp>）</rp></ruby>「にぎわして」も<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>う。",
-            "meaning": "Cũng sử dụng dạng thể て của &quot;にぎわす&quot;.",
+            "meaning": "Cũng sử dụng dạng thể て của \"にぎわす\".",
             "badge": "※"
           },
           {
@@ -11478,7 +11478,7 @@
             "text": "ヲにぎわす　（例．父が釣ってきた魚の料理が食卓をにぎわした。）",
             "rubyHtml": "ヲにぎわす　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>父<rp>（</rp><rt>ちち</rt><rp>）</rp></ruby>が<ruby>釣<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ってきた<ruby>魚<rp>（</rp><rt>さかな</rt><rp>）</rp></ruby>の<ruby>料理<rp>（</rp><rt>りょうり</rt><rp>）</rp></ruby>が<ruby>食卓<rp>（</rp><rt>しょくたく</rt><rp>）</rp></ruby>をにぎわした。）",
             "meaning": "Làm cho sôi động (ví dụ: Các món cá bố câu được làm cho bàn ăn thêm sôi động).",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -11634,7 +11634,7 @@
           "seq": 2,
           "japanese": "「緊急事態に際しては、柔軟に対処してください」",
           "rubyHtml": "「<ruby>緊急事態<rp>（</rp><rt>きんきゅうじたい</rt><rp>）</rp></ruby>に<ruby>際<rp>（</rp><rt>さい</rt><rp>）</rp></ruby>しては、<ruby>柔軟<rp>（</rp><rt>じゅうなん</rt><rp>）</rp></ruby>に<ruby>対処<rp>（</rp><rt>たいしょ</rt><rp>）</rp></ruby>してください」",
-          "meaning": "&quot;Trong tình huống khẩn cấp, hãy xử lý linh hoạt.&quot;"
+          "meaning": "\"Trong tình huống khẩn cấp, hãy xử lý linh hoạt.\""
         },
         {
           "seq": 3,
@@ -12448,7 +12448,7 @@
           "seq": 2,
           "japanese": "[（副）　極端に］　この子は極端に口数が少ない。",
           "rubyHtml": "[（<ruby>副<rp>（</rp><rt>ふく</rt><rp>）</rp></ruby>）　<ruby>極端<rp>（</rp><rt>きょくたん</rt><rp>）</rp></ruby>に］　この<ruby>子<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>は<ruby>極端<rp>（</rp><rt>きょくたん</rt><rp>）</rp></ruby>に<ruby>口数<rp>（</rp><rt>くちかず</rt><rp>）</rp></ruby>が<ruby>少<rp>（</rp><rt>すく</rt><rp>）</rp></ruby>ない。",
-          "meaning": "&quot;(Phó từ) cực kỳ, vô cùng, quá mức&quot; Đứa trẻ này cực kỳ ít nói."
+          "meaning": "\"(Phó từ) cực kỳ, vô cùng, quá mức\" Đứa trẻ này cực kỳ ít nói."
         }
       ],
       "related": {
@@ -13091,7 +13091,7 @@
           {
             "text": "「急激な」は程度の変化を、「急速な」は時間的な変化を表すことが多い。",
             "rubyHtml": "「<ruby>急激<rp>（</rp><rt>きゅうげき</rt><rp>）</rp></ruby>な」は<ruby>程度<rp>（</rp><rt>ていど</rt><rp>）</rp></ruby>の<ruby>変化<rp>（</rp><rt>へんか</rt><rp>）</rp></ruby>を、「<ruby>急速<rp>（</rp><rt>きゅうそく</rt><rp>）</rp></ruby>な」は<ruby>時間的<rp>（</rp><rt>じかんてき</rt><rp>）</rp></ruby>な<ruby>変化<rp>（</rp><rt>へんか</rt><rp>）</rp></ruby>を<ruby>表<rp>（</rp><rt>あらわ</rt><rp>）</rp></ruby>すことが<ruby>多<rp>（</rp><rt>おお</rt><rp>）</rp></ruby>い。",
-            "meaning": "&quot;急激な&quot; thường nói về thay đổi mức độ, còn &quot;急速な&quot; ám chỉ tốc độ thay đổi.",
+            "meaning": "\"急激な\" thường nói về thay đổi mức độ, còn \"急速な\" ám chỉ tốc độ thay đổi.",
             "badge": "※"
           }
         ]
@@ -14038,7 +14038,7 @@
           "seq": 1,
           "japanese": "A社の求人案内に「大学卒が望ましい」と書いてあった。",
           "rubyHtml": "A<ruby>社<rp>（</rp><rt>しゃ</rt><rp>）</rp></ruby>の<ruby>求人案内<rp>（</rp><rt>きゅうじんあんない</rt><rp>）</rp></ruby>に「<ruby>大学<rp>（</rp><rt>だいがく</rt><rp>）</rp></ruby><ruby>卒<rp>（</rp><rt>そつ</rt><rp>）</rp></ruby>が<ruby>望<rp>（</rp><rt>のぞ</rt><rp>）</rp></ruby>ましい」と<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>いてあった。",
-          "meaning": "Thông báo tuyển dụng của công ty A ghi: &quot;Ưu tiên người tốt nghiệp đại học&quot;."
+          "meaning": "Thông báo tuyển dụng của công ty A ghi: \"Ưu tiên người tốt nghiệp đại học\"."
         },
         {
           "seq": 2,
@@ -14105,7 +14105,7 @@
           "seq": 4,
           "japanese": "「疑わしきは罰せず」が法の精神だ。",
           "rubyHtml": "「<ruby>疑<rp>（</rp><rt>うたが</rt><rp>）</rp></ruby>わしきは<ruby>罰<rp>（</rp><rt>ばっ</rt><rp>）</rp></ruby>せず」が<ruby>法<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>の<ruby>精神<rp>（</rp><rt>せいしん</rt><rp>）</rp></ruby>だ。",
-          "meaning": "Tinh thần pháp luật là &quot;Nghi ngờ thì không kết tội&quot;."
+          "meaning": "Tinh thần pháp luật là \"Nghi ngờ thì không kết tội\"."
         }
       ],
       "related": {
@@ -14636,7 +14636,7 @@
           "seq": 2,
           "japanese": "「来月海外旅行に行くのに、まだパスポートも取ってないなんて、のんきだね。」",
           "rubyHtml": "「<ruby>来月<rp>（</rp><rt>らいげつ</rt><rp>）</rp></ruby><ruby>海外<rp>（</rp><rt>かいがい</rt><rp>）</rp></ruby><ruby>旅行<rp>（</rp><rt>りょこう</rt><rp>）</rp></ruby>に<ruby>行<rp>（</rp><rt>い</rt><rp>）</rp></ruby>くのに、まだパスポートも<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>ってないなんて、のんきだね。」",
-          "meaning": "&quot;Tháng sau đi nước ngoài rồi mà vẫn chưa làm hộ chiếu, vô tư thật đấy.&quot;"
+          "meaning": "\"Tháng sau đi nước ngoài rồi mà vẫn chưa làm hộ chiếu, vô tư thật đấy.\""
         }
       ],
       "related": {
@@ -15992,7 +15992,7 @@
           "seq": 2,
           "japanese": "「この仕事、明日までに頼むよ」　「そんな無茶な」",
           "rubyHtml": "「この<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>、<ruby>明日<rp>（</rp><rt>あした</rt><rp>）</rp></ruby>までに<ruby>頼<rp>（</rp><rt>たの</rt><rp>）</rp></ruby>むよ」　「そんな<ruby>無茶<rp>（</rp><rt>むちゃ</rt><rp>）</rp></ruby>な」",
-          "meaning": "&quot;Việc này xong trong ngày mai nhé.&quot; &quot;Vô lý thế!&quot;"
+          "meaning": "\"Việc này xong trong ngày mai nhé.\" \"Vô lý thế!\""
         },
         {
           "seq": 3,
@@ -16072,7 +16072,7 @@
           "seq": 4,
           "japanese": "[（副）めちゃくちゃ］　「今日の試験はめちゃくちゃ難しかった。」",
           "rubyHtml": "[（<ruby>副<rp>（</rp><rt>ふく</rt><rp>）</rp></ruby>）めちゃくちゃ］　「<ruby>今日<rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>の<ruby>試験<rp>（</rp><rt>しけん</rt><rp>）</rp></ruby>はめちゃくちゃ<ruby>難<rp>（</rp><rt>むずか</rt><rp>）</rp></ruby>しかった。」",
-          "meaning": "&quot;Bài thi hôm nay khó kinh khủng.&quot;"
+          "meaning": "\"Bài thi hôm nay khó kinh khủng.\""
         }
       ],
       "related": {
@@ -17622,7 +17622,7 @@
           "seq": 2,
           "japanese": "「仕事が楽しければ別に出世しなくてもいいよ」　「欲がないんだねえ」",
           "rubyHtml": "「<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>が<ruby>楽<rp>（</rp><rt>たの</rt><rp>）</rp></ruby>しければ<ruby>別<rp>（</rp><rt>べつ</rt><rp>）</rp></ruby>に<ruby>出世<rp>（</rp><rt>しゅっせ</rt><rp>）</rp></ruby>しなくてもいいよ」　「<ruby>欲<rp>（</rp><rt>よく</rt><rp>）</rp></ruby>がないんだねえ」",
-          "meaning": "&quot;Nếu công việc thú vị thì tôi cũng chẳng cần thăng tiến.&quot; &quot;Anh chẳng có tham vọng gì nhỉ.&quot;"
+          "meaning": "\"Nếu công việc thú vị thì tôi cũng chẳng cần thăng tiến.\" \"Anh chẳng có tham vọng gì nhỉ.\""
         }
       ],
       "related": {
@@ -17738,7 +17738,7 @@
           "seq": 3,
           "japanese": "「信頼してくれる人をだまして利益を得ようとは。恥を知れ！」",
           "rubyHtml": "「<ruby>信頼<rp>（</rp><rt>しんらい</rt><rp>）</rp></ruby>してくれる<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>をだまして<ruby>利益<rp>（</rp><rt>りえき</rt><rp>）</rp></ruby>を<ruby>得<rp>（</rp><rt>え</rt><rp>）</rp></ruby>ようとは。<ruby>恥<rp>（</rp><rt>はじ</rt><rp>）</rp></ruby>を<ruby>知<rp>（</rp><rt>し</rt><rp>）</rp></ruby>れ！」",
-          "meaning": "&quot;Anh lợi dụng niềm tin người khác để trục lợi ư? Thật là nhục nhã!&quot;"
+          "meaning": "\"Anh lợi dụng niềm tin người khác để trục lợi ư? Thật là nhục nhã!\""
         },
         {
           "seq": 4,
@@ -17750,7 +17750,7 @@
           "seq": 5,
           "japanese": "容疑者は「私は人に恥じるようなことを何もしていない」　と言っているそうだ。",
           "rubyHtml": "<ruby>容疑者<rp>（</rp><rt>ようぎしゃ</rt><rp>）</rp></ruby>は「<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>に<ruby>恥<rp>（</rp><rt>は</rt><rp>）</rp></ruby>じるようなことを<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>もしていない」　と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>っているそうだ。",
-          "meaning": "Nghe nói nghi phạm đã nói: &quot;Tôi không làm gì đáng xấu hổ với người khác cả&quot;."
+          "meaning": "Nghe nói nghi phạm đã nói: \"Tôi không làm gì đáng xấu hổ với người khác cả\"."
         },
         {
           "seq": 6,
@@ -17922,13 +17922,13 @@
           {
             "text": "神や仏が下す場合は「罰」ともいう。（例．罰が当たる・罰を当てる）",
             "rubyHtml": "<ruby>神<rp>（</rp><rt>かみ</rt><rp>）</rp></ruby>や<ruby>仏<rp>（</rp><rt>ほとけ</rt><rp>）</rp></ruby>が<ruby>下<rp>（</rp><rt>くだ</rt><rp>）</rp></ruby>す<ruby>場合<rp>（</rp><rt>ばあい</rt><rp>）</rp></ruby>は「<ruby>罰<rp>（</rp><rt>ばち</rt><rp>）</rp></ruby>」ともいう。（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>罰<rp>（</rp><rt>ばち</rt><rp>）</rp></ruby>が<ruby>当<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>たる・<ruby>罰<rp>（</rp><rt>ばち</rt><rp>）</rp></ruby>を<ruby>当<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>てる）",
-            "meaning": "Khi hình phạt do thần phật ban xuống thì gọi là &quot;罰&quot; (đọc ばち). (VD: Bị trời phạt / trời giáng họa)",
+            "meaning": "Khi hình phạt do thần phật ban xuống thì gọi là \"罰\" (đọc ばち). (VD: Bị trời phạt / trời giáng họa)",
             "badge": "※"
           },
           {
             "text": "動詞の受身形は「罰せられる」",
             "rubyHtml": "<ruby>動詞<rp>（</rp><rt>どうし</rt><rp>）</rp></ruby>の<ruby>受身形<rp>（</rp><rt>うけみけい</rt><rp>）</rp></ruby>は「<ruby>罰<rp>（</rp><rt>ばっ</rt><rp>）</rp></ruby>せられる」",
-            "meaning": "Dạng bị động của động từ là &quot;罰せられる&quot;",
+            "meaning": "Dạng bị động của động từ là \"罰せられる\"",
             "badge": "※"
           }
         ]
@@ -17962,7 +17962,7 @@
           "seq": 3,
           "japanese": "「本当にいいんですね？」と彼は私に何度も念を押した。",
           "rubyHtml": "「<ruby>本当<rp>（</rp><rt>ほんとう</rt><rp>）</rp></ruby>にいいんですね？」と<ruby>彼<rp>（</rp><rt>かれ</rt><rp>）</rp></ruby>は<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>に<ruby>何度<rp>（</rp><rt>なんど</rt><rp>）</rp></ruby>も<ruby>念<rp>（</rp><rt>ねん</rt><rp>）</rp></ruby>を<ruby>押<rp>（</rp><rt>お</rt><rp>）</rp></ruby>した。",
-          "meaning": "Anh ấy liên tục xác nhận với tôi rằng &quot;Thật sự ổn chứ?&quot;"
+          "meaning": "Anh ấy liên tục xác nhận với tôi rằng \"Thật sự ổn chứ?\""
         },
         {
           "seq": 4,
@@ -18084,7 +18084,7 @@
           {
             "text": "「本音」は「本心」が言葉として表れたもので、やや感情的な言い方。",
             "rubyHtml": "「<ruby>本音<rp>（</rp><rt>ほんね</rt><rp>）</rp></ruby>」は「<ruby>本心<rp>（</rp><rt>ほんしん</rt><rp>）</rp></ruby>」が<ruby>言葉<rp>（</rp><rt>ことば</rt><rp>）</rp></ruby>として<ruby>表<rp>（</rp><rt>あらわ</rt><rp>）</rp></ruby>れたもので、やや<ruby>感情的<rp>（</rp><rt>かんじょうてき</rt><rp>）</rp></ruby>な<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>い<ruby>方<rp>（</rp><rt>かた</rt><rp>）</rp></ruby>。",
-            "meaning": "&quot;本音&quot; là cách diễn đạt bằng lời của &quot;本心&quot;, mang tính cảm xúc.",
+            "meaning": "\"本音\" là cách diễn đạt bằng lời của \"本心\", mang tính cảm xúc.",
             "badge": "※"
           }
         ]
@@ -18341,7 +18341,7 @@
           {
             "text": "充実だ",
             "rubyHtml": "<ruby>充実<rp>（</rp><rt>じゅうじつ</rt><rp>）</rp></ruby>だ",
-            "meaning": "Không tồn tại dạng &quot;充実だ&quot;",
+            "meaning": "Không tồn tại dạng \"充実だ\"",
             "badge": "✖"
           }
         ]
@@ -18537,7 +18537,7 @@
           {
             "text": "共感だ",
             "rubyHtml": "<ruby>共感<rp>（</rp><rt>きょうかん</rt><rp>）</rp></ruby>だ",
-            "meaning": "Không dùng dạng &quot;共感だ&quot;",
+            "meaning": "Không dùng dạng \"共感だ\"",
             "badge": "✖"
           }
         ]
@@ -18853,7 +18853,7 @@
           "seq": 1,
           "japanese": "「商談が終わったら、結果を電話で報告してください」　「了解しました」",
           "rubyHtml": "「<ruby>商談<rp>（</rp><rt>しょうだん</rt><rp>）</rp></ruby>が<ruby>終<rp>（</rp><rt>お</rt><rp>）</rp></ruby>わったら、<ruby>結果<rp>（</rp><rt>けっか</rt><rp>）</rp></ruby>を<ruby>電話<rp>（</rp><rt>でんわ</rt><rp>）</rp></ruby>で<ruby>報告<rp>（</rp><rt>ほうこく</rt><rp>）</rp></ruby>してください」　「<ruby>了解<rp>（</rp><rt>りょうかい</rt><rp>）</rp></ruby>しました」",
-          "meaning": "&quot;Khi đàm phán xong, xin hãy báo kết quả qua điện thoại.&quot; &quot;Tôi hiểu rồi.&quot;"
+          "meaning": "\"Khi đàm phán xong, xin hãy báo kết quả qua điện thoại.\" \"Tôi hiểu rồi.\""
         },
         {
           "seq": 2,
@@ -18886,7 +18886,7 @@
           {
             "text": "親しい人同士や通信などでは「了解」と短く言うこともある。",
             "rubyHtml": "<ruby>親<rp>（</rp><rt>した</rt><rp>）</rp></ruby>しい<ruby>人同士<rp>（</rp><rt>ひとどうし</rt><rp>）</rp></ruby>や<ruby>通信<rp>（</rp><rt>つうしん</rt><rp>）</rp></ruby>などでは「<ruby>了解<rp>（</rp><rt>りょうかい</rt><rp>）</rp></ruby>」と<ruby>短<rp>（</rp><rt>みじか</rt><rp>）</rp></ruby>く<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>うこともある。",
-            "meaning": "Giữa những người thân thiết hoặc trong tin nhắn, thường dùng ngắn gọn &quot;了解&quot;.",
+            "meaning": "Giữa những người thân thiết hoặc trong tin nhắn, thường dùng ngắn gọn \"了解\".",
             "badge": "※"
           }
         ]
@@ -19302,7 +19302,7 @@
           {
             "text": "「論理」よりも個人的な場面で使われやすい。",
             "rubyHtml": "「<ruby>論理<rp>（</rp><rt>ろんり</rt><rp>）</rp></ruby>」よりも<ruby>個人<rp>（</rp><rt>こじん</rt><rp>）</rp></ruby><ruby>的<rp>（</rp><rt>てき</rt><rp>）</rp></ruby>な<ruby>場面<rp>（</rp><rt>ばめん</rt><rp>）</rp></ruby>で<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>われやすい。",
-            "meaning": "Từ &quot;理屈&quot; thường được dùng trong tình huống cá nhân hơn so với &quot;論理&quot;.",
+            "meaning": "Từ \"理屈\" thường được dùng trong tình huống cá nhân hơn so với \"論理\".",
             "badge": "※"
           }
         ]
@@ -19518,7 +19518,7 @@
           "seq": 3,
           "japanese": "不安なときは、「絶対大丈夫」　と自分に暗示をかけることにしている。",
           "rubyHtml": "<ruby>不安<rp>（</rp><rt>ふあん</rt><rp>）</rp></ruby>なときは、「<ruby>絶対大丈夫<rp>（</rp><rt>ぜったいだいじょうぶ</rt><rp>）</rp></ruby>」　と<ruby>自分<rp>（</rp><rt>じぶん</rt><rp>）</rp></ruby>に<ruby>暗示<rp>（</rp><rt>あんじ</rt><rp>）</rp></ruby>をかけることにしている。",
-          "meaning": "Khi bất an, tôi thường tự ám thị bản thân rằng &quot;mọi chuyện sẽ ổn thôi&quot;."
+          "meaning": "Khi bất an, tôi thường tự ám thị bản thân rằng \"mọi chuyện sẽ ổn thôi\"."
         }
       ],
       "related": {
@@ -20280,7 +20280,7 @@
           {
             "text": "「光景」は目の前で起きている具体的な場面を言う。",
             "rubyHtml": "「<ruby>光景<rp>（</rp><rt>こうけい</rt><rp>）</rp></ruby>」は<ruby>目<rp>（</rp><rt>め</rt><rp>）</rp></ruby>の<ruby>前<rp>（</rp><rt>まえ</rt><rp>）</rp></ruby>で<ruby>起<rp>（</rp><rt>お</rt><rp>）</rp></ruby>きている<ruby>具体的<rp>（</rp><rt>ぐたいてき</rt><rp>）</rp></ruby>な<ruby>場面<rp>（</rp><rt>ばめん</rt><rp>）</rp></ruby>を<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>う。",
-            "meaning": "&quot;光景&quot; dùng để miêu tả một cảnh tượng cụ thể diễn ra ngay trước mắt.",
+            "meaning": "\"光景\" dùng để miêu tả một cảnh tượng cụ thể diễn ra ngay trước mắt.",
             "badge": "※"
           }
         ]
@@ -20941,7 +20941,7 @@
           "seq": 2,
           "japanese": "「一切の責任は私が負います」",
           "rubyHtml": "「<ruby>一切<rp>（</rp><rt>いっさい</rt><rp>）</rp></ruby>の<ruby>責任<rp>（</rp><rt>せきにん</rt><rp>）</rp></ruby>は<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>が<ruby>負<rp>（</rp><rt>お</rt><rp>）</rp></ruby>います」",
-          "meaning": "&quot;Tôi sẽ chịu hoàn toàn trách nhiệm.&quot;"
+          "meaning": "\"Tôi sẽ chịu hoàn toàn trách nhiệm.\""
         },
         {
           "seq": 3,
@@ -21008,7 +21008,7 @@
           "seq": 1,
           "japanese": "「お父様のお加減はいかがですか」",
           "rubyHtml": "「お<ruby>父<rp>（</rp><rt>とう</rt><rp>）</rp></ruby><ruby>様<rp>（</rp><rt>さま</rt><rp>）</rp></ruby>のお<ruby>加減<rp>（</rp><rt>かげん</rt><rp>）</rp></ruby>はいかがですか」",
-          "meaning": "&quot;Sức khỏe của bố bạn dạo này thế nào ạ?&quot;"
+          "meaning": "\"Sức khỏe của bố bạn dạo này thế nào ạ?\""
         },
         {
           "seq": 2,
@@ -21180,7 +21180,7 @@
           "seq": 1,
           "japanese": "「このプリントは余分がないので、なくさないようにしてください。」",
           "rubyHtml": "「このプリントは<ruby>余分<rp>（</rp><rt>よぶん</rt><rp>）</rp></ruby>がないので、なくさないようにしてください。」",
-          "meaning": "&quot;Tài liệu này không có bản dư nên đừng làm mất nhé.&quot;"
+          "meaning": "\"Tài liệu này không có bản dư nên đừng làm mất nhé.\""
         },
         {
           "seq": 2,
@@ -21307,7 +21307,7 @@
           "seq": 2,
           "japanese": "「ご発言のある方は、挙手をお願いします。」",
           "rubyHtml": "「ご<ruby>発言<rp>（</rp><rt>はつげん</rt><rp>）</rp></ruby>のある<ruby>方<rp>（</rp><rt>かた</rt><rp>）</rp></ruby>は、<ruby>挙手<rp>（</rp><rt>きょしゅ</rt><rp>）</rp></ruby>をお<ruby>願<rp>（</rp><rt>ねが</rt><rp>）</rp></ruby>いします。」",
-          "meaning": "&quot;Ai có ý kiến xin hãy giơ tay.&quot;"
+          "meaning": "\"Ai có ý kiến xin hãy giơ tay.\""
         },
         {
           "seq": 3,
@@ -21667,7 +21667,7 @@
             "text": "ガ発電スル、ガ発散スル、ガ発覚スル、ガ発病スル、が発熱スル、ガ発射スル　など",
             "rubyHtml": "ガ<ruby>発電<rp>（</rp><rt>はつでん</rt><rp>）</rp></ruby>スル、ガ<ruby>発散<rp>（</rp><rt>はっさん</rt><rp>）</rp></ruby>スル、ガ<ruby>発覚<rp>（</rp><rt>はっかく</rt><rp>）</rp></ruby>スル、ガ<ruby>発病<rp>（</rp><rt>はつびょう</rt><rp>）</rp></ruby>スル、が<ruby>発熱<rp>（</rp><rt>はつねつ</rt><rp>）</rp></ruby>スル、ガ<ruby>発射<rp>（</rp><rt>はっしゃ</rt><rp>）</rp></ruby>スル　など",
             "meaning": "Phát điện, phát tán, phát hiện, phát bệnh, phát sốt, phóng (tên lửa)...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -22230,7 +22230,7 @@
             "text": "反感、反動、反面、ガ反響、ガ反復スル、ガ反論スル、ガ反乱スル",
             "rubyHtml": "<ruby>反感<rp>（</rp><rt>はんかん</rt><rp>）</rp></ruby>、<ruby>反動<rp>（</rp><rt>はんどう</rt><rp>）</rp></ruby>、<ruby>反面<rp>（</rp><rt>はんめん</rt><rp>）</rp></ruby>、ガ<ruby>反響<rp>（</rp><rt>はんきょう</rt><rp>）</rp></ruby>、ガ<ruby>反復<rp>（</rp><rt>はんぷく</rt><rp>）</rp></ruby>スル、ガ<ruby>反論<rp>（</rp><rt>はんろん</rt><rp>）</rp></ruby>スル、ガ<ruby>反乱<rp>（</rp><rt>はんらん</rt><rp>）</rp></ruby>スル",
             "meaning": "Phản cảm, phản động, mặt khác, phản hồi, lặp lại, phản bác, nổi loạn",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -22354,7 +22354,7 @@
           "seq": 1,
           "japanese": "「権力は腐敗する」というのは一般論で、特定の政治家に当てはめられるわけではない。",
           "rubyHtml": "「<ruby>権力<rp>（</rp><rt>けんりょく</rt><rp>）</rp></ruby>は<ruby>腐敗<rp>（</rp><rt>ふはい</rt><rp>）</rp></ruby>する」というのは<ruby>一般論<rp>（</rp><rt>いっぱんろん</rt><rp>）</rp></ruby>で、<ruby>特定<rp>（</rp><rt>とくてい</rt><rp>）</rp></ruby>の<ruby>政治家<rp>（</rp><rt>せいじか</rt><rp>）</rp></ruby>に<ruby>当<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>てはめられるわけではない。",
-          "meaning": "&quot;Quyền lực sinh tham nhũng&quot; là nhận định chung, không nhằm chỉ đích danh chính trị gia nào."
+          "meaning": "\"Quyền lực sinh tham nhũng\" là nhận định chung, không nhằm chỉ đích danh chính trị gia nào."
         },
         {
           "seq": 2,
@@ -22400,7 +22400,7 @@
             "text": "特技、特色、特売など",
             "rubyHtml": "<ruby>特技<rp>（</rp><rt>とくぎ</rt><rp>）</rp></ruby>、<ruby>特色<rp>（</rp><rt>とくしょく</rt><rp>）</rp></ruby>、<ruby>特売<rp>（</rp><rt>とくばい</rt><rp>）</rp></ruby>など",
             "meaning": "Kỹ năng riêng, điểm nổi bật, bán hàng khuyến mãi...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -22565,7 +22565,7 @@
             "text": "ガ／ヲ復活スル、ガ／ヲ復元スルなど",
             "rubyHtml": "ガ／ヲ<ruby>復活<rp>（</rp><rt>ふっかつ</rt><rp>）</rp></ruby>スル、ガ／ヲ<ruby>復元<rp>（</rp><rt>ふくげん</rt><rp>）</rp></ruby>スルなど",
             "meaning": "Khôi phục, tái hiện, phục dựng...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -22719,7 +22719,7 @@
             "text": "ガ追突スル、ヲ追放スル、追試験など",
             "rubyHtml": "ガ<ruby>追突<rp>（</rp><rt>ついとつ</rt><rp>）</rp></ruby>スル、ヲ<ruby>追放<rp>（</rp><rt>ついほう</rt><rp>）</rp></ruby>スル、<ruby>追試験<rp>（</rp><rt>ついしけん</rt><rp>）</rp></ruby>など",
             "meaning": "Va chạm từ phía sau, trục xuất, thi lại...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -23041,7 +23041,7 @@
             "text": "手数、ガ／ヲ手加減スル、手口、手ごたえ、手製、手作り、ヲ手直しスル、ヲ手抜きスル、手ぶら　など",
             "rubyHtml": "<ruby>手数<rp>（</rp><rt>てすう</rt><rp>）</rp></ruby>、ガ／ヲ<ruby>手加減<rp>（</rp><rt>てかげん</rt><rp>）</rp></ruby>スル、<ruby>手口<rp>（</rp><rt>てぐち</rt><rp>）</rp></ruby>、<ruby>手<rp>（</rp><rt>て</rt><rp>）</rp></ruby>ごたえ、<ruby>手製<rp>（</rp><rt>てせい</rt><rp>）</rp></ruby>、<ruby>手作<rp>（</rp><rt>てづく</rt><rp>）</rp></ruby>り、ヲ<ruby>手直<rp>（</rp><rt>てなお</rt><rp>）</rp></ruby>しスル、ヲ<ruby>手抜<rp>（</rp><rt>てぬ</rt><rp>）</rp></ruby>きスル、<ruby>手<rp>（</rp><rt>て</rt><rp>）</rp></ruby>ぶら　など",
             "meaning": "Phiền toái, nương tay, thủ đoạn, cảm nhận, làm thủ công, sửa tay, làm sơ sài, tay không...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -23172,7 +23172,7 @@
           "seq": 1,
           "japanese": "「人目を気にせず、やりたいことをやりなさい。」",
           "rubyHtml": "「<ruby>人目<rp>（</rp><rt>ひとめ</rt><rp>）</rp></ruby>を<ruby>気<rp>（</rp><rt>き</rt><rp>）</rp></ruby>にせず、やりたいことをやりなさい。」",
-          "meaning": "&quot;Đừng bận tâm ánh nhìn của người khác, cứ làm điều mình muốn.&quot;"
+          "meaning": "\"Đừng bận tâm ánh nhìn của người khác, cứ làm điều mình muốn.\""
         },
         {
           "seq": 2,
@@ -23272,7 +23272,7 @@
             "text": "人柄、人ごと、人前、ガ人見知り（ヲ）スル　など",
             "rubyHtml": "<ruby>人柄<rp>（</rp><rt>ひとがら</rt><rp>）</rp></ruby>、<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>ごと、<ruby>人前<rp>（</rp><rt>ひとまえ</rt><rp>）</rp></ruby>、ガ<ruby>人見知<rp>（</rp><rt>ひとみし</rt><rp>）</rp></ruby>り（ヲ）スル　など",
             "meaning": "Tính cách, chuyện người khác, trước đám đông, ngại người lạ...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -23460,7 +23460,7 @@
             "text": "殴りかかる、襲いかかる、切りかかる、など",
             "rubyHtml": "<ruby>殴<rp>（</rp><rt>なぐ</rt><rp>）</rp></ruby>りかかる、<ruby>襲<rp>（</rp><rt>おそ</rt><rp>）</rp></ruby>いかかる、<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>りかかる、など",
             "meaning": "Lao vào đánh, Tấn công, Vung dao chém, v.v.",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "～かかる②　＜自＞　～始める",
@@ -23580,7 +23580,7 @@
             "text": "溺れかかる、沈みかかる、死にかかる　など",
             "rubyHtml": "<ruby>溺<rp>（</rp><rt>おぼ</rt><rp>）</rp></ruby>れかかる、<ruby>沈<rp>（</rp><rt>しず</rt><rp>）</rp></ruby>みかかる、<ruby>死<rp>（</rp><rt>し</rt><rp>）</rp></ruby>にかかる　など",
             "meaning": "Sắp chết đuối, sắp chìm, suýt chết...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "「～かける」としてもほとんど同じ意味になる。",
@@ -23824,7 +23824,7 @@
             "text": "ガ／ヲ呼びかける、ヲ追いかける、ヲ問いかける、ヲ投げかける　など",
             "rubyHtml": "ガ／ヲ<ruby>呼<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>びかける、ヲ<ruby>追<rp>（</rp><rt>お</rt><rp>）</rp></ruby>いかける、ヲ<ruby>問<rp>（</rp><rt>と</rt><rp>）</rp></ruby>いかける、ヲ<ruby>投<rp>（</rp><rt>な</rt><rp>）</rp></ruby>げかける　など",
             "meaning": "Gọi, đuổi theo, hỏi, ném ra...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "～かける②　＜自／他＞　～し始めてやめる",
@@ -23866,12 +23866,12 @@
             "text": "ヲ食べかける、ヲ書きかける、ヲ読みかける、ヲやりかける、ガ帰りかける　など",
             "rubyHtml": "ヲ<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べかける、ヲ<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>きかける、ヲ<ruby>読<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>みかける、ヲやりかける、ガ<ruby>帰<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>りかける　など",
             "meaning": "Ăn dở, viết dở, đọc dở, đang làm, đang trên đường về...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "名詞の形の場合は「～の途中」という意味になる。　（例．食べかけ、読みかけ）",
             "rubyHtml": "<ruby>名詞<rp>（</rp><rt>めいし</rt><rp>）</rp></ruby>の<ruby>形<rp>（</rp><rt>かたち</rt><rp>）</rp></ruby>の<ruby>場合<rp>（</rp><rt>ばあい</rt><rp>）</rp></ruby>は「～の<ruby>途中<rp>（</rp><rt>とちゅう</rt><rp>）</rp></ruby>」という<ruby>意味<rp>（</rp><rt>いみ</rt><rp>）</rp></ruby>になる。　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べかけ、<ruby>読<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>みかけ）",
-            "meaning": "Ở dạng danh từ, mang nghĩa &quot;đang dang dở&quot;. (Ví dụ: Đồ ăn dở, sách đọc dở)",
+            "meaning": "Ở dạng danh từ, mang nghĩa \"đang dang dở\". (Ví dụ: Đồ ăn dở, sách đọc dở)",
             "badge": "※"
           },
           {
@@ -23914,7 +23914,7 @@
             "text": "壊れかける、沈みかける、死にかける　など",
             "rubyHtml": "<ruby>壊<rp>（</rp><rt>こわ</rt><rp>）</rp></ruby>れかける、<ruby>沈<rp>（</rp><rt>しず</rt><rp>）</rp></ruby>みかける、<ruby>死<rp>（</rp><rt>し</rt><rp>）</rp></ruby>にかける　など",
             "meaning": "Sắp hỏng, sắp chìm, suýt chết...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24218,7 +24218,7 @@
             "text": "ヲ申しつける、ヲ叱りつける、ヲ売りつける、ヲ貸しつける、ヲ投げつける、ヲ呼びつける、ヲ見せつける、ガ照りつける　など",
             "rubyHtml": "ヲ<ruby>申<rp>（</rp><rt>もう</rt><rp>）</rp></ruby>しつける、ヲ<ruby>叱<rp>（</rp><rt>しか</rt><rp>）</rp></ruby>りつける、ヲ<ruby>売<rp>（</rp><rt>う</rt><rp>）</rp></ruby>りつける、ヲ<ruby>貸<rp>（</rp><rt>か</rt><rp>）</rp></ruby>しつける、ヲ<ruby>投<rp>（</rp><rt>な</rt><rp>）</rp></ruby>げつける、ヲ<ruby>呼<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>びつける、ヲ<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>せつける、ガ<ruby>照<rp>（</rp><rt>て</rt><rp>）</rp></ruby>りつける　など",
             "meaning": "Ra lệnh, mắng, ép mua, cho vay, ném vào, gọi đến, khoe khoang, chiếu rọi...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24296,7 +24296,7 @@
             "text": "据え付ける、張り付ける、縫い付ける、縛り付ける、巻き付ける、結びつける、くっ付ける　など",
             "rubyHtml": "<ruby>据<rp>（</rp><rt>す</rt><rp>）</rp></ruby>え<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける、<ruby>張<rp>（</rp><rt>は</rt><rp>）</rp></ruby>り<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける、<ruby>縫<rp>（</rp><rt>ぬ</rt><rp>）</rp></ruby>い<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける、<ruby>縛<rp>（</rp><rt>しば</rt><rp>）</rp></ruby>り<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける、<ruby>巻<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>き<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける、<ruby>結<rp>（</rp><rt>むす</rt><rp>）</rp></ruby>びつける、くっ<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ける　など",
             "meaning": "Gắn vào, dán vào, may vào, trói vào, cuốn vào, buộc lại, dính lấy...",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24367,19 +24367,19 @@
             "text": "ヲ食べつける",
             "rubyHtml": "ヲ<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べつける",
             "meaning": "Thường ăn, quen với món ăn",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ飲みつける",
             "rubyHtml": "ヲ<ruby>飲<rp>（</rp><rt>の</rt><rp>）</rp></ruby>みつける",
             "meaning": "Thường uống, quen với đồ uống",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "かかりつけ（例：かかりつけの医者）",
             "rubyHtml": "かかりつけ（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>：かかりつけの<ruby>医者<rp>（</rp><rt>いしゃ</rt><rp>）</rp></ruby>）",
             "meaning": "Bác sĩ quen, thường xuyên khám",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24625,37 +24625,37 @@
             "text": "受け取る",
             "rubyHtml": "<ruby>受<rp>（</rp><rt>う</rt><rp>）</rp></ruby>け<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Nhận",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "写し取る",
             "rubyHtml": "<ruby>写<rp>（</rp><rt>うつ</rt><rp>）</rp></ruby>し<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Chép lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "買い取る",
             "rubyHtml": "<ruby>買<rp>（</rp><rt>か</rt><rp>）</rp></ruby>い<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Mua lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "感じ取る",
             "rubyHtml": "<ruby>感<rp>（</rp><rt>かん</rt><rp>）</rp></ruby>じ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Cảm nhận được",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "奪い取る",
             "rubyHtml": "<ruby>奪<rp>（</rp><rt>うば</rt><rp>）</rp></ruby>い<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Chiếm đoạt",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "搾り取る　など",
             "rubyHtml": "<ruby>搾<rp>（</rp><rt>しぼ</rt><rp>）</rp></ruby>り<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る　など",
             "meaning": "Vắt kiệt, bóc lột",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24698,13 +24698,13 @@
             "text": "切り取る",
             "rubyHtml": "<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>り<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る",
             "meaning": "Cắt ra (một phần từ toàn thể)",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "摘み取る　など",
             "rubyHtml": "<ruby>摘<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>み<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>る　など",
             "meaning": "Hái, ngắt (hoa, quả...)",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24740,25 +24740,25 @@
             "text": "やり返す",
             "rubyHtml": "やり<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す",
             "meaning": "Làm lại, trả đũa",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "取り返す",
             "rubyHtml": "<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す",
             "meaning": "Lấy lại (những gì đã mất)",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "送り返す",
             "rubyHtml": "<ruby>送<rp>（</rp><rt>おく</rt><rp>）</rp></ruby>り<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す",
             "meaning": "Gửi trả lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "突き返す　など",
             "rubyHtml": "<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す　など",
             "meaning": "Từ chối, bác lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -24957,8 +24957,8 @@
           {
             "text": "＜その他の意味の「～返す」＞　　ヲ追い返す、ヲ繰り返す、ヲ裏返す、ヲひっくり返す、ガ引き返す　など",
             "rubyHtml": "＜その<ruby>他<rp>（</rp><rt>た</rt><rp>）</rp></ruby>の<ruby>意味<rp>（</rp><rt>いみ</rt><rp>）</rp></ruby>の「～<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す」＞　　ヲ<ruby>追<rp>（</rp><rt>お</rt><rp>）</rp></ruby>い<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す、ヲ<ruby>繰<rp>（</rp><rt>く</rt><rp>）</rp></ruby>り<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す、ヲ<ruby>裏返<rp>（</rp><rt>うらがえ</rt><rp>）</rp></ruby>す、ヲひっくり<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す、ガ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す　など",
-            "meaning": "Những ý nghĩa khác của &quot;返す&quot;: Đuổi về, Lặp lại, Lật ngửa, Lật ngược, Quay trở lại...",
-            "badge": "&lt;その他&gt;"
+            "meaning": "Những ý nghĩa khác của \"返す\": Đuổi về, Lặp lại, Lật ngửa, Lật ngược, Quay trở lại...",
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -25029,25 +25029,25 @@
             "text": "ガ走り切る",
             "rubyHtml": "ガ<ruby>走<rp>（</rp><rt>はし</rt><rp>）</rp></ruby>り<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Chạy đến cùng",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ上がり切る",
             "rubyHtml": "ガ<ruby>上<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>がり<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Leo lên hết mức",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ泳ぎ切る",
             "rubyHtml": "ヲ<ruby>泳<rp>（</rp><rt>およ</rt><rp>）</rp></ruby>ぎ<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Bơi đến cùng",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "食べ切る",
             "rubyHtml": "<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べ<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Ăn hết không chừa lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -25068,7 +25068,7 @@
           "seq": 1,
           "japanese": "「そんなわかり切ったことを何度も言わないで」",
           "rubyHtml": "「そんなわかり<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>ったことを<ruby>何度<rp>（</rp><rt>なんど</rt><rp>）</rp></ruby>も<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>わないで」",
-          "meaning": "&quot;Đừng cứ lặp đi lặp lại những chuyện rõ như ban ngày nữa.&quot;"
+          "meaning": "\"Đừng cứ lặp đi lặp lại những chuyện rõ như ban ngày nữa.\""
         }
       ],
       "related": {
@@ -25176,25 +25176,25 @@
             "text": "ガ疲れ切る",
             "rubyHtml": "ガ<ruby>疲<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>れ<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Kiệt sức",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ弱り切る",
             "rubyHtml": "ガ<ruby>弱<rp>（</rp><rt>よわ</rt><rp>）</rp></ruby>り<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Yếu đi trông thấy",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ逃げ切る",
             "rubyHtml": "ガ<ruby>逃<rp>（</rp><rt>に</rt><rp>）</rp></ruby>げ<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Trốn thoát thành công",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ断ち切る",
             "rubyHtml": "ヲ<ruby>断<rp>（</rp><rt>た</rt><rp>）</rp></ruby>ち<ruby>切<rp>（</rp><rt>き</rt><rp>）</rp></ruby>る",
             "meaning": "Cắt đứt hoàn toàn (mối quan hệ, dòng suy nghĩ...)",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -25292,7 +25292,7 @@
           "seq": 2,
           "japanese": "＜スポーツ＞　「点を取られたら取り返せ！」",
           "rubyHtml": "＜スポーツ＞　「<ruby>点<rp>（</rp><rt>てん</rt><rp>）</rp></ruby>を<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>られたら<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>せ！」",
-          "meaning": "&lt;Trong thể thao&gt; &quot;Bị dẫn điểm thì phải gỡ lại ngay!&quot;"
+          "meaning": "〈Trong thể thao〉 \"Bị dẫn điểm thì phải gỡ lại ngay!\""
         }
       ],
       "related": {
@@ -25496,13 +25496,13 @@
             "text": "洗濯物を取り込んでたたむ。",
             "rubyHtml": "<ruby>洗濯物<rp>（</rp><rt>せんたくもの</rt><rp>）</rp></ruby>を<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>んでたたむ。",
             "meaning": "Lấy đồ giặt vào và gấp lại.",
-            "badge": "&lt;他&gt;例１"
+            "badge": "〈他〉例１"
           },
           {
             "text": "家族の入院などで家の中が取り込んでいる。",
             "rubyHtml": "<ruby>家族<rp>（</rp><rt>かぞく</rt><rp>）</rp></ruby>の<ruby>入院<rp>（</rp><rt>にゅういん</rt><rp>）</rp></ruby>などで<ruby>家<rp>（</rp><rt>いえ</rt><rp>）</rp></ruby>の<ruby>中<rp>（</rp><rt>なか</rt><rp>）</rp></ruby>が<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>んでいる。",
             "meaning": "Gia đình có người nhập viện nên trong nhà đang rất bận rộn.",
-            "badge": "&lt;自&gt;例"
+            "badge": "〈自〉例"
           },
           {
             "text": "取り込み",
@@ -25653,19 +25653,19 @@
             "text": "ヲ取り消す",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>消<rp>（</rp><rt>け</rt><rp>）</rp></ruby>す",
             "meaning": "Hủy bỏ",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ取り上げる",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>上<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げる",
             "meaning": "Nêu lên, tiếp nhận",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ取り入れる　など",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>入<rp>（</rp><rt>い</rt><rp>）</rp></ruby>れる　など",
             "meaning": "Áp dụng, tiếp thu",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -25844,7 +25844,7 @@
           "seq": 1,
           "japanese": "「この荷物は壊れやすいので、丁寧に取り扱ってください。」",
           "rubyHtml": "「この<ruby>荷物<rp>（</rp><rt>にもつ</rt><rp>）</rp></ruby>は<ruby>壊<rp>（</rp><rt>こわ</rt><rp>）</rp></ruby>れやすいので、<ruby>丁寧<rp>（</rp><rt>ていねい</rt><rp>）</rp></ruby>に<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>扱<rp>（</rp><rt>あつか</rt><rp>）</rp></ruby>ってください。」",
-          "meaning": "&quot;Hành lý này dễ vỡ, xin hãy cẩn thận khi xử lý.&quot;"
+          "meaning": "\"Hành lý này dễ vỡ, xin hãy cẩn thận khi xử lý.\""
         },
         {
           "seq": 2,
@@ -26060,25 +26060,25 @@
             "text": "ヲ取り揃える",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>揃<rp>（</rp><rt>そろ</rt><rp>）</rp></ruby>える",
             "meaning": "Tập hợp, sắp xếp",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ取りはからう",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>りはからう",
             "meaning": "Thu xếp, điều phối",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ取り合わせる",
             "rubyHtml": "ヲ<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>わせる",
             "meaning": "Phối hợp, kết hợp",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "取り逃がす",
             "rubyHtml": "<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>逃<rp>（</rp><rt>に</rt><rp>）</rp></ruby>がす",
             "meaning": "Để tuột mất",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -26099,7 +26099,7 @@
           "seq": 1,
           "japanese": "上司から「もっと詳しく書け」と、報告書を突き返された。",
           "rubyHtml": "<ruby>上司<rp>（</rp><rt>じょうし</rt><rp>）</rp></ruby>から「もっと<ruby>詳<rp>（</rp><rt>くわ</rt><rp>）</rp></ruby>しく<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>け」と、<ruby>報告書<rp>（</rp><rt>ほうこくしょ</rt><rp>）</rp></ruby>を<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>された。",
-          "meaning": "Bản báo cáo bị sếp trả lại với lời nhắc &quot;Viết chi tiết hơn nữa.&quot;"
+          "meaning": "Bản báo cáo bị sếp trả lại với lời nhắc \"Viết chi tiết hơn nữa.\""
         }
       ],
       "related": {
@@ -26179,7 +26179,7 @@
             "text": "こぶしを突き上げて抗議の意思を示す。",
             "rubyHtml": "こぶしを<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>上<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げて<ruby>抗議<rp>（</rp><rt>こうぎ</rt><rp>）</rp></ruby>の<ruby>意思<rp>（</rp><rt>いし</rt><rp>）</rp></ruby>を<ruby>示<rp>（</rp><rt>しめ</rt><rp>）</rp></ruby>す。",
             "meaning": "Giơ nắm tay thể hiện sự phản đối.",
-            "badge": "&lt;他&gt;例１"
+            "badge": "〈他〉例１"
           },
           {
             "text": "突き上げ",
@@ -26191,7 +26191,7 @@
             "text": "腹の底から怒りが突き上げてきた。",
             "rubyHtml": "<ruby>腹<rp>（</rp><rt>はら</rt><rp>）</rp></ruby>の<ruby>底<rp>（</rp><rt>そこ</rt><rp>）</rp></ruby>から<ruby>怒<rp>（</rp><rt>いか</rt><rp>）</rp></ruby>りが<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>上<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げてきた。",
             "meaning": "Cơn giận sôi lên từ tận đáy lòng.",
-            "badge": "&lt;自&gt;例"
+            "badge": "〈自〉例"
           }
         ]
       },
@@ -26233,7 +26233,7 @@
             "text": "ガ突き出る",
             "rubyHtml": "ガ<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>出<rp>（</rp><rt>で</rt><rp>）</rp></ruby>る",
             "meaning": "Lồi ra, nhô ra phía trước",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -26283,7 +26283,7 @@
           "seq": 1,
           "japanese": "強盗は主人にナイフを突きつけて「金を出せ」と脅した。",
           "rubyHtml": "<ruby>強盗<rp>（</rp><rt>ごうとう</rt><rp>）</rp></ruby>は<ruby>主人<rp>（</rp><rt>しゅじん</rt><rp>）</rp></ruby>にナイフを<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>きつけて「<ruby>金<rp>（</rp><rt>かね</rt><rp>）</rp></ruby>を<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>せ」と<ruby>脅<rp>（</rp><rt>おど</rt><rp>）</rp></ruby>した。",
-          "meaning": "Tên cướp dí dao vào chồng tôi và đe dọa: &quot;Đưa tiền đây!&quot;"
+          "meaning": "Tên cướp dí dao vào chồng tôi và đe dọa: \"Đưa tiền đây!\""
         },
         {
           "seq": 2,
@@ -26345,25 +26345,25 @@
             "text": "ガ突き当たる",
             "rubyHtml": "ガ<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>当<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>たる",
             "meaning": "Đâm vào, gặp phải, chạm trán với",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ突き落とす",
             "rubyHtml": "ヲ<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>落<rp>（</rp><rt>お</rt><rp>）</rp></ruby>とす",
             "meaning": "Đẩy ngã xuống",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ突き破る",
             "rubyHtml": "ヲ<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>破<rp>（</rp><rt>やぶ</rt><rp>）</rp></ruby>る",
             "meaning": "Đâm thủng, xuyên qua",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ突き抜ける",
             "rubyHtml": "ガ<ruby>突<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>き<ruby>抜<rp>（</rp><rt>ぬ</rt><rp>）</rp></ruby>ける",
             "meaning": "Xuyên thẳng qua, vượt ra ngoài",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -26686,19 +26686,19 @@
             "text": "ガ飛び出す",
             "rubyHtml": "ガ<ruby>飛<rp>（</rp><rt>と</rt><rp>）</rp></ruby>び<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>す",
             "meaning": "Lao ra",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ飛び込む",
             "rubyHtml": "ガ<ruby>飛<rp>（</rp><rt>と</rt><rp>）</rp></ruby>び<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>む",
             "meaning": "Lao vào",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ飛び回る　など",
             "rubyHtml": "ガ<ruby>飛<rp>（</rp><rt>と</rt><rp>）</rp></ruby>び<ruby>回<rp>（</rp><rt>まわ</rt><rp>）</rp></ruby>る　など",
             "meaning": "Bay / chạy tới lui khắp nơi",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -26966,25 +26966,25 @@
             "text": "ヲ差し込む",
             "rubyHtml": "ヲ<ruby>差<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>し<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>む",
             "meaning": "Cắm vào",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ差し止める",
             "rubyHtml": "ヲ<ruby>差<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>し<ruby>止<rp>（</rp><rt>と</rt><rp>）</rp></ruby>める",
             "meaning": "Ngăn chặn, cấm",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ差し押さえる",
             "rubyHtml": "ヲ<ruby>差<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>し<ruby>押<rp>（</rp><rt>お</rt><rp>）</rp></ruby>さえる",
             "meaning": "Tịch thu, kê biên",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ差し戻す",
             "rubyHtml": "ヲ<ruby>差<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>し<ruby>戻<rp>（</rp><rt>もど</rt><rp>）</rp></ruby>す",
             "meaning": "Trả lại, hoàn lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -27060,7 +27060,7 @@
           "seq": 1,
           "japanese": "「もう１０時だ。そろそろ引き揚げよう。」",
           "rubyHtml": "「もう１０<ruby>時<rp>（</rp><rt>じ</rt><rp>）</rp></ruby>だ。そろそろ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>揚<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げよう。」",
-          "meaning": "&quot;Đã 10 giờ rồi. Chúng ta nên kết thúc thôi.&quot;"
+          "meaning": "\"Đã 10 giờ rồi. Chúng ta nên kết thúc thôi.\""
         },
         {
           "seq": 2,
@@ -27214,7 +27214,7 @@
             "text": "新しい家電製品を買うと、古いのは店で引き取ってくれる。",
             "rubyHtml": "<ruby>新<rp>（</rp><rt>あたら</rt><rp>）</rp></ruby>しい<ruby>家電製品<rp>（</rp><rt>かでんせいひん</rt><rp>）</rp></ruby>を<ruby>買<rp>（</rp><rt>か</rt><rp>）</rp></ruby>うと、<ruby>古<rp>（</rp><rt>ふる</rt><rp>）</rp></ruby>いのは<ruby>店<rp>（</rp><rt>みせ</rt><rp>）</rp></ruby>で<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>ってくれる。",
             "meaning": "Nếu mua đồ điện gia dụng mới, cửa hàng sẽ nhận lại đồ cũ.",
-            "badge": "&lt;他&gt;例１"
+            "badge": "〈他〉例１"
           },
           {
             "text": "引き取り",
@@ -27225,8 +27225,8 @@
           {
             "text": "「今日はもう遅いので、どうぞお引き取りください。」",
             "rubyHtml": "「<ruby>今日<rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>はもう<ruby>遅<rp>（</rp><rt>おそ</rt><rp>）</rp></ruby>いので、どうぞお<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>りください。」",
-            "meaning": "&quot;Hôm nay muộn rồi, xin mời bạn về cho.&quot;",
-            "badge": "&lt;自&gt;例"
+            "meaning": "\"Hôm nay muộn rồi, xin mời bạn về cho.\"",
+            "badge": "〈自〉例"
           }
         ]
       },
@@ -27333,19 +27333,19 @@
             "text": "引き締まる",
             "rubyHtml": "<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>締<rp>（</rp><rt>し</rt><rp>）</rp></ruby>まる",
             "meaning": "Căng cứng, siết chặt",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           },
           {
             "text": "ガ引き締まった体",
             "rubyHtml": "ガ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>締<rp>（</rp><rt>し</rt><rp>）</rp></ruby>まった<ruby>体<rp>（</rp><rt>からだ</rt><rp>）</rp></ruby>",
             "meaning": "Cơ thể săn chắc",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           },
           {
             "text": "心が引き締まった。",
             "rubyHtml": "<ruby>心<rp>（</rp><rt>こころ</rt><rp>）</rp></ruby>が<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>締<rp>（</rp><rt>し</rt><rp>）</rp></ruby>まった。",
             "meaning": "Tinh thần tập trung",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -27490,37 +27490,37 @@
             "text": "ヲ引き出す",
             "rubyHtml": "ヲ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>す",
             "meaning": "Rút ra",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ引き込む",
             "rubyHtml": "ヲ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>む",
             "meaning": "Cuốn vào",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ガ引き返す",
             "rubyHtml": "ガ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>返<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>す",
             "meaning": "Quay lại",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ引き受ける",
             "rubyHtml": "ヲ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>受<rp>（</rp><rt>う</rt><rp>）</rp></ruby>ける",
             "meaning": "Nhận trách nhiệm",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ引き離す",
             "rubyHtml": "ヲ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>離<rp>（</rp><rt>はな</rt><rp>）</rp></ruby>す",
             "meaning": "Tách rời ra",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ引き立てる　など",
             "rubyHtml": "ヲ<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>立<rp>（</rp><rt>た</rt><rp>）</rp></ruby>てる　など",
             "meaning": "Đề bạt, nâng đỡ",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -27690,19 +27690,19 @@
             "text": "ヲ振り込む",
             "rubyHtml": "ヲ<ruby>振<rp>（</rp><rt>ふ</rt><rp>）</rp></ruby>り<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>む",
             "meaning": "Chuyển tiền vào tài khoản",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ振りまく",
             "rubyHtml": "ヲ<ruby>振<rp>（</rp><rt>ふ</rt><rp>）</rp></ruby>りまく",
             "meaning": "Rắc, rải khắp nơi",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           },
           {
             "text": "ヲ振りかける　など",
             "rubyHtml": "ヲ<ruby>振<rp>（</rp><rt>ふ</rt><rp>）</rp></ruby>りかける　など",
             "meaning": "Rắc lên, rưới lên",
-            "badge": "&lt;その他&gt;"
+            "badge": "〈その他〉"
           }
         ]
       },
@@ -28552,7 +28552,7 @@
           "seq": 2,
           "japanese": "紅白歌合戦は、年末のテレビの一大イベントだ。",
           "rubyHtml": "<ruby>紅白歌合戦<rp>（</rp><rt>こうはくうたがっせん</rt><rp>）</rp></ruby>は、<ruby>年末<rp>（</rp><rt>ねんまつ</rt><rp>）</rp></ruby>のテレビの<ruby>一大<rp>（</rp><rt>いちだい</rt><rp>）</rp></ruby>イベントだ。",
-          "meaning": "Chương trình &quot;Kōhaku Uta Gassen&quot; là một trong những sự kiện truyền hình lớn nhất vào dịp cuối năm."
+          "meaning": "Chương trình \"Kōhaku Uta Gassen\" là một trong những sự kiện truyền hình lớn nhất vào dịp cuối năm."
         }
       ],
       "related": {
@@ -29310,7 +29310,7 @@
           "seq": 1,
           "japanese": "私の名前は「伊藤たかし」だから、イニシャルは「Ｉ・Ｔ」だ。",
           "rubyHtml": "<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>名前<rp>（</rp><rt>なまえ</rt><rp>）</rp></ruby>は「<ruby>伊藤<rp>（</rp><rt>いとう</rt><rp>）</rp></ruby>たかし」だから、イニシャルは「Ｉ・Ｔ」だ。",
-          "meaning": "Vì tên tôi là Itou Takashi nên chữ cái viết tắt là &quot;I.T&quot;."
+          "meaning": "Vì tên tôi là Itou Takashi nên chữ cái viết tắt là \"I.T\"."
         }
       ],
       "related": {
@@ -30230,7 +30230,7 @@
         {
           "seq": 1,
           "japanese": "ランクの高い大学は受験生の人気も高い。",
-          "rubyHtml": "<ruby>ランク</ruby>の<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い<ruby>大<rp>（</rp><rt>だい</rt><rp>）</rp></ruby><ruby>学<rp>（</rp><rt>がく</rt><rp>）</rp></ruby>は<ruby>受<rp>（</rp><rt>じゅ</rt><rp>）</rp></ruby><ruby>験<rp>（</rp><rt>けん</rt><rp>）</rp></ruby><ruby>生<rp>（</rp><rt>せい</rt><rp>）</rp></ruby>の<ruby>人<rp>（</rp><rt>にん</rt><rp>）</rp></ruby><ruby>気<rp>（</rp><rt>き</rt><rp>）</rp></ruby>も<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い。",
+          "rubyHtml": "ランクの<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い<ruby>大<rp>（</rp><rt>だい</rt><rp>）</rp></ruby><ruby>学<rp>（</rp><rt>がく</rt><rp>）</rp></ruby>は<ruby>受<rp>（</rp><rt>じゅ</rt><rp>）</rp></ruby><ruby>験<rp>（</rp><rt>けん</rt><rp>）</rp></ruby><ruby>生<rp>（</rp><rt>せい</rt><rp>）</rp></ruby>の<ruby>人<rp>（</rp><rt>にん</rt><rp>）</rp></ruby><ruby>気<rp>（</rp><rt>き</rt><rp>）</rp></ruby>も<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い。",
           "meaning": "Các trường đại học có thứ hạng cao cũng được nhiều thí sinh ưa chuộng."
         },
         {
@@ -30875,7 +30875,7 @@
           "seq": 4,
           "japanese": "「そんな話、いまだかつて、見たことも聞いたこともない。」",
           "rubyHtml": "「そんな<ruby>話<rp>（</rp><rt>はなし</rt><rp>）</rp></ruby>、いまだかつて、<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>たことも<ruby>聞<rp>（</rp><rt>き</rt><rp>）</rp></ruby>いたこともない。」",
-          "meaning": "&quot;Chuyện đó từ trước tới nay tôi chưa từng mắt thấy tai nghe bao giờ.&quot;"
+          "meaning": "\"Chuyện đó từ trước tới nay tôi chưa từng mắt thấy tai nghe bao giờ.\""
         }
       ],
       "related": {
@@ -30937,7 +30937,7 @@
           "seq": 2,
           "japanese": "「お名前はかねてより伺っております。」",
           "rubyHtml": "「お<ruby>名前<rp>（</rp><rt>なまえ</rt><rp>）</rp></ruby>はかねてより<ruby>伺<rp>（</rp><rt>うかが</rt><rp>）</rp></ruby>っております。」",
-          "meaning": "&quot;Trước đây tôi có nghe đến tên của anh.&quot;"
+          "meaning": "\"Trước đây tôi có nghe đến tên của anh.\""
         }
       ],
       "related": {
@@ -31136,7 +31136,7 @@
           "seq": 1,
           "japanese": "東京への転勤を打診されたとき、私は即座に「行きます」と返事をした。",
           "rubyHtml": "<ruby>東京<rp>（</rp><rt>とうきょう</rt><rp>）</rp></ruby>への<ruby>転勤<rp>（</rp><rt>てんきん</rt><rp>）</rp></ruby>を<ruby>打診<rp>（</rp><rt>だしん</rt><rp>）</rp></ruby>されたとき、<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は<ruby>即座<rp>（</rp><rt>そくざ</rt><rp>）</rp></ruby>に「<ruby>行<rp>（</rp><rt>い</rt><rp>）</rp></ruby>きます」と<ruby>返事<rp>（</rp><rt>へんじ</rt><rp>）</rp></ruby>をした。",
-          "meaning": "Khi được hỏi về ý định chuyển công tác đến Tokyo, tôi ngay lập tức trả lời &quot;Vâng, tôi sẽ đi.&quot;"
+          "meaning": "Khi được hỏi về ý định chuyển công tác đến Tokyo, tôi ngay lập tức trả lời \"Vâng, tôi sẽ đi.\""
         },
         {
           "seq": 2,
@@ -31202,7 +31202,7 @@
           "seq": 3,
           "japanese": "私は北原先生が好きなので、「誰か手伝って」と言われたとき、すかさず手を挙げた。",
           "rubyHtml": "<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は<ruby>北原先生<rp>（</rp><rt>きたはらせんせい</rt><rp>）</rp></ruby>が<ruby>好<rp>（</rp><rt>す</rt><rp>）</rp></ruby>きなので、「<ruby>誰<rp>（</rp><rt>だれ</rt><rp>）</rp></ruby>か<ruby>手伝<rp>（</rp><rt>てつだ</rt><rp>）</rp></ruby>って」と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>われたとき、すかさず<ruby>手<rp>（</rp><rt>て</rt><rp>）</rp></ruby>を<ruby>挙<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げた。",
-          "meaning": "Tôi rất thích cô Kitahara nên khi cô nói &quot;Ai đó giúp tôi với&quot;, tôi lập tức giơ tay."
+          "meaning": "Tôi rất thích cô Kitahara nên khi cô nói \"Ai đó giúp tôi với\", tôi lập tức giơ tay."
         }
       ],
       "related": {
@@ -31409,7 +31409,7 @@
           "seq": 2,
           "japanese": "「仕事、終わった？」　「うん、じきに終わるから、ちょっと待ってて。」",
           "rubyHtml": "「<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>、<ruby>終<rp>（</rp><rt>お</rt><rp>）</rp></ruby>わった？」　「うん、じきに<ruby>終<rp>（</rp><rt>お</rt><rp>）</rp></ruby>わるから、ちょっと<ruby>待<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>ってて。」",
-          "meaning": "&quot;Bạn hoàn thành công việc chưa?&quot; &quot;Tôi sắp xong rồi, chờ tôi chút nhé!&quot;"
+          "meaning": "\"Bạn hoàn thành công việc chưa?\" \"Tôi sắp xong rồi, chờ tôi chút nhé!\""
         }
       ],
       "related": {
@@ -31464,7 +31464,7 @@
           "seq": 2,
           "japanese": "「ぼつぼつ出かけようか」",
           "rubyHtml": "「ぼつぼつ<ruby>出<rp>（</rp><rt>で</rt><rp>）</rp></ruby>かけようか」",
-          "meaning": "&quot;Chúng ta chuẩn bị đi thôi.&quot;"
+          "meaning": "\"Chúng ta chuẩn bị đi thôi.\""
         },
         {
           "seq": 3,
@@ -31530,7 +31530,7 @@
           "seq": 1,
           "japanese": "「そんなやり方、今どきはやらないよ。」",
           "rubyHtml": "「そんなやり<ruby>方<rp>（</rp><rt>かた</rt><rp>）</rp></ruby>、<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>どきはやらないよ。」",
-          "meaning": "&quot;Cách làm này ngày nay người ta không làm nữa.&quot;"
+          "meaning": "\"Cách làm này ngày nay người ta không làm nữa.\""
         },
         {
           "seq": 2,
@@ -31590,13 +31590,13 @@
           "seq": 2,
           "japanese": "「今ごろ謝っても遅いよ。」",
           "rubyHtml": "「<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>ごろ<ruby>謝<rp>（</rp><rt>あやま</rt><rp>）</rp></ruby>っても<ruby>遅<rp>（</rp><rt>おそ</rt><rp>）</rp></ruby>いよ。」",
-          "meaning": "&quot;Đến bây giờ có xin lỗi thì cũng muộn rồi.&quot;"
+          "meaning": "\"Đến bây giờ có xin lỗi thì cũng muộn rồi.\""
         },
         {
           "seq": 3,
           "japanese": "（夜中に帰ってきた娘に）　「今ごろまで何をしてたんだ！」",
           "rubyHtml": "（<ruby>夜中<rp>（</rp><rt>よなか</rt><rp>）</rp></ruby>に<ruby>帰<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>ってきた<ruby>娘<rp>（</rp><rt>むすめ</rt><rp>）</rp></ruby>に）　「<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>ごろまで<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>をしてたんだ！」",
-          "meaning": "(Nói với người con gái về nhà lúc nửa đêm) &quot;Con làm gì đến giờ này thế hả?&quot;"
+          "meaning": "(Nói với người con gái về nhà lúc nửa đêm) \"Con làm gì đến giờ này thế hả?\""
         },
         {
           "seq": 4,
@@ -31657,7 +31657,7 @@
           "seq": 2,
           "japanese": "「今さら断られても困ります。」",
           "rubyHtml": "「<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>さら<ruby>断<rp>（</rp><rt>ことわ</rt><rp>）</rp></ruby>られても<ruby>困<rp>（</rp><rt>こま</rt><rp>）</rp></ruby>ります。」",
-          "meaning": "&quot;Đến giờ mà bị từ chối thì khó xử.&quot;"
+          "meaning": "\"Đến giờ mà bị từ chối thì khó xử.\""
         },
         {
           "seq": 3,
@@ -31785,13 +31785,13 @@
           "seq": 2,
           "japanese": "「どうしてあんなことをしたのか、理由を教えてください。」　「今にわかりますよ。」",
           "rubyHtml": "「どうしてあんなことをしたのか、<ruby>理由<rp>（</rp><rt>りゆう</rt><rp>）</rp></ruby>を<ruby>教<rp>（</rp><rt>おし</rt><rp>）</rp></ruby>えてください。」　「<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>にわかりますよ。」",
-          "meaning": "&quot;Tại sao bạn lại làm điều đó? Hãy nói cho tôi biết lý do đi!&quot; &quot;Chẳng mấy chốc bạn sẽ hiểu thôi.&quot;"
+          "meaning": "\"Tại sao bạn lại làm điều đó? Hãy nói cho tôi biết lý do đi!\" \"Chẳng mấy chốc bạn sẽ hiểu thôi.\""
         },
         {
           "seq": 3,
           "japanese": "「今に見ていろ！」",
           "rubyHtml": "「<ruby>今<rp>（</rp><rt>いま</rt><rp>）</rp></ruby>に<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>ていろ！」",
-          "meaning": "&quot;Cứ chờ đấy!&quot;"
+          "meaning": "\"Cứ chờ đấy!\""
         }
       ],
       "related": {
@@ -31950,7 +31950,7 @@
           "seq": 2,
           "japanese": "「もっとちょくちょく顔を見せてよ。」",
           "rubyHtml": "「もっとちょくちょく<ruby>顔<rp>（</rp><rt>かお</rt><rp>）</rp></ruby>を<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>せてよ。」",
-          "meaning": "&quot;Hãy thường ghé lại cho tôi gặp đi.&quot;"
+          "meaning": "\"Hãy thường ghé lại cho tôi gặp đi.\""
         }
       ],
       "related": {
@@ -32011,7 +32011,7 @@
           "seq": 2,
           "japanese": "「およその金額を教えてください。」",
           "rubyHtml": "「およその<ruby>金額<rp>（</rp><rt>きんがく</rt><rp>）</rp></ruby>を<ruby>教<rp>（</rp><rt>おし</rt><rp>）</rp></ruby>えてください。」",
-          "meaning": "&quot;Hãy cho tôi biết số tiền khoảng bao nhiêu.&quot;"
+          "meaning": "\"Hãy cho tôi biết số tiền khoảng bao nhiêu.\""
         },
         {
           "seq": 3,
@@ -32466,7 +32466,7 @@
           "seq": 2,
           "japanese": "「新製品の売り上げはどうですか」　「おかげさまで、そこそこ注文が来るようになりました。」",
           "rubyHtml": "「<ruby>新製品<rp>（</rp><rt>しんせいひん</rt><rp>）</rp></ruby>の<ruby>売<rp>（</rp><rt>う</rt><rp>）</rp></ruby>り<ruby>上<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>げはどうですか」　「おかげさまで、そこそこ<ruby>注文<rp>（</rp><rt>ちゅうもん</rt><rp>）</rp></ruby>が<ruby>来<rp>（</rp><rt>く</rt><rp>）</rp></ruby>るようになりました。」",
-          "meaning": "&quot;Doanh số sản phẩm mới thế nào?&quot; &quot;Thật may, cũng kha khá đơn đặt hàng.&quot;"
+          "meaning": "\"Doanh số sản phẩm mới thế nào?\" \"Thật may, cũng kha khá đơn đặt hàng.\""
         },
         {
           "seq": 3,
@@ -32595,7 +32595,7 @@
           "seq": 2,
           "japanese": "「味はどう？」　「うん、今一つだね」",
           "rubyHtml": "「<ruby>味<rp>（</rp><rt>あじ</rt><rp>）</rp></ruby>はどう？」　「うん、<ruby>今一<rp>（</rp><rt>いまひと</rt><rp>）</rp></ruby>つだね」",
-          "meaning": "&quot;Mùi vị thế nào?&quot; &quot;Ừm, vẫn thiếu một chút.&quot;"
+          "meaning": "\"Mùi vị thế nào?\" \"Ừm, vẫn thiếu một chút.\""
         }
       ],
       "related": {
@@ -33275,7 +33275,7 @@
           "seq": 2,
           "japanese": "「細かいことをごたごた言うな」",
           "rubyHtml": "「<ruby>細<rp>（</rp><rt>こま</rt><rp>）</rp></ruby>かいことをごたごた<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>うな」",
-          "meaning": "&quot;Đừng càm ràm những chuyện vặt nữa.&quot;"
+          "meaning": "\"Đừng càm ràm những chuyện vặt nữa.\""
         },
         {
           "seq": 3,
@@ -33341,7 +33341,7 @@
           "seq": 4,
           "japanese": "「文句ばかりごちゃごちゃ言ってないで、早く言われたことをやれ。」",
           "rubyHtml": "「<ruby>文句<rp>（</rp><rt>もんく</rt><rp>）</rp></ruby>ばかりごちゃごちゃ<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>ってないで、<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>く<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>われたことをやれ。」",
-          "meaning": "&quot;Đừng chỉ than phiền này nọ nữa, hãy làm nhanh những gì được giao đi.&quot;"
+          "meaning": "\"Đừng chỉ than phiền này nọ nữa, hãy làm nhanh những gì được giao đi.\""
         }
       ],
       "related": {
@@ -33492,7 +33492,7 @@
           "seq": 2,
           "japanese": "「さぞお疲れでしょう。どうぞゆっくり休んでください。」",
           "rubyHtml": "「さぞお<ruby>疲<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>れでしょう。どうぞゆっくり<ruby>休<rp>（</rp><rt>やす</rt><rp>）</rp></ruby>んでください。」",
-          "meaning": "&quot;Bạn chắc là mệt lắm đúng không. Hãy thong thả nghỉ ngơi đi nhé.&quot;"
+          "meaning": "\"Bạn chắc là mệt lắm đúng không. Hãy thong thả nghỉ ngơi đi nhé.\""
         }
       ],
       "related": {
@@ -33535,13 +33535,13 @@
           "seq": 1,
           "japanese": "「遅れて申し訳ありません。何とぞお許しください」",
           "rubyHtml": "「<ruby>遅<rp>（</rp><rt>おく</rt><rp>）</rp></ruby>れて<ruby>申<rp>（</rp><rt>もう</rt><rp>）</rp></ruby>し<ruby>訳<rp>（</rp><rt>わけ</rt><rp>）</rp></ruby>ありません。<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>とぞお<ruby>許<rp>（</rp><rt>ゆる</rt><rp>）</rp></ruby>しください」",
-          "meaning": "&quot;Tôi xin lỗi vì đến muộn. Vui lòng tha thứ cho tôi.&quot;"
+          "meaning": "\"Tôi xin lỗi vì đến muộn. Vui lòng tha thứ cho tôi.\""
         },
         {
           "seq": 2,
           "japanese": "「何とぞよろしくお願い致します。」",
           "rubyHtml": "「<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>とぞよろしくお<ruby>願<rp>（</rp><rt>ねが</rt><rp>）</rp></ruby>い<ruby>致<rp>（</rp><rt>いた</rt><rp>）</rp></ruby>します。」",
-          "meaning": "&quot;Xin vui lòng giúp đỡ tôi.&quot;"
+          "meaning": "\"Xin vui lòng giúp đỡ tôi.\""
         }
       ],
       "related": {
@@ -33584,13 +33584,13 @@
           "seq": 1,
           "japanese": "「ご不明な点は、何なりとお尋ねください。」",
           "rubyHtml": "「ご<ruby>不明<rp>（</rp><rt>ふめい</rt><rp>）</rp></ruby>な<ruby>点<rp>（</rp><rt>てん</rt><rp>）</rp></ruby>は、<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>なりとお<ruby>尋<rp>（</rp><rt>たず</rt><rp>）</rp></ruby>ねください。」",
-          "meaning": "&quot;Những điểm gì không rõ, dù là chuyện gì cũng hãy hỏi nhé.&quot;"
+          "meaning": "\"Những điểm gì không rõ, dù là chuyện gì cũng hãy hỏi nhé.\""
         },
         {
           "seq": 2,
           "japanese": "「何なりとお申し付けください。」",
           "rubyHtml": "「<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>なりとお<ruby>申<rp>（</rp><rt>もう</rt><rp>）</rp></ruby>し<ruby>付<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>けください。」",
-          "meaning": "&quot;Hãy bảo tôi bất cứ chuyện gì.&quot;"
+          "meaning": "\"Hãy bảo tôi bất cứ chuyện gì.\""
         }
       ],
       "related": {
@@ -33724,7 +33724,7 @@
           "seq": 3,
           "japanese": "「よほどのことがない限り、出席します。」",
           "rubyHtml": "「よほどのことがない<ruby>限<rp>（</rp><rt>かぎ</rt><rp>）</rp></ruby>り、<ruby>出席<rp>（</rp><rt>しゅっせき</rt><rp>）</rp></ruby>します。」",
-          "meaning": "&quot;Chỉ cần không có việc gì đáng kể, tôi sẽ có mặt.&quot;"
+          "meaning": "\"Chỉ cần không có việc gì đáng kể, tôi sẽ có mặt.\""
         },
         {
           "seq": 4,
@@ -34114,13 +34114,13 @@
           "seq": 1,
           "japanese": "「最近、スミスさん、見ないね」　「何でも、帰国したらしいよ」",
           "rubyHtml": "「<ruby>最近<rp>（</rp><rt>さいきん</rt><rp>）</rp></ruby>、スミスさん、<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>ないね」　「<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>でも、<ruby>帰国<rp>（</rp><rt>きこく</rt><rp>）</rp></ruby>したらしいよ」",
-          "meaning": "&quot;Gần đây không thấy Smith nhỉ?&quot; &quot;Nghe nói hình như anh ấy về nước rồi.&quot;"
+          "meaning": "\"Gần đây không thấy Smith nhỉ?\" \"Nghe nói hình như anh ấy về nước rồi.\""
         },
         {
           "seq": 2,
           "japanese": "「先ほど田中さんから連絡があり、何でも、交渉はうまくいったとのことです。」",
           "rubyHtml": "「<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>ほど<ruby>田中<rp>（</rp><rt>たなか</rt><rp>）</rp></ruby>さんから<ruby>連絡<rp>（</rp><rt>れんらく</rt><rp>）</rp></ruby>があり、<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>でも、<ruby>交渉<rp>（</rp><rt>こうしょう</rt><rp>）</rp></ruby>はうまくいったとのことです。」",
-          "meaning": "&quot;Lúc trước anh Tanaka có liên lạc sang thì được biết cuộc đàm phán đã suôn sẻ.&quot;"
+          "meaning": "\"Lúc trước anh Tanaka có liên lạc sang thì được biết cuộc đàm phán đã suôn sẻ.\""
         }
       ],
       "related": {
@@ -34156,7 +34156,7 @@
           "seq": 1,
           "japanese": "「ここに住所・氏名及び生年月日を記入してください。」",
           "rubyHtml": "「ここに<ruby>住所<rp>（</rp><rt>じゅうしょ</rt><rp>）</rp></ruby>・<ruby>氏名<rp>（</rp><rt>しめい</rt><rp>）</rp></ruby><ruby>及<rp>（</rp><rt>およ</rt><rp>）</rp></ruby>び<ruby>生年月日<rp>（</rp><rt>せいねんがっぴ</rt><rp>）</rp></ruby>を<ruby>記入<rp>（</rp><rt>きにゅう</rt><rp>）</rp></ruby>してください。」",
-          "meaning": "&quot;Vui lòng điền địa chỉ, họ tên cũng như ngày tháng năm sinh vào đây.&quot;"
+          "meaning": "\"Vui lòng điền địa chỉ, họ tên cũng như ngày tháng năm sinh vào đây.\""
         },
         {
           "seq": 2,
@@ -34211,7 +34211,7 @@
           "seq": 2,
           "japanese": "「新入生並びに保護者の皆様、本日はご入学おめでとうございます。」",
           "rubyHtml": "「<ruby>新入生<rp>（</rp><rt>しんにゅうせい</rt><rp>）</rp></ruby><ruby>並<rp>（</rp><rt>なら</rt><rp>）</rp></ruby>びに<ruby>保護者<rp>（</rp><rt>ほごしゃ</rt><rp>）</rp></ruby>の<ruby>皆様<rp>（</rp><rt>みなさま</rt><rp>）</rp></ruby>、<ruby>本日<rp>（</rp><rt>ほんじつ</rt><rp>）</rp></ruby>はご<ruby>入学<rp>（</rp><rt>にゅうがく</rt><rp>）</rp></ruby>おめでとうございます。」",
-          "meaning": "&quot;Tôi xin được gửi lời chúc mừng tới các em học sinh khóa mới cũng như các vị phụ huynh đã tới tham dự buổi lễ nhập học ngày hôm nay.&quot;"
+          "meaning": "\"Tôi xin được gửi lời chúc mừng tới các em học sinh khóa mới cũng như các vị phụ huynh đã tới tham dự buổi lễ nhập học ngày hôm nay.\""
         }
       ],
       "related": {
@@ -34254,7 +34254,7 @@
           "seq": 1,
           "japanese": "「勤務先、もしくは私の携帯に電話してください。」",
           "rubyHtml": "「<ruby>勤務先<rp>（</rp><rt>きんむさき</rt><rp>）</rp></ruby>、もしくは<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>携帯<rp>（</rp><rt>けいたい</rt><rp>）</rp></ruby>に<ruby>電話<rp>（</rp><rt>でんわ</rt><rp>）</rp></ruby>してください。」",
-          "meaning": "&quot;Hãy gọi đến nơi làm việc hoặc máy di động của tôi.&quot;"
+          "meaning": "\"Hãy gọi đến nơi làm việc hoặc máy di động của tôi.\""
         },
         {
           "seq": 2,
@@ -34303,7 +34303,7 @@
           "seq": 1,
           "japanese": "「試験が合格点に満たなかった場合は、再試験が受けられます。ただし、有料です。」",
           "rubyHtml": "「<ruby>試験<rp>（</rp><rt>しけん</rt><rp>）</rp></ruby>が<ruby>合格点<rp>（</rp><rt>ごうかくてん</rt><rp>）</rp></ruby>に<ruby>満<rp>（</rp><rt>み</rt><rp>）</rp></ruby>たなかった<ruby>場合<rp>（</rp><rt>ばあい</rt><rp>）</rp></ruby>は、<ruby>再試験<rp>（</rp><rt>さいしけん</rt><rp>）</rp></ruby>が<ruby>受<rp>（</rp><rt>う</rt><rp>）</rp></ruby>けられます。ただし、<ruby>有料<rp>（</rp><rt>ゆうりょう</rt><rp>）</rp></ruby>です。」",
-          "meaning": "&quot;Trong trường hợp không đủ điểm thi đậu có thể thi lại. Tuy nhiên có tính phí.&quot;"
+          "meaning": "\"Trong trường hợp không đủ điểm thi đậu có thể thi lại. Tuy nhiên có tính phí.\""
         },
         {
           "seq": 2,
@@ -34345,7 +34345,7 @@
           "seq": 1,
           "japanese": "「次の会合は２月4日午後２時からです。なお、場所は追って連絡します。」",
           "rubyHtml": "「<ruby>次<rp>（</rp><rt>つぎ</rt><rp>）</rp></ruby>の<ruby>会合<rp>（</rp><rt>かいごう</rt><rp>）</rp></ruby>は２<ruby>月<rp>（</rp><rt>がつ</rt><rp>）</rp></ruby>4<ruby>日<rp>（</rp><rt>か</rt><rp>）</rp></ruby><ruby>午後<rp>（</rp><rt>ごご</rt><rp>）</rp></ruby>２<ruby>時<rp>（</rp><rt>じ</rt><rp>）</rp></ruby>からです。なお、<ruby>場所<rp>（</rp><rt>ばしょ</rt><rp>）</rp></ruby>は<ruby>追<rp>（</rp><rt>お</rt><rp>）</rp></ruby>って<ruby>連絡<rp>（</rp><rt>れんらく</rt><rp>）</rp></ruby>します。」",
-          "meaning": "&quot;Cuộc họp lần tới là từ 2 giờ chiều ngày 4/2. Còn về địa điểm sẽ được sắp xếp và liên hệ sau.&quot;"
+          "meaning": "\"Cuộc họp lần tới là từ 2 giờ chiều ngày 4/2. Còn về địa điểm sẽ được sắp xếp và liên hệ sau.\""
         },
         {
           "seq": 2,
@@ -34460,7 +34460,7 @@
           "seq": 1,
           "japanese": "「彼女、やせてきれいになったね。もっとも、僕は前のふっくらしていたときの方が好きだけど。」",
           "rubyHtml": "「<ruby>彼女<rp>（</rp><rt>かのじょ</rt><rp>）</rp></ruby>、やせてきれいになったね。もっとも、<ruby>僕<rp>（</rp><rt>ぼく</rt><rp>）</rp></ruby>は<ruby>前<rp>（</rp><rt>まえ</rt><rp>）</rp></ruby>のふっくらしていたときの<ruby>方<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>が<ruby>好<rp>（</rp><rt>す</rt><rp>）</rp></ruby>きだけど。」",
-          "meaning": "&quot;Cô ấy gầy hơn thì đẹp. Dù là vậy tôi thích cô ấy múp míp như trước hơn.&quot;"
+          "meaning": "\"Cô ấy gầy hơn thì đẹp. Dù là vậy tôi thích cô ấy múp míp như trước hơn.\""
         },
         {
           "seq": 2,
@@ -34478,7 +34478,7 @@
           "seq": 4,
           "japanese": "「おっしゃることは、まことにごもっともです。」",
           "rubyHtml": "「おっしゃることは、まことにごもっともです。」",
-          "meaning": "&quot;Những điều quý vị nói là điều đương nhiên.&quot;"
+          "meaning": "\"Những điều quý vị nói là điều đương nhiên.\""
         }
       ],
       "related": {
@@ -34533,7 +34533,7 @@
           "seq": 3,
           "japanese": "「我思う、ゆえにわれあり」",
           "rubyHtml": "「<ruby>我思<rp>（</rp><rt>われおも</rt><rp>）</rp></ruby>う、ゆえにわれあり」",
-          "meaning": "&quot;Tôi tư duy, vì vậy tôi tồn tại.&quot;"
+          "meaning": "\"Tôi tư duy, vì vậy tôi tồn tại.\""
         },
         {
           "seq": 4,
@@ -34661,13 +34661,13 @@
           "seq": 1,
           "japanese": "「結婚なんて、まだまだ先ですよ。第一、相手がいません。」",
           "rubyHtml": "「<ruby>結婚<rp>（</rp><rt>けっこん</rt><rp>）</rp></ruby>なんて、まだまだ<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>ですよ。<ruby>第一<rp>（</rp><rt>だいいち</rt><rp>）</rp></ruby>、<ruby>相手<rp>（</rp><rt>あいて</rt><rp>）</rp></ruby>がいません。」",
-          "meaning": "&quot;Kết hôn gì, vẫn còn xa lắm. Trên hết là tôi còn chưa có đối tượng.&quot;"
+          "meaning": "\"Kết hôn gì, vẫn còn xa lắm. Trên hết là tôi còn chưa có đối tượng.\""
         },
         {
           "seq": 2,
           "japanese": "「カナダ支社への赴任は河野君が適任だと思います。仕事もできるし、英語もできるし、第一、本人が強く希望しています。」",
           "rubyHtml": "「カナダ<ruby>支社<rp>（</rp><rt>ししゃ</rt><rp>）</rp></ruby>への<ruby>赴任<rp>（</rp><rt>ふにん</rt><rp>）</rp></ruby>は<ruby>河野君<rp>（</rp><rt>こうのくん</rt><rp>）</rp></ruby>が<ruby>適任<rp>（</rp><rt>てきにん</rt><rp>）</rp></ruby>だと<ruby>思<rp>（</rp><rt>おも</rt><rp>）</rp></ruby>います。<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>もできるし、<ruby>英語<rp>（</rp><rt>えいご</rt><rp>）</rp></ruby>もできるし、<ruby>第一<rp>（</rp><rt>だいいち</rt><rp>）</rp></ruby>、<ruby>本人<rp>（</rp><rt>ほんにん</rt><rp>）</rp></ruby>が<ruby>強<rp>（</rp><rt>つよ</rt><rp>）</rp></ruby>く<ruby>希望<rp>（</rp><rt>きぼう</rt><rp>）</rp></ruby>しています。」",
-          "meaning": "&quot;Về việc đến công tác tại chi nhánh ở Canada tôi nghĩ anh Kono là thích hợp nhất. Anh ấy vừa làm tốt công việc, vừa nói được tiếng Anh, và trên hết, bản thân anh ấy rất mong muốn.&quot;"
+          "meaning": "\"Về việc đến công tác tại chi nhánh ở Canada tôi nghĩ anh Kono là thích hợp nhất. Anh ấy vừa làm tốt công việc, vừa nói được tiếng Anh, và trên hết, bản thân anh ấy rất mong muốn.\""
         }
       ],
       "related": {
@@ -34873,7 +34873,7 @@
           "seq": 2,
           "japanese": "（店員が客に）　「すみません、ご合席お願いできますか。」",
           "rubyHtml": "（<ruby>店員<rp>（</rp><rt>てんいん</rt><rp>）</rp></ruby>が<ruby>客<rp>（</rp><rt>きゃく</rt><rp>）</rp></ruby>に）　「すみません、ご<ruby>合席<rp>（</rp><rt>あいせき</rt><rp>）</rp></ruby>お<ruby>願<rp>（</rp><rt>ねが</rt><rp>）</rp></ruby>いできますか。」",
-          "meaning": "(Nhân viên nhà hàng nói với khách) &quot;Dạ thưa, anh/ chị có thể ngồi chung bàn được không ạ?&quot;"
+          "meaning": "(Nhân viên nhà hàng nói với khách) \"Dạ thưa, anh/ chị có thể ngồi chung bàn được không ạ?\""
         }
       ],
       "related": {
@@ -34909,7 +34909,7 @@
           "seq": 1,
           "japanese": "（親が子供に）「お手伝いをしたら、何かご褒美をあげるよ。」",
           "rubyHtml": "（<ruby>親<rp>（</rp><rt>おや</rt><rp>）</rp></ruby>が<ruby>子供<rp>（</rp><rt>こども</rt><rp>）</rp></ruby>に）「お<ruby>手伝<rp>（</rp><rt>てつだ</rt><rp>）</rp></ruby>いをしたら、<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>かご<ruby>褒美<rp>（</rp><rt>ほうび</rt><rp>）</rp></ruby>をあげるよ。」",
-          "meaning": "(Bố mẹ nói với con) &quot;Con giúp bố mẹ, bố mẹ sẽ thưởng nhé.&quot;"
+          "meaning": "(Bố mẹ nói với con) \"Con giúp bố mẹ, bố mẹ sẽ thưởng nhé.\""
         }
       ],
       "related": {
@@ -35049,7 +35049,7 @@
           "seq": 2,
           "japanese": "「君たちのけんかのせいで、パーティーが台無しだ。」",
           "rubyHtml": "「<ruby>君<rp>（</rp><rt>きみ</rt><rp>）</rp></ruby>たちのけんかのせいで、パーティーが<ruby>台無<rp>（</rp><rt>だいな</rt><rp>）</rp></ruby>しだ。」",
-          "meaning": "&quot;Do các bạn cãi nhau mà bữa tiệc bị hỏng hết.&quot;"
+          "meaning": "\"Do các bạn cãi nhau mà bữa tiệc bị hỏng hết.\""
         }
       ],
       "related": {
@@ -35306,7 +35306,7 @@
           "seq": 1,
           "japanese": "「そんな意地の悪いことばかりしないで、人にはもっと親切にしなさい。」",
           "rubyHtml": "「そんな<ruby>意地<rp>（</rp><rt>いじ</rt><rp>）</rp></ruby>の<ruby>悪<rp>（</rp><rt>わる</rt><rp>）</rp></ruby>いことばかりしないで、<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>にはもっと<ruby>親切<rp>（</rp><rt>しんせつ</rt><rp>）</rp></ruby>にしなさい。」",
-          "meaning": "&quot;Đừng có xấu bụng như vậy chứ, hãy đối xử tử tế với mọi người hơn.&quot;"
+          "meaning": "\"Đừng có xấu bụng như vậy chứ, hãy đối xử tử tế với mọi người hơn.\""
         },
         {
           "seq": 2,
@@ -35409,7 +35409,7 @@
           "seq": 1,
           "japanese": "「新入社員の皆さん、社会人としての自覚を持って働いてください。」",
           "rubyHtml": "「<ruby>新入社員<rp>（</rp><rt>しんにゅうしゃいん</rt><rp>）</rp></ruby>の<ruby>皆<rp>（</rp><rt>みな</rt><rp>）</rp></ruby>さん、<ruby>社会人<rp>（</rp><rt>しゃかいじん</rt><rp>）</rp></ruby>としての<ruby>自覚<rp>（</rp><rt>じかく</rt><rp>）</rp></ruby>を<ruby>持<rp>（</rp><rt>も</rt><rp>）</rp></ruby>って<ruby>働<rp>（</rp><rt>はたら</rt><rp>）</rp></ruby>いてください。」",
-          "meaning": "&quot;Tất cả các nhân viên mới hãy tự ý thức mình là người đi làm và làm việc.&quot;"
+          "meaning": "\"Tất cả các nhân viên mới hãy tự ý thức mình là người đi làm và làm việc.\""
         },
         {
           "seq": 2,
@@ -35897,7 +35897,7 @@
           "seq": 2,
           "japanese": "「信念に従って行動しなさい。」",
           "rubyHtml": "「<ruby>信念<rp>（</rp><rt>しんねん</rt><rp>）</rp></ruby>に<ruby>従<rp>（</rp><rt>したが</rt><rp>）</rp></ruby>って<ruby>行動<rp>（</rp><rt>こうどう</rt><rp>）</rp></ruby>しなさい。」",
-          "meaning": "&quot;Hãy hành động theo niềm tin của mình.&quot;"
+          "meaning": "\"Hãy hành động theo niềm tin của mình.\""
         },
         {
           "seq": 3,
@@ -35963,7 +35963,7 @@
           "seq": 2,
           "japanese": "精神的に弱っている彼女に「もっとがんばれ」と言ったのは、配慮が足りなかった。",
           "rubyHtml": "<ruby>精神的<rp>（</rp><rt>せいしんてき</rt><rp>）</rp></ruby>に<ruby>弱<rp>（</rp><rt>よわ</rt><rp>）</rp></ruby>っている<ruby>彼女<rp>（</rp><rt>かのじょ</rt><rp>）</rp></ruby>に「もっとがんばれ」と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>ったのは、<ruby>配慮<rp>（</rp><rt>はいりょ</rt><rp>）</rp></ruby>が<ruby>足<rp>（</rp><rt>た</rt><rp>）</rp></ruby>りなかった。",
-          "meaning": "Nói &quot;hãy cố gắng hơn nữa&quot; với một người yếu về tinh thần như cô ấy thì không đủ sự quan tâm."
+          "meaning": "Nói \"hãy cố gắng hơn nữa\" với một người yếu về tinh thần như cô ấy thì không đủ sự quan tâm."
         },
         {
           "seq": 3,
@@ -36098,7 +36098,7 @@
           "seq": 1,
           "japanese": "結婚相手には「包容力のある人」を望む人が多い。",
           "rubyHtml": "<ruby>結婚相手<rp>（</rp><rt>けっこんあいて</rt><rp>）</rp></ruby>には「<ruby>包容力<rp>（</rp><rt>ほうようりょく</rt><rp>）</rp></ruby>のある<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>」を<ruby>望<rp>（</rp><rt>のぞ</rt><rp>）</rp></ruby>む<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>が<ruby>多<rp>（</rp><rt>おお</rt><rp>）</rp></ruby>い。",
-          "meaning": "Nhiều người mong muốn tìm được đối tượng kết hôn là &quot;người có lòng bao dung&quot;."
+          "meaning": "Nhiều người mong muốn tìm được đối tượng kết hôn là \"người có lòng bao dung\"."
         }
       ],
       "related": {
@@ -36134,7 +36134,7 @@
           "seq": 1,
           "japanese": "「学生なんだから分相応の生活をしなさい。」",
           "rubyHtml": "「<ruby>学生<rp>（</rp><rt>がくせい</rt><rp>）</rp></ruby>なんだから<ruby>分相応<rp>（</rp><rt>ぶんそうおう</rt><rp>）</rp></ruby>の<ruby>生活<rp>（</rp><rt>せいかつ</rt><rp>）</rp></ruby>をしなさい。」",
-          "meaning": "&quot;Là học sinh nên hãy sống biết thân biết phận đi.&quot;"
+          "meaning": "\"Là học sinh nên hãy sống biết thân biết phận đi.\""
         },
         {
           "seq": 2,
@@ -36201,7 +36201,7 @@
           "seq": 2,
           "japanese": "「天丼の並を一つお願いします。」",
           "rubyHtml": "「<ruby>天丼<rp>（</rp><rt>てんどん</rt><rp>）</rp></ruby>の<ruby>並<rp>（</rp><rt>なみ</rt><rp>）</rp></ruby>を<ruby>一<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>つお<ruby>願<rp>（</rp><rt>ねが</rt><rp>）</rp></ruby>いします。」",
-          "meaning": "&quot;Cho tôi một suất cơm tempura bình thường.&quot;"
+          "meaning": "\"Cho tôi một suất cơm tempura bình thường.\""
         },
         {
           "seq": 3,
@@ -36647,7 +36647,7 @@
           "seq": 3,
           "japanese": "「みんなが君を声援してるぞ。頑張れ！」",
           "rubyHtml": "「みんなが<ruby>君<rp>（</rp><rt>きみ</rt><rp>）</rp></ruby>を<ruby>声援<rp>（</rp><rt>せいえん</rt><rp>）</rp></ruby>してるぞ。<ruby>頑張<rp>（</rp><rt>がんば</rt><rp>）</rp></ruby>れ！」",
-          "meaning": "&quot;Mọi người đều cổ vũ cho cậu đấy. Hãy cố lên!&quot;"
+          "meaning": "\"Mọi người đều cổ vũ cho cậu đấy. Hãy cố lên!\""
         }
       ],
       "related": {
@@ -36895,7 +36895,7 @@
           "seq": 3,
           "japanese": "「もう子供じゃないんだから、私のすることに干渉しないで。」",
           "rubyHtml": "「もう<ruby>子供<rp>（</rp><rt>こども</rt><rp>）</rp></ruby>じゃないんだから、<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>のすることに<ruby>干渉<rp>（</rp><rt>かんしょう</rt><rp>）</rp></ruby>しないで。」",
-          "meaning": "&quot;Tôi không còn là trẻ con nữa rồi, đừng xen vào chuyện của tôi nữa.&quot;"
+          "meaning": "\"Tôi không còn là trẻ con nữa rồi, đừng xen vào chuyện của tôi nữa.\""
         }
       ],
       "related": {
@@ -39618,7 +39618,7 @@
           "seq": 2,
           "japanese": "（手品師）　「このハンカチには、種も仕掛けもありません。」",
           "rubyHtml": "（<ruby>手品<rp>（</rp><rt>てじな</rt><rp>）</rp></ruby><ruby>師<rp>（</rp><rt>し</rt><rp>）</rp></ruby>）　「このハンカチには、<ruby>種<rp>（</rp><rt>たね</rt><rp>）</rp></ruby>も<ruby>仕掛<rp>（</rp><rt>しか</rt><rp>）</rp></ruby>けもありません。」",
-          "meaning": "(Ảo thuật gia) &quot;Trong chiếc khăn này không có mánh khóe gì hết.&quot;"
+          "meaning": "(Ảo thuật gia) \"Trong chiếc khăn này không có mánh khóe gì hết.\""
         },
         {
           "seq": 3,
@@ -39965,7 +39965,7 @@
           "seq": 8,
           "japanese": "「先に述べたように～」",
           "rubyHtml": "「<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>に<ruby>述<rp>（</rp><rt>の</rt><rp>）</rp></ruby>べたように～」",
-          "meaning": "&quot;Như những gì tôi trình bày trước đó…&quot;"
+          "meaning": "\"Như những gì tôi trình bày trước đó…\""
         },
         {
           "seq": 9,
@@ -39977,19 +39977,19 @@
           "seq": 10,
           "japanese": "「お先に失礼します。」",
           "rubyHtml": "「お先に失礼します。」",
-          "meaning": "&quot;Tôi xin phép về trước.&quot;"
+          "meaning": "\"Tôi xin phép về trước.\""
         },
         {
           "seq": 11,
           "japanese": "「お先にどうぞ」",
           "rubyHtml": "「お<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>にどうぞ」",
-          "meaning": "&quot;Xin mời bạn đi trước.&quot;"
+          "meaning": "\"Xin mời bạn đi trước.\""
         },
         {
           "seq": 12,
           "japanese": "「言い訳より謝罪が先だ」",
           "rubyHtml": "「<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>い<ruby>訳<rp>（</rp><rt>わけ</rt><rp>）</rp></ruby>より<ruby>謝罪<rp>（</rp><rt>しゃざい</rt><rp>）</rp></ruby>が<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>だ」",
-          "meaning": "&quot;Xin lỗi phải đứng trước lời biện bạch.&quot;"
+          "meaning": "\"Xin lỗi phải đứng trước lời biện bạch.\""
         },
         {
           "seq": 13,
@@ -40494,7 +40494,7 @@
           "seq": 3,
           "japanese": "結婚を目前に控えて、気分が憂鬱になることを「マリッジブルー」という。",
           "rubyHtml": "<ruby>結婚<rp>（</rp><rt>けっこん</rt><rp>）</rp></ruby>を<ruby>目前<rp>（</rp><rt>もくぜん</rt><rp>）</rp></ruby>に<ruby>控<rp>（</rp><rt>ひか</rt><rp>）</rp></ruby>えて、<ruby>気分<rp>（</rp><rt>きぶん</rt><rp>）</rp></ruby>が<ruby>憂鬱<rp>（</rp><rt>ゆううつ</rt><rp>）</rp></ruby>になることを「マリッジブルー」という。",
-          "meaning": "Tâm trạng u buồn khi ngày lễ kết hôn đến gần được gọi là &quot;nỗi buồn trước khi cưới&quot;."
+          "meaning": "Tâm trạng u buồn khi ngày lễ kết hôn đến gần được gọi là \"nỗi buồn trước khi cưới\"."
         },
         {
           "seq": 4,
@@ -40866,7 +40866,7 @@
           "seq": 3,
           "japanese": "「我が社では、枠にはまらない柔軟な考えを持つ人を求めています。」",
           "rubyHtml": "「<ruby>我<rp>（</rp><rt>わ</rt><rp>）</rp></ruby>が<ruby>社<rp>（</rp><rt>しゃ</rt><rp>）</rp></ruby>では、<ruby>枠<rp>（</rp><rt>わく</rt><rp>）</rp></ruby>にはまらない<ruby>柔軟<rp>（</rp><rt>じゅうなん</rt><rp>）</rp></ruby>な<ruby>考<rp>（</rp><rt>かんが</rt><rp>）</rp></ruby>えを<ruby>持<rp>（</rp><rt>も</rt><rp>）</rp></ruby>つ<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>を<ruby>求<rp>（</rp><rt>もと</rt><rp>）</rp></ruby>めています。」",
-          "meaning": "&quot;Công ty chúng tôi đang cần những người có suy nghĩ linh hoạt, không bị đóng khung tư tưởng.&quot;"
+          "meaning": "\"Công ty chúng tôi đang cần những người có suy nghĩ linh hoạt, không bị đóng khung tư tưởng.\""
         },
         {
           "seq": 4,
@@ -41256,19 +41256,19 @@
           "seq": 4,
           "japanese": "「あなたが謙遜するなんて柄でもない」",
           "rubyHtml": "「あなたが<ruby>謙遜<rp>（</rp><rt>けんそん</rt><rp>）</rp></ruby>するなんて<ruby>柄<rp>（</rp><rt>がら</rt><rp>）</rp></ruby>でもない」",
-          "meaning": "&quot;Bạn khiêm tốn như thế thì chẳng đúng chất bạn.&quot;"
+          "meaning": "\"Bạn khiêm tốn như thế thì chẳng đúng chất bạn.\""
         },
         {
           "seq": 5,
           "japanese": "「人の上に立つなんて、私の柄じゃない」",
           "rubyHtml": "「<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>の<ruby>上<rp>（</rp><rt>うえ</rt><rp>）</rp></ruby>に<ruby>立<rp>（</rp><rt>た</rt><rp>）</rp></ruby>つなんて、<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>柄<rp>（</rp><rt>がら</rt><rp>）</rp></ruby>じゃない」",
-          "meaning": "&quot;Đứng trên người ta như thế thật là không phải kiểu cách của tôi.&quot;"
+          "meaning": "\"Đứng trên người ta như thế thật là không phải kiểu cách của tôi.\""
         },
         {
           "seq": 6,
           "japanese": "＜銀行員＞　仕事柄、金の計算は得意だ。",
           "rubyHtml": "＜<ruby>銀行員<rp>（</rp><rt>ぎんこういん</rt><rp>）</rp></ruby>＞　<ruby>仕事柄<rp>（</rp><rt>しごとがら</rt><rp>）</rp></ruby>、<ruby>金<rp>（</rp><rt>かね</rt><rp>）</rp></ruby>の<ruby>計算<rp>（</rp><rt>けいさん</rt><rp>）</rp></ruby>は<ruby>得意<rp>（</rp><rt>とくい</rt><rp>）</rp></ruby>だ。",
-          "meaning": "&lt;Nhân viên ngân hàng&gt; Về tính chất công việc, tính toán tiền bạc là sở trường."
+          "meaning": "〈Nhân viên ngân hàng〉 Về tính chất công việc, tính toán tiền bạc là sở trường."
         }
       ],
       "related": {
@@ -41410,13 +41410,13 @@
           "seq": 1,
           "japanese": "「お差支えなかったら、電話番号を教えていただけませんか。」",
           "rubyHtml": "「お<ruby>差支<rp>（</rp><rt>さしつか</rt><rp>）</rp></ruby>えなかったら、<ruby>電話番号<rp>（</rp><rt>でんわばんごう</rt><rp>）</rp></ruby>を<ruby>教<rp>（</rp><rt>おし</rt><rp>）</rp></ruby>えていただけませんか。」",
-          "meaning": "&quot;Nếu bạn không ngại, bạn có thể cho tôi số điện thoại được không?&quot;"
+          "meaning": "\"Nếu bạn không ngại, bạn có thể cho tôi số điện thoại được không?\""
         },
         {
           "seq": 2,
           "japanese": "「次の会合ですが、５日でいかがでしょう」　「ええ、差し支えありません」",
           "rubyHtml": "「<ruby>次<rp>（</rp><rt>つぎ</rt><rp>）</rp></ruby>の<ruby>会合<rp>（</rp><rt>かいごう</rt><rp>）</rp></ruby>ですが、５<ruby>日<rp>（</rp><rt>か</rt><rp>）</rp></ruby>でいかがでしょう」　「ええ、<ruby>差<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>し<ruby>支<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>えありません」",
-          "meaning": "&quot;Cuộc họp tới ngày mùng 5 thì sao?&quot; &quot;Vâng, không trở ngại.&quot;"
+          "meaning": "\"Cuộc họp tới ngày mùng 5 thì sao?\" \"Vâng, không trở ngại.\""
         }
       ],
       "related": {
@@ -41568,7 +41568,7 @@
           "seq": 3,
           "japanese": "めいめい（が）得意料理を持ち寄って、パーティーを開いた。",
           "rubyHtml": "めいめい（が）<ruby>得意<rp>（</rp><rt>とくい</rt><rp>）</rp></ruby><ruby>料理<rp>（</rp><rt>りょうり</rt><rp>）</rp></ruby>を<ruby>持<rp>（</rp><rt>も</rt><rp>）</rp></ruby>ち<ruby>寄<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>って、パーティーを<ruby>開<rp>（</rp><rt>ひら</rt><rp>）</rp></ruby>いた。",
-          "meaning": "Mỗi người mang &quot;món tủ&quot; của mình đến và mở tiệc."
+          "meaning": "Mỗi người mang \"món tủ\" của mình đến và mở tiệc."
         }
       ],
       "related": {
@@ -41650,7 +41650,7 @@
             "text": "ヲ晴らす　（例．お酒を飲んで日頃のうっぷんを晴らした。）",
             "rubyHtml": "ヲ<ruby>晴<rp>（</rp><rt>は</rt><rp>）</rp></ruby>らす　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．お<ruby>酒<rp>（</rp><rt>さけ</rt><rp>）</rp></ruby>を<ruby>飲<rp>（</rp><rt>の</rt><rp>）</rp></ruby>んで<ruby>日頃<rp>（</rp><rt>ひごろ</rt><rp>）</rp></ruby>のうっぷんを<ruby>晴<rp>（</rp><rt>は</rt><rp>）</rp></ruby>らした。）",
             "meaning": "Giải tỏa (Ví dụ: Uống rượu và giải tỏa nỗi uất ức trong những ngày qua.)",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           },
           {
             "text": "晴れ",
@@ -41773,7 +41773,7 @@
           "seq": 3,
           "japanese": "「政府は、経済問題を国際問題にすり替えるな」",
           "rubyHtml": "「<ruby>政府<rp>（</rp><rt>せいふ</rt><rp>）</rp></ruby>は、<ruby>経済問題<rp>（</rp><rt>けいざいもんだい</rt><rp>）</rp></ruby>を<ruby>国際問題<rp>（</rp><rt>こくさいもんだい</rt><rp>）</rp></ruby>にすり<ruby>替<rp>（</rp><rt>か</rt><rp>）</rp></ruby>えるな」",
-          "meaning": "&quot;Chính phủ không được đánh tráo vấn đề kinh tế với những vấn đề quốc tế.&quot;"
+          "meaning": "\"Chính phủ không được đánh tráo vấn đề kinh tế với những vấn đề quốc tế.\""
         }
       ],
       "related": {
@@ -41936,7 +41936,7 @@
           "seq": 2,
           "japanese": "子供の頃、よく祖母に「横になっている人をまたいではいけない」と叱られた。",
           "rubyHtml": "<ruby>子供<rp>（</rp><rt>こども</rt><rp>）</rp></ruby>の<ruby>頃<rp>（</rp><rt>ころ</rt><rp>）</rp></ruby>、よく<ruby>祖母<rp>（</rp><rt>そぼ</rt><rp>）</rp></ruby>に「<ruby>横<rp>（</rp><rt>よこ</rt><rp>）</rp></ruby>になっている<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>をまたいではいけない」と<ruby>叱<rp>（</rp><rt>しか</rt><rp>）</rp></ruby>られた。",
-          "meaning": "Hồi còn nhỏ, bà tôi thường mắng tôi rằng &quot;Không được bước qua một người khác đang nằm&quot;."
+          "meaning": "Hồi còn nhỏ, bà tôi thường mắng tôi rằng \"Không được bước qua một người khác đang nằm\"."
         },
         {
           "seq": 3,
@@ -42011,13 +42011,13 @@
             "text": "ピストルの弾が私の肩を貫いた。",
             "rubyHtml": "ピストルの<ruby>弾<rp>（</rp><rt>たま</rt><rp>）</rp></ruby>が<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>肩<rp>（</rp><rt>かた</rt><rp>）</rp></ruby>を<ruby>貫<rp>（</rp><rt>つらぬ</rt><rp>）</rp></ruby>いた。",
             "meaning": "Viên đạn xuyên vào vai tôi.",
-            "badge": "&lt;他&gt;例"
+            "badge": "〈他〉例"
           },
           {
             "text": "山本氏は信念を貫き、最後まで戦争に反対した。",
             "rubyHtml": "<ruby>山本氏<rp>（</rp><rt>やまもとし</rt><rp>）</rp></ruby>は<ruby>信念<rp>（</rp><rt>しんねん</rt><rp>）</rp></ruby>を<ruby>貫<rp>（</rp><rt>つらぬ</rt><rp>）</rp></ruby>き、<ruby>最後<rp>（</rp><rt>さいご</rt><rp>）</rp></ruby>まで<ruby>戦争<rp>（</rp><rt>せんそう</rt><rp>）</rp></ruby>に<ruby>反対<rp>（</rp><rt>はんたい</rt><rp>）</rp></ruby>した。",
             "meaning": "Ông Yamamoto kiên định với quan điểm của mình, phản đối chiến tranh đến cùng.",
-            "badge": "&lt;他&gt;例"
+            "badge": "〈他〉例"
           }
         ]
       },
@@ -42159,13 +42159,13 @@
           "seq": 5,
           "japanese": "「電車内での携帯電話のご使用はお控えください。」",
           "rubyHtml": "「<ruby>電車内<rp>（</rp><rt>でんしゃない</rt><rp>）</rp></ruby>での<ruby>携帯電話<rp>（</rp><rt>けいたいでんわ</rt><rp>）</rp></ruby>のご<ruby>使用<rp>（</rp><rt>しよう</rt><rp>）</rp></ruby>はお<ruby>控<rp>（</rp><rt>ひか</rt><rp>）</rp></ruby>えください。」",
-          "meaning": "&quot;Xin vui lòng hạn chế sử dụng điện thoại di động trên tàu.&quot;"
+          "meaning": "\"Xin vui lòng hạn chế sử dụng điện thoại di động trên tàu.\""
         },
         {
           "seq": 6,
           "japanese": "「その件については、コメントを控えさせていただきます。」",
           "rubyHtml": "「その<ruby>件<rp>（</rp><rt>けん</rt><rp>）</rp></ruby>については、コメントを<ruby>控<rp>（</rp><rt>ひか</rt><rp>）</rp></ruby>えさせていただきます。」",
-          "meaning": "&quot;Tôi xin phép không bình luận về vụ việc này.&quot;"
+          "meaning": "\"Tôi xin phép không bình luận về vụ việc này.\""
         },
         {
           "seq": 7,
@@ -42230,13 +42230,13 @@
             "text": "出演者はステージの脇に控えて出番を待った。",
             "rubyHtml": "<ruby>出演者<rp>（</rp><rt>しゅつえんしゃ</rt><rp>）</rp></ruby>はステージの<ruby>脇<rp>（</rp><rt>わき</rt><rp>）</rp></ruby>に<ruby>控<rp>（</rp><rt>ひか</rt><rp>）</rp></ruby>えて<ruby>出番<rp>（</rp><rt>でばん</rt><rp>）</rp></ruby>を<ruby>待<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>った。",
             "meaning": "Những người biểu diễn chờ đến lượt ở bên cánh sân khấu.",
-            "badge": "&lt;自&gt;例１"
+            "badge": "〈自〉例１"
           },
           {
             "text": "父は50才を超えてから少しお酒を控えるようになった。",
             "rubyHtml": "<ruby>父<rp>（</rp><rt>ちち</rt><rp>）</rp></ruby>は50<ruby>才<rp>（</rp><rt>さい</rt><rp>）</rp></ruby>を<ruby>超<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>えてから<ruby>少<rp>（</rp><rt>すこ</rt><rp>）</rp></ruby>しお<ruby>酒<rp>（</rp><rt>さけ</rt><rp>）</rp></ruby>を<ruby>控<rp>（</rp><rt>ひか</rt><rp>）</rp></ruby>えるようになった。",
             "meaning": "Bố tôi hơn 50 tuổi rồi nên giờ trở nên tiết chế rượu.",
-            "badge": "&lt;他&gt;例１"
+            "badge": "〈他〉例１"
           },
           {
             "text": "控え　（例．控えの選手、　契約書の控え）",
@@ -42467,7 +42467,7 @@
           "seq": 1,
           "japanese": "「私は将来父の会社を継ぐつもりです。」",
           "rubyHtml": "「<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>は<ruby>将来<rp>（</rp><rt>しょうらい</rt><rp>）</rp></ruby><ruby>父<rp>（</rp><rt>ちち</rt><rp>）</rp></ruby>の<ruby>会社<rp>（</rp><rt>かいしゃ</rt><rp>）</rp></ruby>を<ruby>継<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>ぐつもりです。」",
-          "meaning": "&quot;Tương lai tôi sẽ kế nghiệp tại công ty của bố.&quot;"
+          "meaning": "\"Tương lai tôi sẽ kế nghiệp tại công ty của bố.\""
         },
         {
           "seq": 2,
@@ -42649,7 +42649,7 @@
             "text": "ガ裂ける　（例．地震で地面が裂けた。）",
             "rubyHtml": "ガ<ruby>裂<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>ける　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>地震<rp>（</rp><rt>じしん</rt><rp>）</rp></ruby>で<ruby>地面<rp>（</rp><rt>じめん</rt><rp>）</rp></ruby>が<ruby>裂<rp>（</rp><rt>さ</rt><rp>）</rp></ruby>けた。）",
             "meaning": "Bị cắt xé (Ví dụ: Do trận động đất, mặt đất bị nứt toác.)",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -42785,7 +42785,7 @@
           "seq": 2,
           "japanese": "「年会費を払わない会員は、会を脱退したものと見なします。」",
           "rubyHtml": "「<ruby>年会費<rp>（</rp><rt>ねんかいひ</rt><rp>）</rp></ruby>を<ruby>払<rp>（</rp><rt>はら</rt><rp>）</rp></ruby>わない<ruby>会員<rp>（</rp><rt>かいいん</rt><rp>）</rp></ruby>は、<ruby>会<rp>（</rp><rt>かい</rt><rp>）</rp></ruby>を<ruby>脱退<rp>（</rp><rt>だったい</rt><rp>）</rp></ruby>したものと<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>なします。」",
-          "meaning": "&quot;Những thành viên không đóng hội phí năm sẽ bị coi như đã rời khỏi hội.&quot;"
+          "meaning": "\"Những thành viên không đóng hội phí năm sẽ bị coi như đã rời khỏi hội.\""
         }
       ],
       "related": {
@@ -43014,7 +43014,7 @@
           "seq": 2,
           "japanese": "「君がそんなに冷たい人間だったとは。見損なったよ。」",
           "rubyHtml": "「<ruby>君<rp>（</rp><rt>きみ</rt><rp>）</rp></ruby>がそんなに<ruby>冷<rp>（</rp><rt>つめ</rt><rp>）</rp></ruby>たい<ruby>人間<rp>（</rp><rt>にんげん</rt><rp>）</rp></ruby>だったとは。<ruby>見損<rp>（</rp><rt>みそこ</rt><rp>）</rp></ruby>なったよ。」",
-          "meaning": "&quot;Bạn là người lạnh lùng như vậy sao. Tôi đã đánh giá nhầm rồi.&quot;"
+          "meaning": "\"Bạn là người lạnh lùng như vậy sao. Tôi đã đánh giá nhầm rồi.\""
         }
       ],
       "related": {
@@ -43683,7 +43683,7 @@
           "seq": 3,
           "japanese": "「早く帰ろう」と課長は社員たちに（帰宅を）促した。",
           "rubyHtml": "「<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>く<ruby>帰<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>ろう」と<ruby>課長<rp>（</rp><rt>かちょう</rt><rp>）</rp></ruby>は<ruby>社員<rp>（</rp><rt>しゃいん</rt><rp>）</rp></ruby>たちに（<ruby>帰宅<rp>（</rp><rt>きたく</rt><rp>）</rp></ruby>を）<ruby>促<rp>（</rp><rt>うなが</rt><rp>）</rp></ruby>した。",
-          "meaning": "Trưởng ban thúc giục các nhân viên &quot;Hãy về nhà sớm đi&quot;."
+          "meaning": "Trưởng ban thúc giục các nhân viên \"Hãy về nhà sớm đi\"."
         },
         {
           "seq": 4,
@@ -44040,13 +44040,13 @@
             "text": "日本記録を樹立した野村選手は、来月、世界記録に挑む。",
             "rubyHtml": "<ruby>日本記録<rp>（</rp><rt>にほんきろく</rt><rp>）</rp></ruby>を<ruby>樹立<rp>（</rp><rt>じゅりつ</rt><rp>）</rp></ruby>した<ruby>野村選手<rp>（</rp><rt>のむらせんしゅ</rt><rp>）</rp></ruby>は、<ruby>来月<rp>（</rp><rt>らいげつ</rt><rp>）</rp></ruby>、<ruby>世界記録<rp>（</rp><rt>せかいきろく</rt><rp>）</rp></ruby>に<ruby>挑<rp>（</rp><rt>いど</rt><rp>）</rp></ruby>む。",
             "meaning": "Vận động viên Nomura, người đạt kỷ lục Nhật Bản, tháng sau sẽ thử sức với mức kỷ lục thế giới.",
-            "badge": "&lt;自&gt;例"
+            "badge": "〈自〉例"
           },
           {
             "text": "チャンピオンに戦いを挑む。",
             "rubyHtml": "チャンピオンに<ruby>戦<rp>（</rp><rt>たたか</rt><rp>）</rp></ruby>いを<ruby>挑<rp>（</rp><rt>いど</rt><rp>）</rp></ruby>む。",
             "meaning": "Thách đấu nhà vô địch.",
-            "badge": "&lt;他&gt;例"
+            "badge": "〈他〉例"
           }
         ]
       },
@@ -45108,7 +45108,7 @@
             "text": "ヲ化かす",
             "rubyHtml": "ヲ<ruby>化<rp>（</rp><rt>ば</rt><rp>）</rp></ruby>かす",
             "meaning": "Làm mê hoặc",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -45202,7 +45202,7 @@
           "seq": 3,
           "japanese": "「こんな大事なときに風邪をひくなんて、精神がたるんでいる！」",
           "rubyHtml": "「こんな<ruby>大事<rp>（</rp><rt>だいじ</rt><rp>）</rp></ruby>なときに<ruby>風邪<rp>（</rp><rt>かぜ</rt><rp>）</rp></ruby>をひくなんて、<ruby>精神<rp>（</rp><rt>せいしん</rt><rp>）</rp></ruby>がたるんでいる！」",
-          "meaning": "&quot;Vào những lúc quan trọng như thế này mà lại bị cảm, tinh thần sao mà lơi lỏng thế.&quot;"
+          "meaning": "\"Vào những lúc quan trọng như thế này mà lại bị cảm, tinh thần sao mà lơi lỏng thế.\""
         }
       ],
       "related": {
@@ -46201,7 +46201,7 @@
           "seq": 7,
           "japanese": "「我々は今何をなすべきだろうか。」",
           "rubyHtml": "「<ruby>我々<rp>（</rp><rt>われわれ</rt><rp>）</rp></ruby>は<ruby>今何<rp>（</rp><rt>いまなに</rt><rp>）</rp></ruby>をなすべきだろうか。」",
-          "meaning": "&quot;Mỗi chúng ta nên làm gì đây?&quot;"
+          "meaning": "\"Mỗi chúng ta nên làm gì đây?\""
         }
       ],
       "related": {
@@ -46366,7 +46366,7 @@
           "seq": 5,
           "japanese": "汚職を追及された議員は、「調査します」と答えるにとどまった。",
           "rubyHtml": "<ruby>汚職<rp>（</rp><rt>おしょく</rt><rp>）</rp></ruby>を<ruby>追及<rp>（</rp><rt>ついきゅう</rt><rp>）</rp></ruby>された<ruby>議員<rp>（</rp><rt>ぎいん</rt><rp>）</rp></ruby>は、「<ruby>調査<rp>（</rp><rt>ちょうさ</rt><rp>）</rp></ruby>します」と<ruby>答<rp>（</rp><rt>こた</rt><rp>）</rp></ruby>えるにとどまった。",
-          "meaning": "Vị nghị sĩ bị truy cứu về tham nhũng chỉ đáp lại &quot;Tôi sẽ điều tra&quot;."
+          "meaning": "Vị nghị sĩ bị truy cứu về tham nhũng chỉ đáp lại \"Tôi sẽ điều tra\"."
         },
         {
           "seq": 6,
@@ -46620,7 +46620,7 @@
           "seq": 2,
           "japanese": "「最善を尽くします。」",
           "rubyHtml": "「<ruby>最善<rp>（</rp><rt>さいぜん</rt><rp>）</rp></ruby>を<ruby>尽<rp>（</rp><rt>つ</rt><rp>）</rp></ruby>くします。」",
-          "meaning": "&quot;Tôi sẽ cố gắng tốt nhất có thể.&quot;"
+          "meaning": "\"Tôi sẽ cố gắng tốt nhất có thể.\""
         },
         {
           "seq": 3,
@@ -46783,7 +46783,7 @@
           "seq": 1,
           "japanese": "タバコの箱には「タバコの吸い過ぎは健康を損なうおそれがあるので注意しましょう」と書いてある。",
           "rubyHtml": "タバコの<ruby>箱<rp>（</rp><rt>はこ</rt><rp>）</rp></ruby>には「タバコの<ruby>吸<rp>（</rp><rt>す</rt><rp>）</rp></ruby>い<ruby>過<rp>（</rp><rt>す</rt><rp>）</rp></ruby>ぎは<ruby>健康<rp>（</rp><rt>けんこう</rt><rp>）</rp></ruby>を<ruby>損<rp>（</rp><rt>そこ</rt><rp>）</rp></ruby>なうおそれがあるので<ruby>注意<rp>（</rp><rt>ちゅうい</rt><rp>）</rp></ruby>しましょう」と<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>いてある。",
-          "meaning": "Trên hộp thuốc lá có ghi &quot;Hút thuốc lá quá nhiều sẽ có nguy cơ gây hại cho sức khỏe, vì vậy hãy chú ý&quot;."
+          "meaning": "Trên hộp thuốc lá có ghi \"Hút thuốc lá quá nhiều sẽ có nguy cơ gây hại cho sức khỏe, vì vậy hãy chú ý\"."
         },
         {
           "seq": 2,
@@ -47606,7 +47606,7 @@
           "seq": 6,
           "japanese": "（いいアイデアを思いついた人に）　「おっ、今日はさえてるね。」",
           "rubyHtml": "（いいアイデアを<ruby>思<rp>（</rp><rt>おも</rt><rp>）</rp></ruby>いついた<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>に）　「おっ、<ruby>今日<rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>はさえてるね。」",
-          "meaning": "(Nói với người vừa nghĩ ra ý tưởng hay) &quot;Ồ, hôm nay đầu óc minh mẫn đấy.&quot;"
+          "meaning": "(Nói với người vừa nghĩ ra ý tưởng hay) \"Ồ, hôm nay đầu óc minh mẫn đấy.\""
         },
         {
           "seq": 7,
@@ -47819,7 +47819,7 @@
           "seq": 5,
           "japanese": "コンピューターのソフト　（＜ソフトウェア）",
           "rubyHtml": "コンピューターのソフト　（＜ソフトウェア）",
-          "meaning": "Phần mềm máy tính (&lt; Phần mềm)"
+          "meaning": "Phần mềm máy tính (〈 Phần mềm)"
         }
       ],
       "related": {
@@ -50355,7 +50355,7 @@
           "seq": 2,
           "japanese": "「この化粧品は、女性の自然な美しさを引き出すというコンセプトで作られております。」",
           "rubyHtml": "「この<ruby>化粧品<rp>（</rp><rt>けしょうひん</rt><rp>）</rp></ruby>は、<ruby>女性<rp>（</rp><rt>じょせい</rt><rp>）</rp></ruby>の<ruby>自然<rp>（</rp><rt>しぜん</rt><rp>）</rp></ruby>な<ruby>美<rp>（</rp><rt>うつく</rt><rp>）</rp></ruby>しさを<ruby>引<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>き<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>すというコンセプトで<ruby>作<rp>（</rp><rt>つく</rt><rp>）</rp></ruby>られております。」",
-          "meaning": "&quot;Mỹ phẩm này được tạo ra với ý tưởng làm nổi bật vẻ đẹp tự nhiên của phái nữ.&quot;"
+          "meaning": "\"Mỹ phẩm này được tạo ra với ý tưởng làm nổi bật vẻ đẹp tự nhiên của phái nữ.\""
         }
       ],
       "related": {
@@ -50794,7 +50794,7 @@
           "seq": 3,
           "japanese": "「この席、前の人の頭で舞台がよく見えないわ」　「じゃ、僕の席チェンジする？」",
           "rubyHtml": "「この<ruby>席<rp>（</rp><rt>せき</rt><rp>）</rp></ruby>、<ruby>前<rp>（</rp><rt>まえ</rt><rp>）</rp></ruby>の<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>の<ruby>頭<rp>（</rp><rt>あたま</rt><rp>）</rp></ruby>で<ruby>舞台<rp>（</rp><rt>ぶたい</rt><rp>）</rp></ruby>がよく<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>えないわ」　「じゃ、<ruby>僕<rp>（</rp><rt>ぼく</rt><rp>）</rp></ruby>の<ruby>席<rp>（</rp><rt>せき</rt><rp>）</rp></ruby>チェンジする？」",
-          "meaning": "&quot;Chỗ này bị người phía trước che rồi nên không thấy rõ sân khấu gì hết.&quot; &quot;Vậy thì đổi qua chỗ của anh không?&quot;"
+          "meaning": "\"Chỗ này bị người phía trước che rồi nên không thấy rõ sân khấu gì hết.\" \"Vậy thì đổi qua chỗ của anh không?\""
         },
         {
           "seq": 4,
@@ -50873,7 +50873,7 @@
           "seq": 2,
           "japanese": "「このフォームに必要事項を書き込んでください」",
           "rubyHtml": "「このフォームに<ruby>必要事項<rp>（</rp><rt>ひつようじこう</rt><rp>）</rp></ruby>を<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>き<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>んでください」",
-          "meaning": "&quot;Hãy điền các thông tin cần thiết theo mẫu này.&quot;"
+          "meaning": "\"Hãy điền các thông tin cần thiết theo mẫu này.\""
         }
       ],
       "related": {
@@ -51386,7 +51386,7 @@
           {
             "text": "「セックス」は生物学的な性、性別",
             "rubyHtml": "「セックス」は<ruby>生物学<rp>（</rp><rt>せいぶつがく</rt><rp>）</rp></ruby><ruby>的<rp>（</rp><rt>てき</rt><rp>）</rp></ruby>な<ruby>性<rp>（</rp><rt>せい</rt><rp>）</rp></ruby>、<ruby>性別<rp>（</rp><rt>せいべつ</rt><rp>）</rp></ruby>",
-            "meaning": "「セックス」là khái niệm chỉ &quot;giới tính&quot; trong sinh vật học.",
+            "meaning": "「セックス」là khái niệm chỉ \"giới tính\" trong sinh vật học.",
             "badge": "※"
           }
         ]
@@ -51525,19 +51525,19 @@
           "seq": 2,
           "japanese": "「いい加減なことを言うな」",
           "rubyHtml": "「いい<ruby>加減<rp>（</rp><rt>かげん</rt><rp>）</rp></ruby>なことを<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>うな」",
-          "meaning": "&quot;Đừng nói vô trách nhiệm thế.&quot;"
+          "meaning": "\"Đừng nói vô trách nhiệm thế.\""
         },
         {
           "seq": 3,
           "japanese": "「遅くなったから、いい加減なところで帰ろう」",
           "rubyHtml": "「<ruby>遅<rp>（</rp><rt>おそ</rt><rp>）</rp></ruby>くなったから、いい<ruby>加減<rp>（</rp><rt>かげん</rt><rp>）</rp></ruby>なところで<ruby>帰<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>ろう」",
-          "meaning": "&quot;Cũng trễ rồi, đến mức này thì chúng ta về thôi.&quot;"
+          "meaning": "\"Cũng trễ rồi, đến mức này thì chúng ta về thôi.\""
         },
         {
           "seq": 4,
           "japanese": "「人に甘えるのもいい加減にしろ」",
           "rubyHtml": "「<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>に<ruby>甘<rp>（</rp><rt>あま</rt><rp>）</rp></ruby>えるのもいい<ruby>加減<rp>（</rp><rt>かげん</rt><rp>）</rp></ruby>にしろ」",
-          "meaning": "&quot;Hãy thôi ngay cái việc ỷ lại vào người khác đi.&quot;"
+          "meaning": "\"Hãy thôi ngay cái việc ỷ lại vào người khác đi.\""
         },
         {
           "seq": 5,
@@ -51605,7 +51605,7 @@
           "seq": 1,
           "japanese": "「もうどうなってもいい」という投げやりな考え方はよくない。",
           "rubyHtml": "「もうどうなってもいい」という<ruby>投<rp>（</rp><rt>な</rt><rp>）</rp></ruby>げやりな<ruby>考<rp>（</rp><rt>かんが</rt><rp>）</rp></ruby>え<ruby>方<rp>（</rp><rt>かた</rt><rp>）</rp></ruby>はよくない。",
-          "meaning": "Cách nghĩ vô trách nhiệm như &quot;Sao cũng được&quot; là (cách nghĩ) không tốt."
+          "meaning": "Cách nghĩ vô trách nhiệm như \"Sao cũng được\" là (cách nghĩ) không tốt."
         },
         {
           "seq": 2,
@@ -51659,7 +51659,7 @@
           "seq": 1,
           "japanese": "私が愛想よく話しかけても、彼女は素っ気なく「うん」と言っただけだった。",
           "rubyHtml": "<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>が<ruby>愛想<rp>（</rp><rt>あいそ</rt><rp>）</rp></ruby>よく<ruby>話<rp>（</rp><rt>はな</rt><rp>）</rp></ruby>しかけても、<ruby>彼女<rp>（</rp><rt>かのじょ</rt><rp>）</rp></ruby>は<ruby>素<rp>（</rp><rt>そ</rt><rp>）</rp></ruby>っ<ruby>気<rp>（</rp><rt>け</rt><rp>）</rp></ruby>なく「うん」と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>っただけだった。",
-          "meaning": "Ngay cả khi tôi bắt chuyện một cách vui vẻ thì cô ấy cũng chỉ nói &quot;Ừ&quot; cộc lốc."
+          "meaning": "Ngay cả khi tôi bắt chuyện một cách vui vẻ thì cô ấy cũng chỉ nói \"Ừ\" cộc lốc."
         },
         {
           "seq": 2,
@@ -51835,7 +51835,7 @@
           "seq": 2,
           "japanese": "「そんなみっともない格好をするな」",
           "rubyHtml": "「そんなみっともない<ruby>格好<rp>（</rp><rt>かっこう</rt><rp>）</rp></ruby>をするな」",
-          "meaning": "&quot;Đừng có ăn mặc khó coi như thế.&quot;"
+          "meaning": "\"Đừng có ăn mặc khó coi như thế.\""
         },
         {
           "seq": 3,
@@ -52388,7 +52388,7 @@
           "seq": 3,
           "japanese": "「20年、毎日日記をつけています」　「まめですねえ」",
           "rubyHtml": "「20<ruby>年<rp>（</rp><rt>ねん</rt><rp>）</rp></ruby>、<ruby>毎日日記<rp>（</rp><rt>まいにちにっき</rt><rp>）</rp></ruby>をつけています」　「まめですねえ」",
-          "meaning": "&quot;20 năm qua, mỗi ngày tôi đều viết nhật ký.&quot; &quot;Chăm chỉ quá!&quot;"
+          "meaning": "\"20 năm qua, mỗi ngày tôi đều viết nhật ký.\" \"Chăm chỉ quá!\""
         }
       ],
       "related": {
@@ -52491,7 +52491,7 @@
           "seq": 3,
           "japanese": "「時間がないので、迅速に行動してください」",
           "rubyHtml": "「<ruby>時間<rp>（</rp><rt>じかん</rt><rp>）</rp></ruby>がないので、<ruby>迅速<rp>（</rp><rt>じんそく</rt><rp>）</rp></ruby>に<ruby>行動<rp>（</rp><rt>こうどう</rt><rp>）</rp></ruby>してください」",
-          "meaning": "&quot;Không có thời gian nữa, hãy hành động nhanh lên.&quot;"
+          "meaning": "\"Không có thời gian nữa, hãy hành động nhanh lên.\""
         }
       ],
       "related": {
@@ -52552,7 +52552,7 @@
           "seq": 1,
           "japanese": "「地震の揺れが収まったら、速やかに屋外へ避難してください」",
           "rubyHtml": "「<ruby>地震<rp>（</rp><rt>じしん</rt><rp>）</rp></ruby>の<ruby>揺<rp>（</rp><rt>ゆ</rt><rp>）</rp></ruby>れが<ruby>収<rp>（</rp><rt>おさ</rt><rp>）</rp></ruby>まったら、<ruby>速<rp>（</rp><rt>すみ</rt><rp>）</rp></ruby>やかに<ruby>屋外<rp>（</rp><rt>おくがい</rt><rp>）</rp></ruby>へ<ruby>避難<rp>（</rp><rt>ひなん</rt><rp>）</rp></ruby>してください」",
-          "meaning": "&quot;Khi cơn địa chấn ngừng lại, hãy nhanh chóng sơ tán ra phía ngoài trời.&quot;"
+          "meaning": "\"Khi cơn địa chấn ngừng lại, hãy nhanh chóng sơ tán ra phía ngoài trời.\""
         },
         {
           "seq": 2,
@@ -52619,7 +52619,7 @@
           "seq": 2,
           "japanese": "「もう着替えたの？素早い！」",
           "rubyHtml": "「もう<ruby>着替<rp>（</rp><rt>きが</rt><rp>）</rp></ruby>えたの？<ruby>素早<rp>（</rp><rt>すばや</rt><rp>）</rp></ruby>い！」",
-          "meaning": "&quot;Đã thay quần áo rồi à? Nhanh ghê đó!&quot;"
+          "meaning": "\"Đã thay quần áo rồi à? Nhanh ghê đó!\""
         },
         {
           "seq": 3,
@@ -53396,7 +53396,7 @@
           "seq": 3,
           "japanese": "「すみません。一晩ご厄介になります」",
           "rubyHtml": "「すみません。<ruby>一晩<rp>（</rp><rt>ひとばん</rt><rp>）</rp></ruby>ご<ruby>厄介<rp>（</rp><rt>やっかい</rt><rp>）</rp></ruby>になります」",
-          "meaning": "&quot;Xin lỗi, cho tôi làm phiền anh chị một đêm ạ.&quot;"
+          "meaning": "\"Xin lỗi, cho tôi làm phiền anh chị một đêm ạ.\""
         },
         {
           "seq": 4,
@@ -53824,7 +53824,7 @@
           "seq": 4,
           "japanese": "「もしかしたら」とはかない望みを抱いたが、夢に終わってしまった。",
           "rubyHtml": "「もしかしたら」とはかない<ruby>望<rp>（</rp><rt>のぞ</rt><rp>）</rp></ruby>みを<ruby>抱<rp>（</rp><rt>いだ</rt><rp>）</rp></ruby>いたが、<ruby>夢<rp>（</rp><rt>ゆめ</rt><rp>）</rp></ruby>に<ruby>終<rp>（</rp><rt>お</rt><rp>）</rp></ruby>わってしまった。",
-          "meaning": "Tôi cứ ôm hy vọng mong manh rằng &quot;Biết đâu chừng…&quot; nhưng kết thúc chỉ là mơ mộng mà thôi."
+          "meaning": "Tôi cứ ôm hy vọng mong manh rằng \"Biết đâu chừng…\" nhưng kết thúc chỉ là mơ mộng mà thôi."
         }
       ],
       "related": {
@@ -53879,7 +53879,7 @@
           "seq": 2,
           "japanese": "「あの映画、途中までは面白かったけど、終わりがあっけなかったね。」",
           "rubyHtml": "「あの<ruby>映画<rp>（</rp><rt>えいが</rt><rp>）</rp></ruby>、<ruby>途中<rp>（</rp><rt>とちゅう</rt><rp>）</rp></ruby>までは<ruby>面白<rp>（</rp><rt>おもしろ</rt><rp>）</rp></ruby>かったけど、<ruby>終<rp>（</rp><rt>お</rt><rp>）</rp></ruby>わりがあっけなかったね。」",
-          "meaning": "&quot;Bộ phim kia đến đoạn giữa thì hay nhưng kết thúc lại chóng vánh quá.&quot;"
+          "meaning": "\"Bộ phim kia đến đoạn giữa thì hay nhưng kết thúc lại chóng vánh quá.\""
         }
       ],
       "related": {
@@ -53946,7 +53946,7 @@
           "seq": 4,
           "japanese": "「人生とはむなしいのだ」というのが、この物語のテーマだ。",
           "rubyHtml": "「<ruby>人生<rp>（</rp><rt>じんせい</rt><rp>）</rp></ruby>とはむなしいのだ」というのが、この<ruby>物語<rp>（</rp><rt>ものがたり</rt><rp>）</rp></ruby>のテーマだ。",
-          "meaning": "&quot;Cuộc đời là vô nghĩa&quot; là chủ đề của truyện này."
+          "meaning": "\"Cuộc đời là vô nghĩa\" là chủ đề của truyện này."
         },
         {
           "seq": 5,
@@ -54214,7 +54214,7 @@
           "seq": 2,
           "japanese": "定年退職後田舎に帰った父は、「田舎の生活はのどかでいい」と言っている。",
           "rubyHtml": "<ruby>定年退職後<rp>（</rp><rt>ていねんたいしょくご</rt><rp>）</rp></ruby><ruby>田舎<rp>（</rp><rt>いなか</rt><rp>）</rp></ruby>に<ruby>帰<rp>（</rp><rt>かえ</rt><rp>）</rp></ruby>った<ruby>父<rp>（</rp><rt>ちち</rt><rp>）</rp></ruby>は、「<ruby>田舎<rp>（</rp><rt>いなか</rt><rp>）</rp></ruby>の<ruby>生活<rp>（</rp><rt>せいかつ</rt><rp>）</rp></ruby>はのどかでいい」と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>っている。",
-          "meaning": "Cha tôi trở về quê sau khi nghỉ hưu luôn nói rằng: &quot;Cuộc sống làng quê thật tốt và yên bình.&quot;"
+          "meaning": "Cha tôi trở về quê sau khi nghỉ hưu luôn nói rằng: \"Cuộc sống làng quê thật tốt và yên bình.\""
         }
       ],
       "related": {
@@ -54665,7 +54665,7 @@
           "seq": 2,
           "japanese": "「あなたの書く　\"れ″の字は　\"わ″と紛らわしいから、気をつけてください。」",
           "rubyHtml": "「あなたの<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>く　\"れ″の<ruby>字<rp>（</rp><rt>じ</rt><rp>）</rp></ruby>は　\"わ″と<ruby>紛<rp>（</rp><rt>まぎ</rt><rp>）</rp></ruby>らわしいから、<ruby>気<rp>（</rp><rt>き</rt><rp>）</rp></ruby>をつけてください。」",
-          "meaning": "&quot;Chữ &quot;れ″của bạn viết rất dễ nhầm với chữ &quot;わ″nên hãy chú ý nhé.″"
+          "meaning": "\"Chữ \"れ″của bạn viết rất dễ nhầm với chữ \"わ″nên hãy chú ý nhé.″"
         }
       ],
       "related": {
@@ -54985,7 +54985,7 @@
           "seq": 2,
           "japanese": "「私の祖父の妹が彼女のおばさんだから、彼女と私の関係は・・・・ああ、ややこしい！」",
           "rubyHtml": "「<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>祖父<rp>（</rp><rt>そふ</rt><rp>）</rp></ruby>の<ruby>妹<rp>（</rp><rt>いもうと</rt><rp>）</rp></ruby>が<ruby>彼女<rp>（</rp><rt>かのじょ</rt><rp>）</rp></ruby>のおばさんだから、<ruby>彼女<rp>（</rp><rt>かのじょ</rt><rp>）</rp></ruby>と<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>の<ruby>関係<rp>（</rp><rt>かんけい</rt><rp>）</rp></ruby>は・・・・ああ、ややこしい！」",
-          "meaning": "&quot;Em gái của ông tôi là dì của cô ấy nên mối quan hệ giữa cô ấy và tôi là….. Ôi, phức tạp quá!&quot;"
+          "meaning": "\"Em gái của ông tôi là dì của cô ấy nên mối quan hệ giữa cô ấy và tôi là….. Ôi, phức tạp quá!\""
         }
       ],
       "related": {
@@ -55523,7 +55523,7 @@
           "seq": 2,
           "japanese": "ゴキブリには生理的な嫌悪感を覚えてしまう。",
           "rubyHtml": "ゴキブリには<ruby>生理的<rp>（</rp><rt>せいりてき</rt><rp>）</rp></ruby>な<ruby>嫌悪感<rp>（</rp><rt>けんおかん</rt><rp>）</rp></ruby>を<ruby>覚<rp>（</rp><rt>おぼ</rt><rp>）</rp></ruby>えてしまう。",
-          "meaning": "Tôi thấy gián rất kinh tởm. (Cảm giác &quot;kinh tởm&quot; này sinh ra tự nhiên, ở mỗi người sẽ khác nhau. Người sợ gián, người sợ chuột,…)"
+          "meaning": "Tôi thấy gián rất kinh tởm. (Cảm giác \"kinh tởm\" này sinh ra tự nhiên, ở mỗi người sẽ khác nhau. Người sợ gián, người sợ chuột,…)"
         },
         {
           "seq": 3,
@@ -55853,7 +55853,7 @@
           "seq": 1,
           "japanese": "「私が犯人だなんて、誤解も甚だしい」",
           "rubyHtml": "「<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>が<ruby>犯人<rp>（</rp><rt>はんにん</rt><rp>）</rp></ruby>だなんて、<ruby>誤解<rp>（</rp><rt>ごかい</rt><rp>）</rp></ruby>も<ruby>甚<rp>（</rp><rt>はなは</rt><rp>）</rp></ruby>だしい」",
-          "meaning": "&quot;Tôi mà là tội phạm ư, đây là sự hiểu lầm khủng khiếp.&quot;"
+          "meaning": "\"Tôi mà là tội phạm ư, đây là sự hiểu lầm khủng khiếp.\""
         },
         {
           "seq": 2,
@@ -55926,13 +55926,13 @@
           "seq": 3,
           "japanese": "「要点だけを端的に述べてください」",
           "rubyHtml": "「<ruby>要点<rp>（</rp><rt>ようてん</rt><rp>）</rp></ruby>だけを<ruby>端的<rp>（</rp><rt>たんてき</rt><rp>）</rp></ruby>に<ruby>述<rp>（</rp><rt>の</rt><rp>）</rp></ruby>べてください」",
-          "meaning": "&quot;Xin vui lòng chỉ nêu rõ những điểm chính.&quot;"
+          "meaning": "\"Xin vui lòng chỉ nêu rõ những điểm chính.\""
         },
         {
           "seq": 4,
           "japanese": "「端的に言えば、この絵は駄作だ」",
           "rubyHtml": "「<ruby>端的<rp>（</rp><rt>たんてき</rt><rp>）</rp></ruby>に<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>えば、この<ruby>絵<rp>（</rp><rt>え</rt><rp>）</rp></ruby>は<ruby>駄作<rp>（</rp><rt>ださく</rt><rp>）</rp></ruby>だ」",
-          "meaning": "&quot;Nói một cách đơn giản thì bức tranh này là đồ bỏ đi.&quot;"
+          "meaning": "\"Nói một cách đơn giản thì bức tranh này là đồ bỏ đi.\""
         }
       ],
       "related": {
@@ -56159,7 +56159,7 @@
           "seq": 1,
           "japanese": "「本日の会議の趣旨をご説明いたします」",
           "rubyHtml": "「<ruby>本日<rp>（</rp><rt>ほんじつ</rt><rp>）</rp></ruby>の<ruby>会議<rp>（</rp><rt>かいぎ</rt><rp>）</rp></ruby>の<ruby>趣旨<rp>（</rp><rt>しゅし</rt><rp>）</rp></ruby>をご<ruby>説明<rp>（</rp><rt>せつめい</rt><rp>）</rp></ruby>いたします」",
-          "meaning": "&quot;Tôi sẽ giải thích mục đích của cuộc họp ngày hôm nay.&quot;"
+          "meaning": "\"Tôi sẽ giải thích mục đích của cuộc họp ngày hôm nay.\""
         },
         {
           "seq": 2,
@@ -56225,7 +56225,7 @@
           "seq": 5,
           "japanese": "彼は仕事があまりできないのに出世が早いので、「要領のいい人」と思われている。",
           "rubyHtml": "<ruby>彼<rp>（</rp><rt>かれ</rt><rp>）</rp></ruby>は<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>があまりできないのに<ruby>出世<rp>（</rp><rt>しゅっせ</rt><rp>）</rp></ruby>が<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>いので、「<ruby>要領<rp>（</rp><rt>ようりょう</rt><rp>）</rp></ruby>のいい<ruby>人<rp>（</rp><rt>ひと</rt><rp>）</rp></ruby>」と<ruby>思<rp>（</rp><rt>おも</rt><rp>）</rp></ruby>われている。",
-          "meaning": "Anh ấy trong công việc tuy không giỏi lắm nhưng lại thăng tiến nhanh nên được coi là &quot;người khôn lỏi&quot;."
+          "meaning": "Anh ấy trong công việc tuy không giỏi lắm nhưng lại thăng tiến nhanh nên được coi là \"người khôn lỏi\"."
         }
       ],
       "related": {
@@ -56362,7 +56362,7 @@
           {
             "text": "＿上　（例．「野菜」　「果物」というのは便宜上の分類にすぎない。）",
             "rubyHtml": "＿<ruby>上<rp>（</rp><rt>じょう</rt><rp>）</rp></ruby>　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．「<ruby>野菜<rp>（</rp><rt>やさい</rt><rp>）</rp></ruby>」　「<ruby>果物<rp>（</rp><rt>くだもの</rt><rp>）</rp></ruby>」というのは<ruby>便宜上<rp>（</rp><rt>べんぎじょう</rt><rp>）</rp></ruby>の<ruby>分類<rp>（</rp><rt>ぶんるい</rt><rp>）</rp></ruby>にすぎない。）",
-            "meaning": "Vì lợi ích/ vì sự tiện lợi (Ví dụ: &quot;Rau củ&quot; hay &quot;trái cây&quot; chỉ là một sự phân loại để cho thuận tiện mà thôi.)",
+            "meaning": "Vì lợi ích/ vì sự tiện lợi (Ví dụ: \"Rau củ\" hay \"trái cây\" chỉ là một sự phân loại để cho thuận tiện mà thôi.)",
             "badge": "合"
           }
         ],
@@ -56847,7 +56847,7 @@
           "seq": 3,
           "japanese": "「X線の年間被ばく許容量はどの程度ですか」",
           "rubyHtml": "「X<ruby>線<rp>（</rp><rt>せん</rt><rp>）</rp></ruby>の<ruby>年間<rp>（</rp><rt>ねんかん</rt><rp>）</rp></ruby><ruby>被<rp>（</rp><rt>ひ</rt><rp>）</rp></ruby>ばく<ruby>許容量<rp>（</rp><rt>きょようりょう</rt><rp>）</rp></ruby>はどの<ruby>程度<rp>（</rp><rt>ていど</rt><rp>）</rp></ruby>ですか」",
-          "meaning": "&quot;Lượng phơi nhiễm bức xạ cho phép của tia X trong một năm là bao nhiêu?&quot; (Phơi nhiễm bức xạ là sự tiếp xúc với các bức xạ điện từ: tia X, tia gamma… trong tự nhiên, y tế,…)"
+          "meaning": "\"Lượng phơi nhiễm bức xạ cho phép của tia X trong một năm là bao nhiêu?\" (Phơi nhiễm bức xạ là sự tiếp xúc với các bức xạ điện từ: tia X, tia gamma… trong tự nhiên, y tế,…)"
         }
       ],
       "related": {
@@ -57484,7 +57484,7 @@
           "seq": 2,
           "japanese": "「平等」は概念としては理解できるが、実践するのは難しい。",
           "rubyHtml": "「<ruby>平等<rp>（</rp><rt>びょうどう</rt><rp>）</rp></ruby>」は<ruby>概念<rp>（</rp><rt>がいねん</rt><rp>）</rp></ruby>としては<ruby>理解<rp>（</rp><rt>りかい</rt><rp>）</rp></ruby>できるが、<ruby>実践<rp>（</rp><rt>じっせん</rt><rp>）</rp></ruby>するのは<ruby>難<rp>（</rp><rt>むずか</rt><rp>）</rp></ruby>しい。",
-          "meaning": "&quot;Sự bình đẳng&quot; có thể hiểu như là một khái niệm, nhưng thực hiện thì rất khó."
+          "meaning": "\"Sự bình đẳng\" có thể hiểu như là một khái niệm, nhưng thực hiện thì rất khó."
         }
       ],
       "related": {
@@ -57799,7 +57799,7 @@
           "seq": 7,
           "japanese": "犯人が逮捕されて、社会を揺るがした大事件は幕を閉じた。",
           "rubyHtml": "<ruby>犯人<rp>（</rp><rt>はんにん</rt><rp>）</rp></ruby>が<ruby>逮捕<rp>（</rp><rt>たいほ</rt><rp>）</rp></ruby>されて、<ruby>社会<rp>（</rp><rt>しゃかい</rt><rp>）</rp></ruby>を<ruby>揺<rp>（</rp><rt>ゆ</rt><rp>）</rp></ruby>るがした<ruby>大事件<rp>（</rp><rt>だいじけん</rt><rp>）</rp></ruby>は<ruby>幕<rp>（</rp><rt>まく</rt><rp>）</rp></ruby>を<ruby>閉<rp>（</rp><rt>と</rt><rp>）</rp></ruby>じた。",
-          "meaning": "Tên tội phạm đã bị bắt, vụ án lớn gây chấn động xã hội đã &quot;hạ màn&quot;."
+          "meaning": "Tên tội phạm đã bị bắt, vụ án lớn gây chấn động xã hội đã \"hạ màn\"."
         }
       ],
       "related": {
@@ -59511,7 +59511,7 @@
           "seq": 1,
           "japanese": "＜会議で＞　「先ほどの説明を補足させていただきます。」",
           "rubyHtml": "＜<ruby>会議<rp>（</rp><rt>かいぎ</rt><rp>）</rp></ruby>で＞　「<ruby>先<rp>（</rp><rt>さき</rt><rp>）</rp></ruby>ほどの<ruby>説明<rp>（</rp><rt>せつめい</rt><rp>）</rp></ruby>を<ruby>補足<rp>（</rp><rt>ほそく</rt><rp>）</rp></ruby>させていただきます。」",
-          "meaning": "(Tại cuộc họp) &quot;Tôi xin phép được bổ sung thêm vào lời giải thích lúc nãy.&quot;"
+          "meaning": "(Tại cuộc họp) \"Tôi xin phép được bổ sung thêm vào lời giải thích lúc nãy.\""
         },
         {
           "seq": 2,
@@ -60136,7 +60136,7 @@
           "seq": 1,
           "japanese": "「旅行中は節度のある行動をとるように」と先生がおっしゃった。",
           "rubyHtml": "「<ruby>旅行<rp>（</rp><rt>りょこう</rt><rp>）</rp></ruby><ruby>中<rp>（</rp><rt>ちゅう</rt><rp>）</rp></ruby>は<ruby>節度<rp>（</rp><rt>せつど</rt><rp>）</rp></ruby>のある<ruby>行動<rp>（</rp><rt>こうどう</rt><rp>）</rp></ruby>をとるように」と<ruby>先生<rp>（</rp><rt>せんせい</rt><rp>）</rp></ruby>がおっしゃった。",
-          "meaning": "Giáo viên đã nói: &quot;Hãy hành động có chừng mực trong khi đi du lịch&quot;."
+          "meaning": "Giáo viên đã nói: \"Hãy hành động có chừng mực trong khi đi du lịch\"."
         },
         {
           "seq": 2,
@@ -60520,7 +60520,7 @@
           "seq": 1,
           "japanese": "「その場の空気を読む」ことを重視するのが、最近の若者の風潮だ。",
           "rubyHtml": "「その<ruby>場<rp>（</rp><rt>ば</rt><rp>）</rp></ruby>の<ruby>空気<rp>（</rp><rt>くうき</rt><rp>）</rp></ruby>を<ruby>読<rp>（</rp><rt>よ</rt><rp>）</rp></ruby>む」ことを<ruby>重視<rp>（</rp><rt>じゅうし</rt><rp>）</rp></ruby>するのが、<ruby>最近<rp>（</rp><rt>さいきん</rt><rp>）</rp></ruby>の<ruby>若者<rp>（</rp><rt>わかもの</rt><rp>）</rp></ruby>の<ruby>風潮<rp>（</rp><rt>ふうちょう</rt><rp>）</rp></ruby>だ。",
-          "meaning": "Chú trọng việc &quot;Đọc bầu không khí&quot; (tinh ý nắm bắt tình hình) là xu hướng của giới trẻ gần đây."
+          "meaning": "Chú trọng việc \"Đọc bầu không khí\" (tinh ý nắm bắt tình hình) là xu hướng của giới trẻ gần đây."
         },
         {
           "seq": 2,
@@ -60789,7 +60789,7 @@
           "seq": 2,
           "japanese": "「家族間の問題は複雑なので、第三者に調停を依頼しよう。」",
           "rubyHtml": "「<ruby>家族間<rp>（</rp><rt>かぞくかん</rt><rp>）</rp></ruby>の<ruby>問題<rp>（</rp><rt>もんだい</rt><rp>）</rp></ruby>は<ruby>複雑<rp>（</rp><rt>ふくざつ</rt><rp>）</rp></ruby>なので、<ruby>第三者<rp>（</rp><rt>だいさんしゃ</rt><rp>）</rp></ruby>に<ruby>調停<rp>（</rp><rt>ちょうてい</rt><rp>）</rp></ruby>を<ruby>依頼<rp>（</rp><rt>いらい</rt><rp>）</rp></ruby>しよう。」",
-          "meaning": "&quot;Vì các vấn đề trong gia đình rất phức tạp, chúng ta hãy yêu cầu bên thứ ba hòa giải.&quot;"
+          "meaning": "\"Vì các vấn đề trong gia đình rất phức tạp, chúng ta hãy yêu cầu bên thứ ba hòa giải.\""
         }
       ],
       "related": {
@@ -60880,7 +60880,7 @@
           "seq": 2,
           "japanese": "「これ以上、あなたの言いなりにはなりません。自分の思う通りにやります」",
           "rubyHtml": "「これ<ruby>以上<rp>（</rp><rt>いじょう</rt><rp>）</rp></ruby>、あなたの<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>いなりにはなりません。<ruby>自分<rp>（</rp><rt>じぶん</rt><rp>）</rp></ruby>の<ruby>思<rp>（</rp><rt>おも</rt><rp>）</rp></ruby>う<ruby>通<rp>（</rp><rt>どお</rt><rp>）</rp></ruby>りにやります」",
-          "meaning": "&quot;Từ giờ tôi sẽ không nghe theo lời của anh nữa. Tôi sẽ làm theo những gì tôi nghĩ.&quot;"
+          "meaning": "\"Từ giờ tôi sẽ không nghe theo lời của anh nữa. Tôi sẽ làm theo những gì tôi nghĩ.\""
         }
       ],
       "related": {
@@ -61276,13 +61276,13 @@
           "seq": 2,
           "japanese": "＜手紙＞　「寒さ厳しき折り、お体、お大切に」",
           "rubyHtml": "＜<ruby>手紙<rp>（</rp><rt>てがみ</rt><rp>）</rp></ruby>＞　「<ruby>寒<rp>（</rp><rt>さむ</rt><rp>）</rp></ruby>さ<ruby>厳<rp>（</rp><rt>きび</rt><rp>）</rp></ruby>しき<ruby>折<rp>（</rp><rt>お</rt><rp>）</rp></ruby>り、お<ruby>体<rp>（</rp><rt>からだ</rt><rp>）</rp></ruby>、お<ruby>大切<rp>（</rp><rt>たいせつ</rt><rp>）</rp></ruby>に」",
-          "meaning": "(Thư) &quot;Khi tiết trời rét buốt, anh/ chị hãy giữ gìn sức khỏe nhé.&quot;"
+          "meaning": "(Thư) \"Khi tiết trời rét buốt, anh/ chị hãy giữ gìn sức khỏe nhé.\""
         },
         {
           "seq": 3,
           "japanese": "「その件については、私から折りを見て話しておこう」",
           "rubyHtml": "「その<ruby>件<rp>（</rp><rt>けん</rt><rp>）</rp></ruby>については、<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>から<ruby>折<rp>（</rp><rt>お</rt><rp>）</rp></ruby>りを<ruby>見<rp>（</rp><rt>み</rt><rp>）</rp></ruby>て<ruby>話<rp>（</rp><rt>はな</rt><rp>）</rp></ruby>しておこう」",
-          "meaning": "&quot;Tôi sẽ nói với anh ấy/ cô ấy về việc này khi có cơ hội.&quot;"
+          "meaning": "\"Tôi sẽ nói với anh ấy/ cô ấy về việc này khi có cơ hội.\""
         },
         {
           "seq": 4,
@@ -61857,7 +61857,7 @@
           "seq": 2,
           "japanese": "ちょっと用事で遅れますから、私に構わないで会を始めていてください。",
           "rubyHtml": "ちょっと<ruby>用事<rp>（</rp><rt>ようじ</rt><rp>）</rp></ruby>で<ruby>遅<rp>（</rp><rt>おく</rt><rp>）</rp></ruby>れますから、<ruby>私<rp>（</rp><rt>わたし</rt><rp>）</rp></ruby>に<ruby>構<rp>（</rp><rt>かま</rt><rp>）</rp></ruby>わないで<ruby>会<rp>（</rp><rt>かい</rt><rp>）</rp></ruby>を<ruby>始<rp>（</rp><rt>はじ</rt><rp>）</rp></ruby>めていてください。",
-          "meaning": "&quot;Tôi có chút việc nên tới trễ, đừng quan tâm tới tôi mà hãy bắt đầu cuộc họp đi.&quot;"
+          "meaning": "\"Tôi có chút việc nên tới trễ, đừng quan tâm tới tôi mà hãy bắt đầu cuộc họp đi.\""
         },
         {
           "seq": 3,
@@ -61875,13 +61875,13 @@
           "seq": 5,
           "japanese": "（取り引き先などで）　「何かお飲みになりますか」　「どうぞお構いなく」",
           "rubyHtml": "（<ruby>取<rp>（</rp><rt>と</rt><rp>）</rp></ruby>り<ruby>引き先<rp>（</rp><rt>ひきさき</rt><rp>）</rp></ruby>などで）　「<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>かお<ruby>飲<rp>（</rp><rt>の</rt><rp>）</rp></ruby>みになりますか」　「どうぞお<ruby>構<rp>（</rp><rt>かま</rt><rp>）</rp></ruby>いなく」",
-          "meaning": "&quot;Anh/ chị uống gì ạ?&quot; &quot;Cảm ơn anh/ chị, đừng bận tâm đến tôi. (Cứ để tôi tự nhiên.)&quot;"
+          "meaning": "\"Anh/ chị uống gì ạ?\" \"Cảm ơn anh/ chị, đừng bận tâm đến tôi. (Cứ để tôi tự nhiên.)\""
         },
         {
           "seq": 6,
           "japanese": "「このコピー機を使ってもいいですか」　「はい、構いません」",
           "rubyHtml": "「このコピー<ruby>機<rp>（</rp><rt>き</rt><rp>）</rp></ruby>を<ruby>使<rp>（</rp><rt>つか</rt><rp>）</rp></ruby>ってもいいですか」　「はい、<ruby>構<rp>（</rp><rt>かま</rt><rp>）</rp></ruby>いません」",
-          "meaning": "&quot;Tôi dùng máy photo này được không ạ?&quot; &quot;Vâng, không vấn đề gì. (Xin cứ tự nhiên.)&quot;"
+          "meaning": "\"Tôi dùng máy photo này được không ạ?\" \"Vâng, không vấn đề gì. (Xin cứ tự nhiên.)\""
         },
         {
           "seq": 10,
@@ -62067,7 +62067,7 @@
           "seq": 2,
           "japanese": "「もう少し体をいたわらないと、病気になりますよ」",
           "rubyHtml": "「もう<ruby>少<rp>（</rp><rt>すこ</rt><rp>）</rp></ruby>し<ruby>体<rp>（</rp><rt>からだ</rt><rp>）</rp></ruby>をいたわらないと、<ruby>病気<rp>（</rp><rt>びょうき</rt><rp>）</rp></ruby>になりますよ」",
-          "meaning": "&quot;Nếu không chịu đối xử tử tế với cơ thể nhiều hơn một chút thì sẽ bị bệnh đấy.&quot;"
+          "meaning": "\"Nếu không chịu đối xử tử tế với cơ thể nhiều hơn một chút thì sẽ bị bệnh đấy.\""
         }
       ],
       "related": {
@@ -62157,7 +62157,7 @@
           "seq": 2,
           "japanese": "「とぼけないで、ちゃんと答えろ」",
           "rubyHtml": "「とぼけないで、ちゃんと<ruby>答<rp>（</rp><rt>こた</rt><rp>）</rp></ruby>えろ」",
-          "meaning": "&quot;Đừng giả nai mà hãy trả lời đàng hoàng đi.&quot;"
+          "meaning": "\"Đừng giả nai mà hãy trả lời đàng hoàng đi.\""
         },
         {
           "seq": 3,
@@ -62410,7 +62410,7 @@
           "seq": 1,
           "japanese": "「上司に対して失礼です。言葉を慎みなさい。」",
           "rubyHtml": "「<ruby>上司<rp>（</rp><rt>じょうし</rt><rp>）</rp></ruby>に対して失礼です。<ruby>言葉<rp>（</rp><rt>ことば</rt><rp>）</rp></ruby>を<ruby>慎<rp>（</rp><rt>つつし</rt><rp>）</rp></ruby>みなさい。」",
-          "meaning": "&quot;Vô lễ với cấp trên. Hãy thận trọng trong lời ăn tiếng nói.&quot;"
+          "meaning": "\"Vô lễ với cấp trên. Hãy thận trọng trong lời ăn tiếng nói.\""
         },
         {
           "seq": 2,
@@ -62565,7 +62565,7 @@
           "seq": 5,
           "japanese": "「あなたのためなら、努力は惜しみません」",
           "rubyHtml": "「あなたのためなら、<ruby>努力<rp>（</rp><rt>どりょく</rt><rp>）</rp></ruby>は<ruby>惜<rp>（</rp><rt>お</rt><rp>）</rp></ruby>しみません」",
-          "meaning": "&quot;Nếu là vì anh/ chị thì chúng tôi không tiếc công sức.&quot;"
+          "meaning": "\"Nếu là vì anh/ chị thì chúng tôi không tiếc công sức.\""
         }
       ],
       "related": {
@@ -62633,7 +62633,7 @@
           "seq": 1,
           "japanese": "「これは外聞をはばかる話なので、誰にも言わないでください。」",
           "rubyHtml": "「これは<ruby>外聞<rp>（</rp><rt>がいぶん</rt><rp>）</rp></ruby>をはばかる<ruby>話<rp>（</rp><rt>はなし</rt><rp>）</rp></ruby>なので、<ruby>誰<rp>（</rp><rt>だれ</rt><rp>）</rp></ruby>にも<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>わないでください。」",
-          "meaning": "&quot;Vì chuyện này ảnh hưởng đến danh dự nên đừng nói với ai cả.&quot;"
+          "meaning": "\"Vì chuyện này ảnh hưởng đến danh dự nên đừng nói với ai cả.\""
         },
         {
           "seq": 2,
@@ -62760,7 +62760,7 @@
           "seq": 3,
           "japanese": "「これに懲りたら、これからはもっと慎重にやりなさい。」",
           "rubyHtml": "「これに<ruby>懲<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>りたら、これからはもっと<ruby>慎重<rp>（</rp><rt>しんちょう</rt><rp>）</rp></ruby>にやりなさい。」",
-          "meaning": "&quot;Nếu đã nhận được bài học rồi thì lần sau hãy thận trọng hơn nữa.&quot;"
+          "meaning": "\"Nếu đã nhận được bài học rồi thì lần sau hãy thận trọng hơn nữa.\""
         }
       ],
       "related": {
@@ -63131,7 +63131,7 @@
           "seq": 4,
           "japanese": "「当店では食材の質にこだわっております。」",
           "rubyHtml": "「<ruby>当店<rp>（</rp><rt>とうてん</rt><rp>）</rp></ruby>では<ruby>食材<rp>（</rp><rt>しょくざい</rt><rp>）</rp></ruby>の<ruby>質<rp>（</rp><rt>しつ</rt><rp>）</rp></ruby>にこだわっております。」",
-          "meaning": "&quot;Quán chúng tôi luôn chú trọng đến chất lượng nguyên liệu nấu ăn.&quot;"
+          "meaning": "\"Quán chúng tôi luôn chú trọng đến chất lượng nguyên liệu nấu ăn.\""
         },
         {
           "seq": 5,
@@ -63302,19 +63302,19 @@
             "text": "ガ極まる／窮まる",
             "rubyHtml": "ガ<ruby>極<rp>（</rp><rt>きわ</rt><rp>）</rp></ruby>まる／<ruby>窮<rp>（</rp><rt>きわ</rt><rp>）</rp></ruby>まる",
             "meaning": "Hết sức/ vô cùng/ cực kỳ",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           },
           {
             "text": "例．失礼窮まる態度",
             "rubyHtml": "<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>失礼<rp>（</rp><rt>しつれい</rt><rp>）</rp></ruby><ruby>窮<rp>（</rp><rt>きわ</rt><rp>）</rp></ruby>まる<ruby>態度<rp>（</rp><rt>たいど</rt><rp>）</rp></ruby>",
             "meaning": "Thái độ hết sức vô lễ.",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           },
           {
             "text": "どうやってもうまくいかず、進退窮まった。",
             "rubyHtml": "どうやってもうまくいかず、<ruby>進退窮<rp>（</rp><rt>しんたいきわ</rt><rp>）</rp></ruby>まった。",
             "meaning": "Dù làm gì cũng không được, tiến thoái lưỡng nan.",
-            "badge": "&lt;自&gt;"
+            "badge": "〈自〉"
           }
         ]
       },
@@ -63768,7 +63768,7 @@
           "seq": 3,
           "japanese": "＜店で＞　「新製品の化粧水はいかがですか」　「いえ、間に合ってますので」",
           "rubyHtml": "＜<ruby>店<rp>（</rp><rt>みせ</rt><rp>）</rp></ruby>で＞　「<ruby>新製品<rp>（</rp><rt>しんせいひん</rt><rp>）</rp></ruby>の<ruby>化粧水<rp>（</rp><rt>けしょうすい</rt><rp>）</rp></ruby>はいかがですか」　「いえ、<ruby>間<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>に<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>ってますので」",
-          "meaning": "(Tại cửa hàng) &quot;Mẫu nước hoa hồng mới thì sao ạ?&quot; &quot;Không, được rồi ạ.&quot;"
+          "meaning": "(Tại cửa hàng) \"Mẫu nước hoa hồng mới thì sao ạ?\" \"Không, được rồi ạ.\""
         }
       ],
       "related": {
@@ -63783,7 +63783,7 @@
             "text": "ヲ間に合わせる　（例．花瓶がないのでワインの瓶で間に合わせた。）→　（名）間に合わせ",
             "rubyHtml": "ヲ<ruby>間<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>に<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>わせる　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>花瓶<rp>（</rp><rt>かびん</rt><rp>）</rp></ruby>がないのでワインの<ruby>瓶<rp>（</rp><rt>びん</rt><rp>）</rp></ruby>で<ruby>間<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>に<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>わせた。）→　（<ruby>名<rp>（</rp><rt>めい</rt><rp>）</rp></ruby>）<ruby>間<rp>（</rp><rt>ま</rt><rp>）</rp></ruby>に<ruby>合<rp>（</rp><rt>あ</rt><rp>）</rp></ruby>わせ",
             "meaning": "Dùng tạm (Ví dụ: Không có lọ hoa nên đã dùng tạm chai rượu.) → Sự tạm thời",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -64087,7 +64087,7 @@
           "seq": 1,
           "japanese": "「お仕事は？」　「製薬に携わっています」",
           "rubyHtml": "「お<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>は？」　「<ruby>製薬<rp>（</rp><rt>せいやく</rt><rp>）</rp></ruby>に<ruby>携<rp>（</rp><rt>たずさ</rt><rp>）</rp></ruby>わっています」",
-          "meaning": "&quot;Công việc của bạn là gì?&quot; &quot;Tôi đang tham gia điều chế thuốc.&quot;"
+          "meaning": "\"Công việc của bạn là gì?\" \"Tôi đang tham gia điều chế thuốc.\""
         },
         {
           "seq": 2,
@@ -64683,7 +64683,7 @@
           "seq": 2,
           "japanese": "「敵を欺くにはまず味方から」というのは、中国の古い本に出てくる言葉だ。",
           "rubyHtml": "「<ruby>敵<rp>（</rp><rt>てき</rt><rp>）</rp></ruby>を<ruby>欺<rp>（</rp><rt>あざむ</rt><rp>）</rp></ruby>くにはまず<ruby>味方<rp>（</rp><rt>みかた</rt><rp>）</rp></ruby>から」というのは、<ruby>中国<rp>（</rp><rt>ちゅうごく</rt><rp>）</rp></ruby>の<ruby>古<rp>（</rp><rt>ふる</rt><rp>）</rp></ruby>い<ruby>本<rp>（</rp><rt>ほん</rt><rp>）</rp></ruby>に<ruby>出<rp>（</rp><rt>で</rt><rp>）</rp></ruby>てくる<ruby>言葉<rp>（</rp><rt>ことば</rt><rp>）</rp></ruby>だ。",
-          "meaning": "&quot;Để đánh lừa kẻ thù, trước hết phải là đánh lừa được chính đồng minh của mình&quot; là câu nói xuất phát từ sách cổ của Trung Quốc."
+          "meaning": "\"Để đánh lừa kẻ thù, trước hết phải là đánh lừa được chính đồng minh của mình\" là câu nói xuất phát từ sách cổ của Trung Quốc."
         }
       ],
       "related": {
@@ -64860,7 +64860,7 @@
           "seq": 1,
           "japanese": "「そんなに仕事ばかりしていると体に障るよ」",
           "rubyHtml": "「そんなに<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>ばかりしていると<ruby>体<rp>（</rp><rt>からだ</rt><rp>）</rp></ruby>に<ruby>障<rp>（</rp><rt>さわ</rt><rp>）</rp></ruby>るよ」",
-          "meaning": "&quot;Chỉ toàn làm việc như thế sẽ có hại cho sức khỏe đấy.&quot;"
+          "meaning": "\"Chỉ toàn làm việc như thế sẽ có hại cho sức khỏe đấy.\""
         },
         {
           "seq": 2,
@@ -65039,7 +65039,7 @@
             "text": "ヲ込める　（例．気持ちを込めて校歌を歌った。）",
             "rubyHtml": "ヲ<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>める　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>気持<rp>（</rp><rt>きも</rt><rp>）</rp></ruby>ちを<ruby>込<rp>（</rp><rt>こ</rt><rp>）</rp></ruby>めて<ruby>校歌<rp>（</rp><rt>こうか</rt><rp>）</rp></ruby>を<ruby>歌<rp>（</rp><rt>うた</rt><rp>）</rp></ruby>った。）",
             "meaning": "Dồn nén/ với tất cả ~ (Ví dụ: Hát bài hát của trường với tất cả tấm lòng.)",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -65270,7 +65270,7 @@
             "text": "ヲ揺るがす　（例．会社を揺るがす事件）",
             "rubyHtml": "ヲ<ruby>揺<rp>（</rp><rt>ゆ</rt><rp>）</rp></ruby>るがす　（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>会社<rp>（</rp><rt>かいしゃ</rt><rp>）</rp></ruby>を<ruby>揺<rp>（</rp><rt>ゆ</rt><rp>）</rp></ruby>るがす<ruby>事件<rp>（</rp><rt>じけん</rt><rp>）</rp></ruby>）",
             "meaning": "Chấn động (Ví dụ: Vụ việc chấn động công ty.)",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           },
           {
             "text": "①～③揺らぎ",
@@ -65662,19 +65662,19 @@
             "text": "ヲゆがめる",
             "rubyHtml": "ヲゆがめる",
             "meaning": "Bẻ cong, bóp méo, xuyên tạc",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           },
           {
             "text": "（例．事実をゆがめて報道してはいけない。",
             "rubyHtml": "（<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．<ruby>事実<rp>（</rp><rt>じじつ</rt><rp>）</rp></ruby>をゆがめて<ruby>報道<rp>（</rp><rt>ほうどう</rt><rp>）</rp></ruby>してはいけない。",
             "meaning": "Không được đưa tin bóp méo sự thật.",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           },
           {
             "text": "苦いものを食べて顔をゆがめる。）",
             "rubyHtml": "<ruby>苦<rp>（</rp><rt>にが</rt><rp>）</rp></ruby>いものを<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べて<ruby>顔<rp>（</rp><rt>かお</rt><rp>）</rp></ruby>をゆがめる。）",
             "meaning": "Ăn phải đồ đắng nên nhăn mặt.",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -66174,7 +66174,7 @@
           "seq": 3,
           "japanese": "「忙しさに紛れて、ごぶさたしてしまいました」",
           "rubyHtml": "「<ruby>忙<rp>（</rp><rt>いそが</rt><rp>）</rp></ruby>しさに<ruby>紛<rp>（</rp><rt>まぎ</rt><rp>）</rp></ruby>れて、ごぶさたしてしまいました」",
-          "meaning": "&quot;Tôi quá bận nên lâu rồi mới viết thư cho bạn.&quot; (ご無沙汰しております là cách nói trang trọng hơn 久しぶり)"
+          "meaning": "\"Tôi quá bận nên lâu rồi mới viết thư cho bạn.\" (ご無沙汰しております là cách nói trang trọng hơn 久しぶり)"
         },
         {
           "seq": 4,
@@ -66794,7 +66794,7 @@
             "text": "ヲ和らげる",
             "rubyHtml": "ヲ<ruby>和<rp>（</rp><rt>やわ</rt><rp>）</rp></ruby>らげる",
             "meaning": "Làm nguôi đi, làm dịu đi",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -66842,7 +66842,7 @@
             "text": "ヲとろかす （例．あめを口に入れてとろかす。　・　心をとろかすような甘い音楽）",
             "rubyHtml": "ヲとろかす （<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>．あめを<ruby>口<rp>（</rp><rt>くち</rt><rp>）</rp></ruby>に<ruby>入<rp>（</rp><rt>い</rt><rp>）</rp></ruby>れてとろかす。　・　<ruby>心<rp>（</rp><rt>こころ</rt><rp>）</rp></ruby>をとろかすような<ruby>甘<rp>（</rp><rt>あま</rt><rp>）</rp></ruby>い<ruby>音楽<rp>（</rp><rt>おんがく</rt><rp>）</rp></ruby>）",
             "meaning": "Làm tan chảy (Ví dụ: Bỏ kẹo vào miệng và ngậm tan ra.; Âm nhạc dịu ngọt làm tan chảy trái tim.)",
-            "badge": "&lt;他&gt;"
+            "badge": "〈他〉"
           }
         ]
       },
@@ -67054,7 +67054,7 @@
           "seq": 3,
           "japanese": "「さっさとしろ！だらだらするな」",
           "rubyHtml": "「さっさとしろ！だらだらするな」",
-          "meaning": "&quot;Khẩn trương lên! Đừng có lề mề!&quot;"
+          "meaning": "\"Khẩn trương lên! Đừng có lề mề!\""
         },
         {
           "seq": 4,
@@ -67121,7 +67121,7 @@
           "seq": 2,
           "japanese": "「ぐずぐずしないで、早く食べてしまいなさい」",
           "rubyHtml": "「ぐずぐずしないで、<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>く<ruby>食<rp>（</rp><rt>た</rt><rp>）</rp></ruby>べてしまいなさい」",
-          "meaning": "&quot;Đừng có dây dưa nữa, mau ăn hết đi.&quot;"
+          "meaning": "\"Đừng có dây dưa nữa, mau ăn hết đi.\""
         },
         {
           "seq": 3,
@@ -67133,7 +67133,7 @@
           "seq": 4,
           "japanese": "「ぐずぐず言わずに、言われたことをやりなさい」",
           "rubyHtml": "「ぐずぐず<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>わずに、<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>われたことをやりなさい」",
-          "meaning": "&quot;Không nói dây dưa mà hãy làm những gì được bảo đi.&quot;"
+          "meaning": "\"Không nói dây dưa mà hãy làm những gì được bảo đi.\""
         },
         {
           "seq": 5,
@@ -67407,7 +67407,7 @@
           "seq": 2,
           "japanese": "「早くしろ。まごまごしていると置いていくぞ。」",
           "rubyHtml": "「<ruby>早<rp>（</rp><rt>はや</rt><rp>）</rp></ruby>くしろ。まごまごしていると<ruby>置<rp>（</rp><rt>お</rt><rp>）</rp></ruby>いていくぞ。」",
-          "meaning": "&quot;Nhanh lên. Lề mề là tôi bỏ lại đó.&quot;"
+          "meaning": "\"Nhanh lên. Lề mề là tôi bỏ lại đó.\""
         }
       ],
       "related": {
@@ -67449,7 +67449,7 @@
           "seq": 2,
           "japanese": "「文句があるなら、陰でぶつぶつ言ってないで、ちゃんと言った方がいいよ」",
           "rubyHtml": "「<ruby>文句<rp>（</rp><rt>もんく</rt><rp>）</rp></ruby>があるなら、<ruby>陰<rp>（</rp><rt>かげ</rt><rp>）</rp></ruby>でぶつぶつ<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>ってないで、ちゃんと<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>った<ruby>方<rp>（</rp><rt>ほう</rt><rp>）</rp></ruby>がいいよ」",
-          "meaning": "&quot;Nếu có than phiền gì thì đừng cằn nhằn sau lưng nữa, nên nói thẳng ra thì tốt hơn đấy.&quot;"
+          "meaning": "\"Nếu có than phiền gì thì đừng cằn nhằn sau lưng nữa, nên nói thẳng ra thì tốt hơn đấy.\""
         },
         {
           "seq": 3,
@@ -67726,7 +67726,7 @@
           "seq": 3,
           "japanese": "「あんなにがんばったのに不合格だなんて。がっくりきちゃう。」",
           "rubyHtml": "「あんなにがんばったのに<ruby>不合格<rp>（</rp><rt>ふごうかく</rt><rp>）</rp></ruby>だなんて。がっくりきちゃう。」",
-          "meaning": "&quot;Tôi đã cố gắng đến thế rồi mà lại rớt. Thật quá thất vọng.&quot;"
+          "meaning": "\"Tôi đã cố gắng đến thế rồi mà lại rớt. Thật quá thất vọng.\""
         },
         {
           "seq": 4,
@@ -67774,13 +67774,13 @@
           "seq": 2,
           "japanese": "「こんな単調な仕事、もううんざりだ」",
           "rubyHtml": "「こんな<ruby>単調<rp>（</rp><rt>たんちょう</rt><rp>）</rp></ruby>な<ruby>仕事<rp>（</rp><rt>しごと</rt><rp>）</rp></ruby>、もううんざりだ」",
-          "meaning": "&quot;Tôi chán công việc tẻ nhạt này lắm rồi.&quot;"
+          "meaning": "\"Tôi chán công việc tẻ nhạt này lắm rồi.\""
         },
         {
           "seq": 3,
           "japanese": "退職した父は、「時間だけはうんざりするほどある」と言っている。",
           "rubyHtml": "<ruby>退職<rp>（</rp><rt>たいしょく</rt><rp>）</rp></ruby>した<ruby>父<rp>（</rp><rt>ちち</rt><rp>）</rp></ruby>は、「<ruby>時間<rp>（</rp><rt>じかん</rt><rp>）</rp></ruby>だけはうんざりするほどある」と<ruby>言<rp>（</rp><rt>い</rt><rp>）</rp></ruby>っている。",
-          "meaning": "Người bố đã nghỉ hưu thường nói với tôi rằng &quot;Có quá nhiều thời gian đến mức phát chán&quot;."
+          "meaning": "Người bố đã nghỉ hưu thường nói với tôi rằng \"Có quá nhiều thời gian đến mức phát chán\"."
         }
       ],
       "related": {
@@ -67822,7 +67822,7 @@
           "seq": 2,
           "japanese": "「えっ、誕生日、来週なの？てっきり今日だと思って、プレゼント持って来ちゃった。」",
           "rubyHtml": "「えっ、<ruby>誕生日<rp>（</rp><rt>たんじょうび</rt><rp>）</rp></ruby>、<ruby>来週<rp>（</rp><rt>らいしゅう</rt><rp>）</rp></ruby>なの？てっきり<ruby>今日<rp>（</rp><rt>きょう</rt><rp>）</rp></ruby>だと<ruby>思<rp>（</rp><rt>おも</rt><rp>）</rp></ruby>って、プレゼント<ruby>持<rp>（</rp><rt>も</rt><rp>）</rp></ruby>って<ruby>来<rp>（</rp><rt>き</rt><rp>）</rp></ruby>ちゃった。」",
-          "meaning": "&quot;Ế, sinh nhật tuần sau á hả? Tớ cứ đinh ninh là hôm nay nên đã mang quà đến.&quot;"
+          "meaning": "\"Ế, sinh nhật tuần sau á hả? Tớ cứ đinh ninh là hôm nay nên đã mang quà đến.\""
         }
       ],
       "related": {
@@ -68045,13 +68045,13 @@
           "seq": 1,
           "japanese": "「ご配慮いただき、まことにありがとうございます」",
           "rubyHtml": "「ご<ruby>配慮<rp>（</rp><rt>はいりょ</rt><rp>）</rp></ruby>いただき、まことにありがとうございます」",
-          "meaning": "&quot;Xin chân thành cảm ơn anh/ chị đã quan tâm.&quot;"
+          "meaning": "\"Xin chân thành cảm ơn anh/ chị đã quan tâm.\""
         },
         {
           "seq": 2,
           "japanese": "「まことに申し訳ありません」",
           "rubyHtml": "「まことに<ruby>申<rp>（</rp><rt>もう</rt><rp>）</rp></ruby>し<ruby>訳<rp>（</rp><rt>わけ</rt><rp>）</rp></ruby>ありません」",
-          "meaning": "&quot;Chân thành xin lỗi&quot; (Thực sự xin lỗi.)"
+          "meaning": "\"Chân thành xin lỗi\" (Thực sự xin lỗi.)"
         }
       ],
       "related": {
@@ -68155,7 +68155,7 @@
           "seq": 2,
           "japanese": "「まさに、おっしゃる通りです」",
           "rubyHtml": "「まさに、おっしゃる<ruby>通<rp>（</rp><rt>とお</rt><rp>）</rp></ruby>りです」",
-          "meaning": "&quot;Theo đúng những gì anh/ chị nói.&quot;"
+          "meaning": "\"Theo đúng những gì anh/ chị nói.\""
         },
         {
           "seq": 3,
@@ -68439,7 +68439,7 @@
           {
             "text": "後ろに、「不必要」という意味の表現がくる。",
             "rubyHtml": "<ruby>後<rp>（</rp><rt>うし</rt><rp>）</rp></ruby>ろに、「<ruby>不必要<rp>（</rp><rt>ふひつよう</rt><rp>）</rp></ruby>」という<ruby>意味<rp>（</rp><rt>いみ</rt><rp>）</rp></ruby>の<ruby>表現<rp>（</rp><rt>ひょうげん</rt><rp>）</rp></ruby>がくる。",
-            "meaning": "Theo sau là cách diễn đạt mang ý nghĩa &quot;không cần thiết&quot;.",
+            "meaning": "Theo sau là cách diễn đạt mang ý nghĩa \"không cần thiết\".",
             "badge": "※"
           }
         ]
@@ -68558,7 +68558,7 @@
           "seq": 2,
           "japanese": "「まだ梅雨前なのに、いやに蒸し暑いですね」",
           "rubyHtml": "「まだ<ruby>梅雨前<rp>（</rp><rt>つゆまえ</rt><rp>）</rp></ruby>なのに、いやに<ruby>蒸<rp>（</rp><rt>む</rt><rp>）</rp></ruby>し<ruby>暑<rp>（</rp><rt>あつ</rt><rp>）</rp></ruby>いですね」",
-          "meaning": "&quot;Vẫn chưa tới mùa mưa mà sao oi bức kinh khủng nhỉ.&quot;"
+          "meaning": "\"Vẫn chưa tới mùa mưa mà sao oi bức kinh khủng nhỉ.\""
         }
       ],
       "related": {
@@ -68790,19 +68790,19 @@
           "seq": 1,
           "japanese": "「最近寝不足なんです。何しろ忙しくて」",
           "rubyHtml": "「<ruby>最近<rp>（</rp><rt>さいきん</rt><rp>）</rp></ruby><ruby>寝不足<rp>（</rp><rt>ねぶそく</rt><rp>）</rp></ruby>なんです。<ruby>何<rp>（</rp><rt>なに</rt><rp>）</rp></ruby>しろ<ruby>忙<rp>（</rp><rt>いそが</rt><rp>）</rp></ruby>しくて」",
-          "meaning": "&quot;Gần đây tôi bị thiếu ngủ. Vì tôi bận quá mà.&quot;"
+          "meaning": "\"Gần đây tôi bị thiếu ngủ. Vì tôi bận quá mà.\""
         },
         {
           "seq": 2,
           "japanese": "「暖房がないので、何しろ寒くて」",
           "rubyHtml": "「<ruby>暖房<rp>（</rp><rt>だんぼう</rt><rp>）</rp></ruby>がないので、<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>しろ<ruby>寒<rp>（</rp><rt>さむ</rt><rp>）</rp></ruby>くて」",
-          "meaning": "&quot;Không có lò sưởi, nên lạnh lắm.&quot;"
+          "meaning": "\"Không có lò sưởi, nên lạnh lắm.\""
         },
         {
           "seq": 3,
           "japanese": "「ご両親はお元気ですか。」　「ええ、でも何しろ高齢なもので、世話が大変です。」",
           "rubyHtml": "「ご<ruby>両親<rp>（</rp><rt>りょうしん</rt><rp>）</rp></ruby>はお<ruby>元気<rp>（</rp><rt>げんき</rt><rp>）</rp></ruby>ですか。」　「ええ、でも<ruby>何<rp>（</rp><rt>なん</rt><rp>）</rp></ruby>しろ<ruby>高齢<rp>（</rp><rt>こうれい</rt><rp>）</rp></ruby>なもので、<ruby>世話<rp>（</rp><rt>せわ</rt><rp>）</rp></ruby>が<ruby>大変<rp>（</rp><rt>たいへん</rt><rp>）</rp></ruby>です。」",
-          "meaning": "&quot;Bố mẹ anh/ chị có khỏe không?&quot; &quot;Vâng, nhưng họ tuổi đã cao nên chăm sóc khá vất vả.&quot;"
+          "meaning": "\"Bố mẹ anh/ chị có khỏe không?\" \"Vâng, nhưng họ tuổi đã cao nên chăm sóc khá vất vả.\""
         }
       ],
       "related": {
@@ -68886,7 +68886,7 @@
           "seq": 2,
           "japanese": "「テスト、できた？」　「答えは一応全部、書いたけど．．．」",
           "rubyHtml": "「テスト、できた？」　「<ruby>答<rp>（</rp><rt>こた</rt><rp>）</rp></ruby>えは<ruby>一応全部<rp>（</rp><rt>いちおうぜんぶ</rt><rp>）</rp></ruby>、<ruby>書<rp>（</rp><rt>か</rt><rp>）</rp></ruby>いたけど．．．」",
-          "meaning": "&quot;Làm bài được không?&quot; &quot;Trước mắt là làm được hết đó nhưng không biết đúng hay không thôi.&quot;"
+          "meaning": "\"Làm bài được không?\" \"Trước mắt là làm được hết đó nhưng không biết đúng hay không thôi.\""
         },
         {
           "seq": 3,
@@ -69061,7 +69061,7 @@
           "seq": 1,
           "japanese": "「会議の日時と場所は次のとおりです。詳細は追って連絡します。」",
           "rubyHtml": "「<ruby>会議<rp>（</rp><rt>かいぎ</rt><rp>）</rp></ruby>の<ruby>日時<rp>（</rp><rt>にちじ</rt><rp>）</rp></ruby>と<ruby>場所<rp>（</rp><rt>ばしょ</rt><rp>）</rp></ruby>は<ruby>次<rp>（</rp><rt>つぎ</rt><rp>）</rp></ruby>のとおりです。<ruby>詳細<rp>（</rp><rt>しょうさい</rt><rp>）</rp></ruby>は<ruby>追<rp>（</rp><rt>お</rt><rp>）</rp></ruby>って<ruby>連絡<rp>（</rp><rt>れんらく</rt><rp>）</rp></ruby>します。」",
-          "meaning": "&quot;Địa điểm và ngày giờ của cuộc họp như sau. Chi tiết sẽ được thông báo sau.&quot;"
+          "meaning": "\"Địa điểm và ngày giờ của cuộc họp như sau. Chi tiết sẽ được thông báo sau.\""
         },
         {
           "seq": 2,
@@ -69187,7 +69187,7 @@
           "seq": 1,
           "japanese": "青春時代には誰でも、「人生、いかに生きるべきか」と悩んで当然だ。",
           "rubyHtml": "<ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby><ruby>時代<rp>（</rp><rt>じだい</rt><rp>）</rp></ruby>には<ruby>誰<rp>（</rp><rt>だれ</rt><rp>）</rp></ruby>でも、「<ruby>人生<rp>（</rp><rt>じんせい</rt><rp>）</rp></ruby>、いかに<ruby>生<rp>（</rp><rt>い</rt><rp>）</rp></ruby>きるべきか」と悩んで当然だ。",
-          "meaning": "Thời trẻ chắc hẳn ai cũng từng trăn trở rằng &quot;Đời người nên sống như thế nào?&quot;"
+          "meaning": "Thời trẻ chắc hẳn ai cũng từng trăn trở rằng \"Đời người nên sống như thế nào?\""
         },
         {
           "seq": 2,
@@ -69996,19 +69996,19 @@
           "seq": 1,
           "japanese": "「例の件、どうなった？」「ええ、うまくいきました」",
           "rubyHtml": "「<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>の<ruby>件<rp>（</rp><rt>けん</rt><rp>）</rp></ruby>、どうなった？」「ええ、うまくいきました」",
-          "meaning": "&quot;Vụ đó sao rồi?&quot; &quot;À, ổn thỏa hết rồi.&quot;"
+          "meaning": "\"Vụ đó sao rồi?\" \"À, ổn thỏa hết rồi.\""
         },
         {
           "seq": 2,
           "japanese": "「例の物を持ってきてくれ」",
           "rubyHtml": "「<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>の<ruby>物<rp>（</rp><rt>もの</rt><rp>）</rp></ruby>を<ruby>持<rp>（</rp><rt>も</rt><rp>）</rp></ruby>ってきてくれ」",
-          "meaning": "&quot;Mang cho tôi cái đó đi.&quot;"
+          "meaning": "\"Mang cho tôi cái đó đi.\""
         },
         {
           "seq": 3,
           "japanese": "「田中さん、社長の前でも例の調子だから、こちらがひやひやしたよ」",
           "rubyHtml": "「<ruby>田中<rp>（</rp><rt>たなか</rt><rp>）</rp></ruby>さん、<ruby>社長<rp>（</rp><rt>しゃちょう</rt><rp>）</rp></ruby>の<ruby>前<rp>（</rp><rt>まえ</rt><rp>）</rp></ruby>でも<ruby>例<rp>（</rp><rt>れい</rt><rp>）</rp></ruby>の<ruby>調子<rp>（</rp><rt>ちょうし</rt><rp>）</rp></ruby>だから、こちらがひやひやしたよ」",
-          "meaning": "&quot;Cái ông Tanaka trước mặt giám đốc mà còn giở cái giọng điệu đó, tôi đây cứ thót cả tim.&quot;"
+          "meaning": "\"Cái ông Tanaka trước mặt giám đốc mà còn giở cái giọng điệu đó, tôi đây cứ thót cả tim.\""
         }
       ],
       "related": {

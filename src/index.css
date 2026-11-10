@@ -26,20 +26,25 @@
   transform: rotateY(180deg);
 }
 
-/* Standard Cross-Browser Furigana (Ruby) Display - Chống lệch dòng tuyệt đối */
+/* Standard Cross-Browser Furigana (Ruby) Display - Chống lệch dòng & Chống tách rời chữ Hán tuyệt đối */
 ruby {
   display: inline-ruby;
   ruby-position: over;
+  ruby-align: center;
+  -webkit-ruby-position: before;
   vertical-align: baseline;
-  line-height: 2.15;
+  line-height: 2.2;
+  margin: 0 0.02em;
 }
 
 rt {
-  font-size: 0.58em; /* Tăng từ 0.5em lên 0.58em để chữ Furigana rõ nét, không bị nhòe */
+  font-size: 0.52em;
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   color: #4f46e5;
   text-align: center;
+  white-space: nowrap;
   user-select: none;
 }
 
@@ -54,6 +59,7 @@ rp {
 
 /* Class hiển thị câu tiếng Nhật có Furigana mượt mà, thoáng đãng, chống vỡ dòng */
 .jp-sentence {
+  font-family: var(--font-japanese, 'Noto Sans JP', sans-serif);
   line-height: 2.2;
   word-break: break-word;
   overflow-wrap: anywhere;

@@ -287,9 +287,9 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     const cssContent = fs.readFileSync(cssPath, 'utf8');
 
     assert.ok(cssContent.includes('ruby-position: over'), 'ruby phải có ruby-position: over');
-    assert.ok(cssContent.includes('line-height: 2.15'), 'ruby phải có line-height: 2.15 chống nhảy dòng');
+    assert.ok(cssContent.includes('ruby-align: center'), 'ruby phải có ruby-align: center chống tách rời chữ Hán');
     assert.ok(cssContent.includes('display: inline-ruby'), 'ruby phải có display: inline-ruby');
-    assert.ok(cssContent.includes('font-size: 0.58em') || cssContent.includes('font-size: 0.5em'), 'rt phải có font-size sắc nét (0.58em hoặc 0.5em)');
+    assert.ok(cssContent.includes('font-size: 0.52em') || cssContent.includes('font-size: 0.58em'), 'rt phải có font-size sắc nét (0.52em)');
     assert.ok(cssContent.includes('.jp-sentence'), 'src/index.css phải định nghĩa class .jp-sentence');
     assert.ok(cssContent.includes('overflow-wrap: anywhere') || cssContent.includes('word-break: break-word'), '.jp-sentence phải có chống tràn chữ');
     assert.ok(cssContent.includes('.cloze'), 'src/index.css phải có class .cloze');
@@ -380,6 +380,48 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(statsContent.includes('getAllUserDataSummary'), 'StatsModal phải dùng getAllUserDataSummary');
     assert.ok(statsContent.includes('Xuất Sao Lưu Toàn Bộ (N3•N2•N1 .json)'), 'StatsModal phải có nút xuất toàn bộ N3•N2•N1');
     assert.ok(statsContent.includes('Gộp thông minh (Khuyên dùng)'), 'StatsModal phải có tùy chọn Gộp thông minh');
+  });
+
+  test('Test 5.7: Kiểm toán làm sạch 100% HTML Entities trong JSON & formatExampleMeaning', async () => {
+    // 1. Kiểm toán toàn bộ 3 file JSON không còn bất kỳ HTML entity nào (&quot;, &lt;, &gt;, &amp;, &#038;, &#039;, &#49;, &#48;)
+    const levels = ['n1', 'n2', 'n3'];
+    for (const lvl of levels) {
+      const filePath = path.resolve(`src/data/mimikara_${lvl}.json`);
+      const rawContent = fs.readFileSync(filePath, 'utf8');
+      const entities = rawContent.match(/&[a-zA-Z0-9#]+;/g) || [];
+      assert.equal(entities.length, 0, `mimikara_${lvl}.json không được chứa bất kỳ HTML entity nào. Tìm thấy: ${entities.slice(0, 5)}`);
+      
+      // Không còn thẻ <u> thừa
+      assert.ok(!rawContent.includes('<u>') && !rawContent.includes('</u>'), `mimikara_${lvl}.json không được chứa thẻ <u>`);
+
+      // Không còn <ruby> không có rt
+      assert.ok(!rawContent.includes('<ruby>ランク</ruby>'), `mimikara_${lvl}.json không được chứa <ruby>ランク</ruby>`);
+    }
+
+    // 2. Kiểm toán hàm formatExampleMeaning và cleanDisplayText
+    const { formatExampleMeaning, cleanDisplayText } = await import('../src/utils/text.js');
+    
+    // Câu hội thoại từ #25 N1 迷信 (vốn đã có ngoặc kép ở đầu)
+    const quoteSentence = '"Cửa chính quay hướng Bắc thì vận may không tốt." "Chuyện đó chỉ là mê tín mà thôi."';
+    const formattedQuote = formatExampleMeaning(quoteSentence);
+    assert.equal(formattedQuote, quoteSentence, 'Câu đã có dấu ngoặc kép không được bọc thêm dấu ngoặc kép thừa ở ngoài');
+
+    // Câu thường không có ngoặc kép ở đầu
+    const normalSentence = 'Mặt trời mọc ở đằng Đông.';
+    const formattedNormal = formatExampleMeaning(normalSentence);
+    assert.equal(formattedNormal, '"Mặt trời mọc ở đằng Đông."', 'Câu thường phải được bọc trong dấu ngoặc kép trang nhã');
+
+    // Kiểm tra cleanDisplayText xử lý an toàn
+    assert.equal(cleanDisplayText('&quot;Hello&quot; &lt;=&gt; &amp; test'), '"Hello" ⇔ & test');
+
+    // 3. Kiểm toán Hán Việt N2 và N3 đồng bộ viết hoa
+    const dataN2 = JSON.parse(fs.readFileSync(path.resolve('src/data/mimikara_n2.json'), 'utf8'));
+    const wordN2_1 = dataN2.vocabulary[0];
+    assert.equal(wordN2_1.hanviet, 'NHÂN SINH', 'Hán Việt N2 phải được viết IN HOA đồng bộ');
+
+    const dataN3 = JSON.parse(fs.readFileSync(path.resolve('src/data/mimikara_n3.json'), 'utf8'));
+    const wordN3_1 = dataN3.vocabulary[0];
+    assert.equal(wordN3_1.hanviet, 'NAM TÍNH', 'Hán Việt N3 phải được viết IN HOA đồng bộ');
   });
 
 });

@@ -25,7 +25,7 @@ import {
   getRetrievability, 
   formatIntervalLabel 
 } from '../utils/srs';
-import { formatRelatedRuby, makeRubyCloze } from '../utils/text';
+import { formatRelatedRuby, makeRubyCloze, formatExampleMeaning } from '../utils/text';
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -388,7 +388,7 @@ export default function FlashcardDeck({
                     <span>Tình huống thực tế (Bối cảnh)</span>
                   </div>
                   <p className="text-base sm:text-xl text-slate-700 dark:text-slate-200 font-medium italic leading-relaxed pt-1">
-                    "{clozeData?.situation || currentWord.meanings?.[0]}"
+                    {formatExampleMeaning(clozeData?.situation || currentWord.meanings?.[0])}
                   </p>
                 </div>
 
@@ -719,7 +719,7 @@ export default function FlashcardDeck({
                           </button>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 text-xs italic">
-                          {ex.meaning}
+                          {formatExampleMeaning(ex.meaning)}
                         </p>
                       </div>
                     ))}

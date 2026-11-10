@@ -16,6 +16,7 @@ import {
 import confetti from 'canvas-confetti';
 import { speakJapanese } from '../utils/audio';
 import { buildQuizQuestions } from '../utils/quizHelper';
+import { formatExampleMeaning } from '../utils/text';
 
 export default function QuizMode({
   allWords,
@@ -523,7 +524,7 @@ export default function QuizMode({
                 </button>
               </div>
               <div className="text-sm text-slate-600 dark:text-slate-300 italic mt-1.5">
-                "{target.examples[0].meaning}"
+                {formatExampleMeaning(target.examples[0].meaning)}
               </div>
             </div>
           )}
