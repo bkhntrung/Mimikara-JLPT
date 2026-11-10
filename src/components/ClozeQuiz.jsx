@@ -404,9 +404,19 @@ export default function ClozeQuiz({
               <Volume2 className="w-4 h-4" />
               <span>Nghe đọc</span>
             </button>
-            <span className="text-xs text-slate-600 dark:text-slate-300">
-              Đáp án: <b className="text-indigo-600 dark:text-indigo-400">{target.word}</b> ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''} - {target.meanings?.[0]}
-            </span>
+            <div className="flex items-center gap-2 flex-wrap text-sm text-slate-600 dark:text-slate-300">
+              <span className="font-semibold text-slate-700 dark:text-slate-200">Đáp án:</span>
+              <span 
+                className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400 ${furiganaClass}`}
+                dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+              />
+              <span className="font-mono text-xs text-slate-400">
+                ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
+              </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                - {target.meanings?.[0]}
+              </span>
+            </div>
           </div>
 
           <button

@@ -4,30 +4,66 @@
 
 /**
  * Chuẩn hóa và làm nổi bật từ gốc trong cụm từ liên quan (collocations) và từ ghép (compounds)
- * Thay thế ký hiệu viết tắt '―', '—' hoặc '＿' bằng từ gốc có gắn class màu nổi bật
+ * Thay thế ký hiệu viết tắt '―', '—' hoặc '＿' bằng từ gốc có gắn class màu nổi bật và ĐẦY ĐỦ FURIGANA
  * mà không làm vỡ hoặc ảnh hưởng đến các thẻ <ruby><rt> xung quanh.
  * 
  * @param {string} htmlOrText - Chuỗi HTML hoặc Text chứa cụm từ ghép
- * @param {string} headWord - Từ gốc (ví dụ: '青春', '人生')
- * @returns {string} Chuỗi HTML đã được thay thế đẹp mắt
+ * @param {string|Object} headWordOrObj - Từ gốc dạng chuỗi (ví dụ: '青春') hoặc object từ vựng
+ * @param {string} [headWordHtml] - Chuỗi HTML có Ruby của từ gốc (nếu có)
+ * @param {string} [headReading] - Cách đọc Hiragana của từ gốc (nếu có)
+ * @returns {string} Chuỗi HTML đã được thay thế đẹp mắt kèm đầy đủ Furigana
  */
-export function formatRelatedRuby(htmlOrText, headWord) {
+export function formatRelatedRuby(htmlOrText, headWordOrObj, headWordHtml, headReading) {
   if (!htmlOrText || typeof htmlOrText !== 'string') return '';
-  if (!headWord) return htmlOrText;
+  if (!headWordOrObj) return htmlOrText;
 
-  const cleanHead = typeof headWord === 'string'
-    ? headWord.replace(/\(.*?\)/g, '').replace(/^[～~]/, '').trim()
+  let rawWord = '';
+  let customHtml = headWordHtml || '';
+  let reading = headReading || '';
+
+  if (typeof headWordOrObj === 'object' && headWordOrObj !== null) {
+    rawWord = headWordOrObj.word || '';
+    customHtml = headWordOrObj.wordHtml || customHtml;
+    reading = headWordOrObj.reading || reading;
+  } else if (typeof headWordOrObj === 'string') {
+    rawWord = headWordOrObj;
+  }
+
+  const cleanHead = typeof rawWord === 'string'
+    ? rawWord.replace(/\(.*?\)/g, '').replace(/^[～~]/, '').trim()
     : '';
 
   if (!cleanHead) return htmlOrText;
 
-  // Nếu chuỗi chứa ký hiệu thay thế (― U+2015, — U+2014, ＿ U+FF3F)
-  if (/[―—＿]/.test(htmlOrText)) {
-    const replacement = `<span class="text-indigo-600 dark:text-indigo-400 font-bold">${cleanHead}</span>`;
-    return htmlOrText.replace(/[―—＿]/g, replacement);
+  // Xây dựng chuỗi hiển thị có Ruby cho từ gốc (rubyHead)
+  let rubyHead = '';
+  if (customHtml && customHtml.includes('<ruby>')) {
+    rubyHead = customHtml;
+  } else if (reading && /[\u4E00-\u9FAF]/.test(cleanHead)) {
+    rubyHead = `<ruby>${cleanHead}<rp>（</rp><rt>${reading}</rt><rp>）</rp></ruby>`;
+  } else {
+    rubyHead = cleanHead;
   }
 
-  return htmlOrText;
+  const replacement = `<span class="text-indigo-600 dark:text-indigo-400 font-bold">${rubyHead}</span>`;
+
+  let res = htmlOrText;
+
+  // 1. Nếu chuỗi chứa ký hiệu thay thế (― U+2015, — U+2014, ＿ U+FF3F)
+  if (/[―—＿]/.test(res)) {
+    res = res.replace(/[―—＿]/g, replacement);
+  } else if (rubyHead.includes('<ruby>') && /[\u4E00-\u9FAF]/.test(cleanHead) && res.includes(cleanHead)) {
+    // 2. Nếu không có ký hiệu [―—＿], nhưng có chứa cleanHead (chữ Hán) nằm ngoài thẻ <ruby>
+    const tokens = tokenizeRuby(res);
+    res = tokens.map(tok => {
+      if (tok.type === 'text' && tok.text.includes(cleanHead)) {
+        return tok.text.split(cleanHead).join(replacement);
+      }
+      return tok.raw;
+    }).join('');
+  }
+
+  return res;
 }
 
 /**

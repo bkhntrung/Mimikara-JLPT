@@ -248,22 +248,22 @@ export default function DictionaryView({
                         <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
                           Ví dụ minh họa ({w.examples.length})
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-2.5">
                           {w.examples.map((ex, ei) => (
-                            <div key={ei} className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 space-y-1">
-                              <div className="flex items-start justify-between gap-2">
+                            <div key={ei} className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+                              <div className="flex items-start justify-between gap-3">
                                 <div 
-                                  className={`jp-sentence font-japanese text-sm font-medium text-slate-800 dark:text-slate-100 ${furiganaClass}`}
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`}
                                   dangerouslySetInnerHTML={{ __html: ex.rubyHtml || ex.japanese }}
                                 />
                                 <button
                                   onClick={() => speakJapanese(ex.japanese, soundSpeed)}
-                                  className="p-1 text-slate-400 hover:text-indigo-600 shrink-0"
+                                  className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg shrink-0 transition-colors"
                                 >
-                                  <Volume2 className="w-3.5 h-3.5" />
+                                  <Volume2 className="w-4 h-4" />
                                 </button>
                               </div>
-                              <p className="text-xs text-slate-500 italic">
+                              <p className="text-sm text-slate-600 dark:text-slate-300 italic">
                                 {formatExampleMeaning(ex.meaning)}
                               </p>
                             </div>
@@ -272,58 +272,128 @@ export default function DictionaryView({
                       </div>
                     )}
 
-                    {/* Related Words (Collocations, Synonyms, Antonyms, Compounds) */}
-                    {((w.related?.collocations?.length || 0) + (w.related?.compounds?.length || 0) + (w.related?.synonyms?.length || 0) + (w.related?.antonyms?.length || 0)) > 0 && (
-                      <div className="space-y-2">
+                    {/* Related Words (Collocations, Synonyms, Antonyms, Compounds, Idioms, Notes) */}
+                    {((w.related?.collocations?.length || 0) + 
+                      (w.related?.compounds?.length || 0) + 
+                      (w.related?.synonyms?.length || 0) + 
+                      (w.related?.antonyms?.length || 0) + 
+                      (w.related?.relatedWords?.length || 0) + 
+                      (w.related?.idioms?.length || 0) + 
+                      (w.related?.notes?.length || 0)) > 0 && (
+                      <div className="space-y-2.5">
                         <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
                           Từ liên quan, Cụm đi kèm & Từ ghép
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           {/* Collocations 連 */}
                           {w.related.collocations?.map((c, ci) => (
-                            <div key={`col-${ci}`} className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs">
-                              <span className="font-bold text-blue-600 mr-1.5">連</span>
-                              <span 
-                                className="font-japanese font-medium" 
-                                dangerouslySetInnerHTML={{ __html: formatRelatedRuby(c.rubyHtml || c.text, w.word) }} 
-                              />
-                              <span className="text-slate-500 ml-1.5">({c.meaning})</span>
+                            <div key={`col-${ci}`} className="p-3 rounded-2xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 shrink-0 mt-1">
+                                連 Đi kèm
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(c.rubyHtml || c.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{c.meaning}</div>
+                              </div>
                             </div>
                           ))}
 
                           {/* Compounds 合 */}
                           {w.related.compounds?.map((c, ci) => (
-                            <div key={`c-${ci}`} className="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs">
-                              <span className="font-bold text-emerald-600 mr-1.5">合</span>
-                              <span 
-                                className="font-japanese font-medium" 
-                                dangerouslySetInnerHTML={{ __html: formatRelatedRuby(c.rubyHtml || c.text, w.word) }} 
-                              />
-                              <span className="text-slate-500 ml-1.5">({c.meaning})</span>
+                            <div key={`c-${ci}`} className="p-3 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 shrink-0 mt-1">
+                                合 Từ ghép
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(c.rubyHtml || c.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{c.meaning}</div>
+                              </div>
                             </div>
                           ))}
 
                           {/* Synonyms 類 */}
                           {w.related.synonyms?.map((s, si) => (
-                            <div key={`s-${si}`} className="px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800 text-xs">
-                              <span className="font-bold text-purple-600 mr-1.5">類</span>
-                              <span 
-                                className="font-japanese font-medium" 
-                                dangerouslySetInnerHTML={{ __html: formatRelatedRuby(s.rubyHtml || s.text, w.word) }} 
-                              />
-                              <span className="text-slate-500 ml-1.5">({s.meaning})</span>
+                            <div key={`s-${si}`} className="p-3 rounded-2xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-purple-200 dark:bg-purple-800 text-purple-800 dark:text-purple-200 shrink-0 mt-1">
+                                類 Đồng nghĩa
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(s.rubyHtml || s.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{s.meaning}</div>
+                              </div>
                             </div>
                           ))}
 
                           {/* Antonyms 対 */}
                           {w.related.antonyms?.map((a, ai) => (
-                            <div key={`a-${ai}`} className="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-xs">
-                              <span className="font-bold text-rose-600 mr-1.5">対</span>
-                              <span 
-                                className="font-japanese font-medium" 
-                                dangerouslySetInnerHTML={{ __html: formatRelatedRuby(a.rubyHtml || a.text, w.word) }} 
-                              />
-                              <span className="text-slate-500 ml-1.5">({a.meaning})</span>
+                            <div key={`a-${ai}`} className="p-3 rounded-2xl bg-rose-50/70 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-rose-200 dark:bg-rose-800 text-rose-800 dark:text-rose-200 shrink-0 mt-1">
+                                対 Trái nghĩa
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(a.rubyHtml || a.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{a.meaning}</div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* Related Words 関 */}
+                          {w.related.relatedWords?.map((r, ri) => (
+                            <div key={`rel-${ri}`} className="p-3 rounded-2xl bg-amber-50/70 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 shrink-0 mt-1">
+                                関 Liên quan
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(r.rubyHtml || r.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{r.meaning}</div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* Idioms 慣 */}
+                          {w.related.idioms?.map((idm, idi) => (
+                            <div key={`idm-${idi}`} className="p-3 rounded-2xl bg-orange-50/70 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800/60 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 shrink-0 mt-1">
+                                慣 Quán ngữ
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(idm.rubyHtml || idm.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{idm.meaning}</div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* Notes ※ */}
+                          {w.related.notes?.map((nte, ni) => (
+                            <div key={`nte-${ni}`} className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-start gap-2.5">
+                              <span className="px-2 py-0.5 rounded-lg font-bold text-xs bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 shrink-0 mt-1">
+                                ※ Lưu ý
+                              </span>
+                              <div className="space-y-1">
+                                <div 
+                                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`} 
+                                  dangerouslySetInnerHTML={{ __html: formatRelatedRuby(nte.rubyHtml || nte.text, w.word, w.wordHtml, w.reading) }} 
+                                />
+                                <div className="text-sm text-slate-600 dark:text-slate-300">{nte.meaning}</div>
+                              </div>
                             </div>
                           ))}
                         </div>

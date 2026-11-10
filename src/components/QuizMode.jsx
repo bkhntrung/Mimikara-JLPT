@@ -473,37 +473,63 @@ export default function QuizMode({
 
       {/* Answer Feedback & Explanation Card */}
       {isAnswered && (
-        <div className="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3 animate-fadeIn">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="font-japanese font-bold text-lg text-slate-800 dark:text-slate-100">
-                {target.word} ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
+        <div className="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3.5 animate-fadeIn">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <span 
+                className={`jp-sentence font-japanese font-bold text-xl sm:text-2xl text-slate-800 dark:text-slate-100 ${furiganaClass}`}
+                dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+              />
+              <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
+                ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
               </span>
               <button
                 onClick={() => speakJapanese(target.word, soundSpeed)}
-                className="p-1 rounded-md text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950"
-                title="Nghe phát âm"
+                className="p-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+                title="Nghe phát âm từ vựng"
               >
-                <Volume2 className="w-4 h-4" />
+                <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             <button
               onClick={handleNext}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 shrink-0"
             >
               <span>Câu kế tiếp (Enter / Space)</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="text-xs text-slate-600 dark:text-slate-300">
-            <b>Ý nghĩa:</b> {target.meanings?.join('; ')}
+          <div className="text-sm text-slate-700 dark:text-slate-200">
+            <span className="font-semibold text-slate-500 dark:text-slate-400">Ý nghĩa: </span>
+            {target.meanings?.join('; ')}
           </div>
 
-          {direction === 'synonym_antonym' && currentQ.relationMeaning && (
-            <div className="text-xs text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 p-2.5 rounded-xl border border-purple-200 dark:border-purple-800">
-              <b>{currentQ.relationLabel}:</b> <span className="font-japanese font-bold">{currentQ.correctAnswer}</span> - {currentQ.relationMeaning}
+          {direction === 'synonym_antonym' && (
+            <div className="p-3 sm:p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 space-y-1.5">
+              <div className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
+                {currentQ.relationLabel}
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span 
+                  className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-purple-900 dark:text-purple-100 ${furiganaClass}`}
+                  dangerouslySetInnerHTML={{ __html: currentQ.correctRubyHtml || currentQ.correctAnswer }}
+                />
+                <button
+                  type="button"
+                  onClick={() => speakJapanese(currentQ.correctAnswer, soundSpeed)}
+                  title="Nghe phát âm đáp án"
+                  className="p-1 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-lg transition-colors"
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
+                {currentQ.relationMeaning && (
+                  <span className="text-sm text-purple-700 dark:text-purple-300">
+                    - {currentQ.relationMeaning}
+                  </span>
+                )}
+              </div>
             </div>
           )}
 
@@ -511,7 +537,7 @@ export default function QuizMode({
             <div className="space-y-1.5 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 shadow-sm">
               <div className="flex items-start justify-between gap-3">
                 <div 
-                  className="jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed"
+                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`}
                   dangerouslySetInnerHTML={{ __html: target.examples[0].rubyHtml || target.examples[0].japanese }}
                 />
                 <button

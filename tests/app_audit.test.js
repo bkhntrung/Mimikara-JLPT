@@ -234,6 +234,28 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.equal(formatRelatedRuby('', 'test'), '');
     assert.equal(formatRelatedRuby(null, 'test'), '');
     assert.equal(formatRelatedRuby('―時代', null), '―時代');
+
+    // Trường hợp 6: Hỗ trợ Furigana cho từ gốc khi truyền wordHtml hoặc reading
+    const formattedWithHtml = formatRelatedRuby(rawN1, '青春', '<ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby>', 'せいしゅん');
+    assert.equal(
+      formattedWithHtml,
+      '<span class="text-indigo-600 dark:text-indigo-400 font-bold"><ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby></span><ruby>時代<rp>（</rp><rt>じだい</rt><rp>）</rp></ruby>'
+    );
+
+    // Trường hợp 7: Hỗ trợ truyền object từ vựng { word, wordHtml, reading }
+    const wordObj = { word: '青春', wordHtml: '<ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby>', reading: 'せいしゅん' };
+    const formattedWithObj = formatRelatedRuby(rawN1, wordObj);
+    assert.equal(
+      formattedWithObj,
+      '<span class="text-indigo-600 dark:text-indigo-400 font-bold"><ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby></span><ruby>時代<rp>（</rp><rt>じだい</rt><rp>）</rp></ruby>'
+    );
+
+    // Trường hợp 8: Từ gốc xuất hiện trực tiếp trong văn bản ngoài thẻ <ruby> (không dùng dấu gạch)
+    const rawNoDash = '青春時代';
+    const formattedNoDash = formatRelatedRuby(rawNoDash, wordObj);
+    assert.ok(
+      formattedNoDash.includes('<span class="text-indigo-600 dark:text-indigo-400 font-bold"><ruby>青春<rp>（</rp><rt>せいしゅん</rt><rp>）</rp></ruby></span>')
+    );
   });
 
   test('Test 4.2: makeRubyCloze bảo toàn 100% thẻ <ruby> xung quanh và thay thế trọn vẹn từ đích thành ô cloze', () => {
@@ -422,6 +444,57 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     const dataN3 = JSON.parse(fs.readFileSync(path.resolve('src/data/mimikara_n3.json'), 'utf8'));
     const wordN3_1 = dataN3.vocabulary[0];
     assert.equal(wordN3_1.hanviet, 'NAM TÍNH', 'Hán Việt N3 phải được viết IN HOA đồng bộ');
+  });
+
+  test('Test 5.8: Kiểm toán Furigana và Cỡ chữ chuẩn cho Từ liên quan, Từ đồng nghĩa & Cụm đi kèm', () => {
+    // 1. Kiểm toán 100% mục related trong cả 3 file JSON không còn chữ Hán ngoài thẻ <ruby>
+    const levels = ['n1', 'n2', 'n3'];
+    for (const lvl of levels) {
+      const filePath = path.resolve(`src/data/mimikara_${lvl}.json`);
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      let missingCount = 0;
+
+      for (const w of data.vocabulary) {
+        if (!w.related) continue;
+        const categories = ['synonyms', 'antonyms', 'compounds', 'collocations', 'relatedWords', 'idioms', 'notes'];
+        for (const cat of categories) {
+          const items = w.related[cat];
+          if (!Array.isArray(items)) continue;
+          for (const item of items) {
+            const ruby = item.rubyHtml || '';
+            const plain = ruby.replace(/<ruby>[\s\S]*?<\/ruby>/gi, '').replace(/[―—＿]/g, '');
+            if (/[\u4E00-\u9FAF]/.test(plain)) {
+              missingCount++;
+            }
+          }
+        }
+      }
+
+      assert.equal(missingCount, 0, `mimikara_${lvl}.json không được có mục related nào còn chữ Hán ngoài thẻ <ruby>`);
+    }
+
+    // 2. Kiểm toán FlashcardDeck.jsx dùng cỡ chữ text-base sm:text-lg cho từ liên quan và formatRelatedRuby
+    const flashcardPath = path.resolve('src/components/FlashcardDeck.jsx');
+    const flashcardContent = fs.readFileSync(flashcardPath, 'utf8');
+    assert.ok(flashcardContent.includes('formatRelatedRuby'), 'FlashcardDeck phải dùng formatRelatedRuby');
+    assert.ok(flashcardContent.includes('text-base sm:text-lg font-semibold'), 'FlashcardDeck phải áp dụng cỡ chữ text-base sm:text-lg cho từ liên quan');
+
+    // 3. Kiểm toán DictionaryView.jsx dùng cỡ chữ text-base sm:text-lg cho từ liên quan và formatRelatedRuby
+    const dictPath = path.resolve('src/components/DictionaryView.jsx');
+    const dictContent = fs.readFileSync(dictPath, 'utf8');
+    assert.ok(dictContent.includes('formatRelatedRuby'), 'DictionaryView phải dùng formatRelatedRuby');
+    assert.ok(dictContent.includes('text-base sm:text-lg font-semibold'), 'DictionaryView phải áp dụng cỡ chữ text-base sm:text-lg');
+
+    // 4. Kiểm toán QuizMode.jsx và ClozeQuiz.jsx nâng cấp Furigana và cỡ chữ
+    const quizPath = path.resolve('src/components/QuizMode.jsx');
+    const quizContent = fs.readFileSync(quizPath, 'utf8');
+    assert.ok(quizContent.includes('currentQ.correctRubyHtml'), 'QuizMode phải hỗ trợ currentQ.correctRubyHtml');
+    assert.ok(quizContent.includes('text-base sm:text-lg font-bold'), 'QuizMode phải dùng text-base sm:text-lg font-bold cho đáp án giải thích đồng/trái nghĩa');
+
+    const clozePath = path.resolve('src/components/ClozeQuiz.jsx');
+    const clozeContent = fs.readFileSync(clozePath, 'utf8');
+    assert.ok(clozeContent.includes('text-base sm:text-lg font-bold'), 'ClozeQuiz phải dùng text-base sm:text-lg font-bold cho đáp án giải thích');
+    assert.ok(clozeContent.includes('target.wordHtml || target.word'), 'ClozeQuiz phải render target.wordHtml với Furigana');
   });
 
 });

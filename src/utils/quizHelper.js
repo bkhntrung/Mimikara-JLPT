@@ -1,4 +1,4 @@
-import { makeRubyCloze } from './text.js';
+import { makeRubyCloze, formatRelatedRuby } from './text.js';
 
 /**
  * Thuật toán sinh câu hỏi thông minh cho Bài tập Điền câu (ClozeQuiz) và Trắc nghiệm (QuizMode)
@@ -234,7 +234,7 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
             relationLabel: 'Từ đồng nghĩa (類義語)',
             badge: '類',
             correctAnswer: s.text,
-            correctRubyHtml: s.rubyHtml || s.text,
+            correctRubyHtml: formatRelatedRuby(s.rubyHtml || s.text, w.word, w.wordHtml, w.reading),
             relationMeaning: s.meaning || ''
           });
         }
@@ -248,7 +248,7 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
             relationLabel: 'Từ trái nghĩa (対義語)',
             badge: '対',
             correctAnswer: a.text,
-            correctRubyHtml: a.rubyHtml || a.text,
+            correctRubyHtml: formatRelatedRuby(a.rubyHtml || a.text, w.word, w.wordHtml, w.reading),
             relationMeaning: a.meaning || ''
           });
         }
@@ -298,6 +298,7 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
         relationLabel: qItem.relationLabel,
         badge: qItem.badge,
         correctAnswer: qItem.correctAnswer,
+        correctRubyHtml: qItem.correctRubyHtml,
         correctOptionId: correctOption.id,
         relationMeaning: qItem.relationMeaning,
         options

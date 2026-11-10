@@ -2596,7 +2596,7 @@
         "collocations": [
           {
             "text": "＿を出す＜＝＞抑える、＿に走る、＿的になる",
-            "rubyHtml": "＿を<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>す＜＝＞<ruby>抑<rp>（</rp><rt>おさ</rt><rp>）</rp></ruby>える、＿に<ruby>走<rp>（</rp><rt>はし</rt><rp>）</rp></ruby>る、＿的になる",
+            "rubyHtml": "＿を<ruby>出<rp>（</rp><rt>だ</rt><rp>）</rp></ruby>す ⇔ <ruby>抑<rp>（</rp><rt>おさ</rt><rp>）</rp></ruby>える、＿に<ruby>走<rp>（</rp><rt>はし</rt><rp>）</rp></ruby>る、＿<ruby>的<rp>（</rp><rt>てき</rt><rp>）</rp></ruby>になる",
             "meaning": "bộc lộ/kiềm chế cảm xúc",
             "badge": "連"
           }
@@ -6221,7 +6221,7 @@
         "compounds": [
           {
             "text": "敷布団、敷物、風呂敷",
-            "rubyHtml": "<ruby>敷布団<rp>（</rp><rt>しきぶとん</rt><rp>）</rp></ruby>、敷物、風呂敷",
+            "rubyHtml": "<ruby>敷布団<rp>（</rp><rt>しきぶとん</rt><rp>）</rp></ruby>、<ruby>敷物<rp>（</rp><rt>しきもの</rt><rp>）</rp></ruby>、<ruby>風呂敷<rp>（</rp><rt>ふろしき</rt><rp>）</rp></ruby>",
             "meaning": "Nệm lót; tấm lót; khăn furoshiki.",
             "badge": "合"
           }
@@ -9600,7 +9600,7 @@
         "compounds": [
           {
             "text": "湿り気、湿っぽい",
-            "rubyHtml": "<ruby>湿<rp>（</rp><rt>しめ</rt><rp>）</rp></ruby>り気、<ruby>湿<rp>（</rp><rt>しめ</rt><rp>）</rp></ruby>っぽい",
+            "rubyHtml": "<ruby>湿<rp>（</rp><rt>しめ</rt><rp>）</rp></ruby>り<ruby>気<rp>（</rp><rt>け</rt><rp>）</rp></ruby>、<ruby>湿<rp>（</rp><rt>しめ</rt><rp>）</rp></ruby>っぽい",
             "meaning": "Ẩm ướt; ẩm thấp.",
             "badge": "合"
           }
@@ -10588,7 +10588,7 @@
         "synonyms": [
           {
             "text": "関係する、関係がある",
-            "rubyHtml": "関係する、関係がある",
+            "rubyHtml": "<ruby>関係<rp>（</rp><rt>かんけい</rt><rp>）</rp></ruby>する、<ruby>関係<rp>（</rp><rt>かんけい</rt><rp>）</rp></ruby>がある",
             "meaning": "Có liên quan; có quan hệ.",
             "badge": "類"
           }
@@ -10599,7 +10599,7 @@
         "notes": [
           {
             "text": "関わり→＿がある＜＝＞ない",
-            "rubyHtml": "関わり→＿がある＜＝＞ない",
+            "rubyHtml": "<ruby>関<rp>（</rp><rt>かか</rt><rp>）</rp></ruby>わり→＿がある ⇔ ない",
             "meaning": "Sự liên quan/dính dáng: có/không.",
             "badge": "名"
           }
@@ -11718,7 +11718,7 @@
         "antonyms": [
           {
             "text": "豊かな、裕福な",
-            "rubyHtml": "<ruby>豊<rp>（</rp><rt>ゆた</rt><rp>）</rp></ruby>かな、裕福な",
+            "rubyHtml": "<ruby>豊<rp>（</rp><rt>ゆた</rt><rp>）</rp></ruby>かな、<ruby>裕福<rp>（</rp><rt>ゆうふく</rt><rp>）</rp></ruby>な",
             "meaning": "Giàu có; sung túc.",
             "badge": "対"
           }
@@ -32773,7 +32773,7 @@
         "relatedWords": [
           {
             "text": "増加",
-            "rubyHtml": "増加",
+            "rubyHtml": "<ruby>増加<rp>（</rp><rt>ぞうか</rt><rp>）</rp></ruby>",
             "meaning": "Tăng thêm; sự gia tăng.",
             "badge": "関"
           }
@@ -48860,7 +48860,7 @@
         "collocations": [
           {
             "text": "＿がいい＜＝＞悪い、＿が高い、＿が高まる、＿を高める",
-            "rubyHtml": "＿がいい＜＝＞悪い、＿が<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い、＿が<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>まる、＿を<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>める",
+            "rubyHtml": "＿がいい ⇔ <ruby>悪<rp>（</rp><rt>わる</rt><rp>）</rp></ruby>い、＿が<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>い、＿が<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>まる、＿を<ruby>高<rp>（</rp><rt>たか</rt><rp>）</rp></ruby>める",
             "meaning": "Hiệu năng tốt ⇔ kém; hiệu năng cao; nâng cao hiệu năng.",
             "badge": "連"
           }
