@@ -12,7 +12,13 @@ import {
   getSmartDistractors,
   buildClozeSentenceQuestions, 
   buildClozeCollocationQuestions,
-  buildQuizQuestions 
+  buildCombinedClozeQuestions,
+  buildQuizQuestions,
+  filterWordsByStudyScope,
+  getWordQuestionQuota,
+  createRetryQuestion,
+  insertRetryQuestion,
+  interleaveQuestionsByTarget
 } from '../src/utils/quizHelper.js';
 
 describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimikara (Audit & Exercises Test Suite)', () => {
@@ -525,7 +531,13 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(handleRateSRSMatch[1].includes('stopSpeech()'), 'handleRateSRS phải gọi stopSpeech()');
     assert.ok(handleRateSRSMatch[1].includes('setIsFlipped(false)'), 'handleRateSRS phải gọi setIsFlipped(false) đồng bộ');
 
-    // 3. Kiểm thử mô phỏng máy trạng thái âm thanh (Audio State Machine Simulation)
+    // 3. Kiểm tra DictionaryView.jsx: Đã import useEffect và stopSpeech
+    const dictPath = path.resolve('src/components/DictionaryView.jsx');
+    const dictContent = fs.readFileSync(dictPath, 'utf8');
+    assert.ok(dictContent.includes('useEffect'), 'DictionaryView.jsx phải import useEffect');
+    assert.ok(dictContent.includes('stopSpeech'), 'DictionaryView.jsx phải import stopSpeech');
+
+    // 4. Kiểm thử mô phỏng máy trạng thái âm thanh (Audio State Machine Simulation)
     let speechPlayedCount = 0;
     let speechStoppedCount = 0;
     let lastSpokenWord = null;
@@ -600,6 +612,185 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     controller.onStateUpdate(wordB, false);
     assert.equal(speechPlayedCount, 2, 'Không phát âm thêm khi lật lại mặt trước');
     assert.ok(speechStoppedCount >= 2, 'Phải ngắt âm thanh khi lật lại mặt trước');
+  });
+
+  test('Test 5.10: Kiểm toán tĩnh toàn bộ các file JSX trong src/ đảm bảo import đầy đủ React hooks (Chống lỗi màn hình trắng ReferenceError)', () => {
+    function getAllJsxFiles(dir) {
+      let results = [];
+      const list = fs.readdirSync(dir);
+      for (const file of list) {
+        const fullPath = path.join(dir, file);
+        const stat = fs.statSync(fullPath);
+        if (stat && stat.isDirectory()) {
+          results = results.concat(getAllJsxFiles(fullPath));
+        } else if (file.endsWith('.jsx')) {
+          results.push(fullPath);
+        }
+      }
+      return results;
+    }
+
+    const hooks = ['useState', 'useEffect', 'useMemo', 'useCallback', 'useRef', 'useContext', 'useReducer'];
+    const jsxFiles = getAllJsxFiles(path.resolve('src'));
+
+    assert.ok(jsxFiles.length >= 10, 'Phải có ít nhất 10 file JSX trong src/');
+
+    const missingImports = [];
+
+    for (const filePath of jsxFiles) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const relPath = path.relative(path.resolve('.'), filePath).replace(/\\/g, '/');
+
+      // Tìm tất cả hooks được import từ 'react'
+      const reactImports = new Set();
+      const importRegex = /import\s+(?:(?:\*\s+as\s+\w+|React|\w+)\s*,?\s*)?(?:\{([^}]+)\})?\s*from\s*['"]react['"]/g;
+      let match;
+      while ((match = importRegex.exec(content)) !== null) {
+        if (match[1]) {
+          match[1].split(',').forEach(item => {
+            const cleaned = item.trim().replace(/^type\s+/, '');
+            if (cleaned) reactImports.add(cleaned);
+          });
+        }
+      }
+
+      // Kiểm tra từng hook
+      for (const hook of hooks) {
+        const usageRegex = new RegExp(`\\b${hook}\\s*\\(`, 'g');
+        if (usageRegex.test(content)) {
+          const isImported = reactImports.has(hook) || content.includes(`React.${hook}`);
+          if (!isImported) {
+            missingImports.push(`${relPath} sử dụng ${hook} nhưng chưa import từ 'react'`);
+          }
+        }
+      }
+    }
+
+    assert.deepEqual(missingImports, [], `Phát hiện file JSX thiếu import React hook dẫn tới ReferenceError: ${missingImports.join('; ')}`);
+
+    // Kiểm tra an toàn khởi tạo ref trong App.jsx (tránh Temporal Dead Zone)
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+    assert.ok(!appContent.includes('useRef(activeWords)'), 'App.jsx không được truyền activeWords vào useRef trước khi activeWords được khai báo');
+    assert.ok(appContent.includes('activeWordsRef = useRef([])'), 'activeWordsRef phải được khởi tạo an toàn với mảng rỗng');
+  });
+
+  test('Test 5.11: Kiểm toán Hệ thống Bài tập Thích ứng theo Từ Đã & Đang Học (Adaptive Mastery Exercises & Spaced Error Re-queue)', () => {
+    // 1. Kiểm tra filterWordsByStudyScope
+    const mockWords = [
+      { id: 1, word: '青春', unit: 1 },
+      { id: 2, word: '晩年', unit: 1 },
+      { id: 3, word: '葬式', unit: 1 },
+      { id: 4, word: '世帯', unit: 1 },
+      { id: 5, word: '一体', unit: 1 }
+    ];
+
+    const now = new Date('2026-11-11T12:00:00Z');
+    const mockSrs = {
+      1: { id: 1, state: 'review', stage: 'good', nextReview: '2026-11-20T12:00:00Z' }, // Studied, vững
+      2: { id: 2, state: 'learning', stage: 'again', nextReview: '2026-11-11T10:00:00Z' }, // Weak (Again, overdue)
+      3: { id: 3, state: 'learning', stage: 'hard', nextReview: '2026-11-12T12:00:00Z' }, // Weak (Hard)
+      4: { id: 4, state: 'new', stage: 'new' } // Chưa học (new)
+      // 5: chưa có record
+    };
+    const mockStarred = new Set([5]); // Từ 5 gắn sao -> được tính là studied và weak
+
+    // Kiểm tra chế độ 'studied'
+    const studiedResult = filterWordsByStudyScope(mockWords, mockWords, mockSrs, mockStarred, 'studied', now);
+    const studiedIds = studiedResult.words.map(w => w.id);
+    assert.deepEqual(studiedIds.sort(), [1, 2, 3, 5], 'Chế độ studied phải lấy các từ có stage !== new hoặc gắn sao, loại bỏ hoàn toàn từ new và chưa học');
+    assert.equal(studiedResult.words.some(w => w.id === 4), false, 'Từ new tuyệt đối không nằm trong danh sách studied');
+
+    // Kiểm tra chế độ 'weak'
+    const weakResult = filterWordsByStudyScope(mockWords, mockWords, mockSrs, mockStarred, 'weak', now);
+    const weakIds = weakResult.words.map(w => w.id);
+    assert.deepEqual(weakIds.sort(), [2, 3, 5], 'Chế độ weak phải lấy đúng từ again, hard, overdue hoặc gắn sao');
+
+    // Kiểm tra quota ưu tiên
+    assert.equal(getWordQuestionQuota({ id: 2 }, mockSrs, mockStarred, 'studied', now), 4, 'Từ again phải có quota = 4');
+    assert.equal(getWordQuestionQuota({ id: 3 }, mockSrs, mockStarred, 'studied', now), 3, 'Từ hard phải có quota = 3');
+    assert.equal(getWordQuestionQuota({ id: 1 }, mockSrs, mockStarred, 'studied', now), 2, 'Từ good phải có quota = 2');
+
+    // 2. Kiểm tra buildClozeSentenceQuestions mở khóa nhiều câu ví dụ
+    const multiExWords = mimikaraN1.vocabulary.filter(w => w.examples && w.examples.length >= 2).slice(0, 10);
+    const multiExQuestions = buildClozeSentenceQuestions(multiExWords, mimikaraN1.vocabulary, { expandAllExamples: true });
+    assert.ok(multiExQuestions.length > multiExWords.length, 'Số câu hỏi sinh ra từ các từ có nhiều ví dụ phải lớn hơn số từ đầu vào');
+
+    // 3. Kiểm tra buildQuizQuestions chế độ all_angles
+    const sampleWords = mimikaraN1.vocabulary.slice(0, 5);
+    const allAngleQuestions = buildQuizQuestions(sampleWords, mimikaraN1.vocabulary, 'all_angles', {
+      srsRecords: { [sampleWords[0].id]: { stage: 'again' } }
+    });
+    assert.ok(allAngleQuestions.length >= sampleWords.length, 'Chế độ all_angles phải sinh đủ câu hỏi đa chiều');
+    const anglesFound = new Set(allAngleQuestions.map(q => q.questionAngle));
+    assert.ok(anglesFound.has('kanji_to_reading'), 'Phải có góc hỏi kanji_to_reading');
+    assert.ok(anglesFound.has('kanji_to_meaning'), 'Phải có góc hỏi kanji_to_meaning');
+
+    // 4. Kiểm tra Vòng lặp Sửa sai (createRetryQuestion & insertRetryQuestion)
+    const originalQ = allAngleQuestions[0];
+    const retryQ = createRetryQuestion(originalQ, sampleWords, mimikaraN1.vocabulary);
+    assert.equal(retryQ.isRetry, true, 'Câu hỏi retry phải có cờ isRetry = true');
+    assert.equal(retryQ.retryCount, 1, 'Lần retry đầu tiên phải có retryCount = 1');
+    assert.notEqual(retryQ.id, originalQ.id, 'ID câu hỏi retry phải khác ID gốc');
+
+    const queue = [{ id: 'q0' }, { id: 'q1' }, { id: 'q2' }, { id: 'q3' }, { id: 'q4' }, { id: 'q5' }];
+    const newQueue = insertRetryQuestion(queue, 1, retryQ, 3);
+    assert.equal(newQueue.length, 7, 'Hàng đợi sau khi chèn phải tăng 1 phần tử');
+    assert.equal(newQueue[4].id, retryQ.id, 'Câu hỏi retry phải xuất hiện tại vị trí currentIndex + spacing (1 + 3 = 4)');
+  });
+
+  test('Test 5.12: Kiểm toán Chống lỗi Reset/Mất phản hồi khi trả lời bài tập (Quiz State Persistence & Anti-Duplication)', () => {
+    // 1. Kiểm tra tĩnh QuizMode.jsx: Không được chứa srsRecords trong dependencies của useEffect sinh câu hỏi
+    const quizPath = path.resolve('src/components/QuizMode.jsx');
+    const quizContent = fs.readFileSync(quizPath, 'utf8');
+
+    assert.ok(quizContent.includes('srsRecordsRef = useRef(srsRecords)'), 'QuizMode phải dùng srsRecordsRef để truy cập srsRecords');
+    assert.ok(quizContent.includes('starredSetRef = useRef(starredSet)'), 'QuizMode phải dùng starredSetRef để truy cập starredSet');
+    
+    // Dependencies của useEffect sinh câu hỏi không được chứa srsRecords hoặc starredSet
+    const quizEffectMatch = quizContent.match(/useEffect\(\(\)\s*=>\s*\{[\s\S]*?setQuizPool\(builtQuestions\);[\s\S]*?\},\s*\[(.*?)\]\);/);
+    assert.ok(quizEffectMatch, 'QuizMode phải có useEffect tạo builtQuestions');
+    assert.ok(!quizEffectMatch[1].includes('srsRecords'), 'QuizMode useEffect sinh câu hỏi TUYỆT ĐỐI KHÔNG phụ thuộc vào srsRecords (tránh reset câu hỏi khi trả lời)');
+    assert.ok(!quizEffectMatch[1].includes('starredSet'), 'QuizMode useEffect sinh câu hỏi TUYỆT ĐỐI KHÔNG phụ thuộc vào starredSet');
+
+    // 2. Kiểm tra tĩnh ClozeQuiz.jsx: Tương tự QuizMode
+    const clozePath = path.resolve('src/components/ClozeQuiz.jsx');
+    const clozeContent = fs.readFileSync(clozePath, 'utf8');
+
+    assert.ok(clozeContent.includes('srsRecordsRef = useRef(srsRecords)'), 'ClozeQuiz phải dùng srsRecordsRef để truy cập srsRecords');
+    assert.ok(clozeContent.includes('starredSetRef = useRef(starredSet)'), 'ClozeQuiz phải dùng starredSetRef để truy cập starredSet');
+
+    const clozeEffectMatch = clozeContent.match(/useEffect\(\(\)\s*=>\s*\{[\s\S]*?setQuestions\(builtQuestions\);[\s\S]*?\},\s*\[(.*?)\]\);/);
+    assert.ok(clozeEffectMatch, 'ClozeQuiz phải có useEffect tạo builtQuestions');
+    assert.ok(!clozeEffectMatch[1].includes('srsRecords'), 'ClozeQuiz useEffect sinh câu hỏi TUYỆT ĐỐI KHÔNG phụ thuộc vào srsRecords (tránh reset câu hỏi khi trả lời)');
+    assert.ok(!clozeEffectMatch[1].includes('starredSet'), 'ClozeQuiz useEffect sinh câu hỏi TUYỆT ĐỐI KHÔNG phụ thuộc vào starredSet');
+
+    // 3. Kiểm tra tính năng Không lặp từ trong cùng 1 phiên bài tập (Deduplication)
+    const unit1Words = mimikaraN1.vocabulary.filter(w => w.unit === 1);
+    
+    // a. Standard Quiz: Mỗi từ chỉ xuất hiện đúng 1 câu hỏi khi adaptiveRepeat: false
+    const standardQuestions = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'kanji_to_reading', { adaptiveRepeat: false });
+    const standardWordIds = standardQuestions.map(q => q.target.id);
+    const standardUniqueIds = new Set(standardWordIds);
+    assert.equal(standardWordIds.length, standardUniqueIds.size, 'Standard Quiz không được có từ vựng bị lặp lại trong cùng phiên');
+
+    // b. Cloze Sentence: Mỗi từ xuất hiện đúng 1 câu khi expandAllExamples: false
+    const clozeQuestions = buildClozeSentenceQuestions(unit1Words, mimikaraN1.vocabulary, { expandAllExamples: false });
+    const clozeWordIds = clozeQuestions.map(q => q.target.id);
+    const clozeUniqueIds = new Set(clozeWordIds);
+    assert.equal(clozeWordIds.length, clozeUniqueIds.size, 'Cloze Sentence không được có từ vựng bị lặp lại trong cùng phiên khi không mở rộng');
+
+    // c. Cloze Collocation: Mỗi từ xuất hiện tối đa 1 câu khi expandAllExamples: false
+    const collocQuestions = buildClozeCollocationQuestions(unit1Words, mimikaraN1.vocabulary, { expandAllExamples: false });
+    const collocWordIds = collocQuestions.map(q => q.target.id);
+    const collocUniqueIds = new Set(collocWordIds);
+    assert.equal(collocWordIds.length, collocUniqueIds.size, 'Cloze Collocation không được có từ vựng bị lặp lại trong cùng phiên khi không mở rộng');
+
+    // d. All Angles Quiz: Luân phiên góc hỏi, mỗi từ xuất hiện đúng 1 lần
+    const allAngles = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'all_angles', { adaptiveRepeat: false });
+    const allAngleWordIds = allAngles.map(q => q.target.id);
+    const allAngleUniqueIds = new Set(allAngleWordIds);
+    assert.equal(allAngleWordIds.length, allAngleUniqueIds.size, 'All Angles Quiz không được có từ vựng bị lặp lại trong cùng phiên');
   });
 
 });

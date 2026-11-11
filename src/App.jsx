@@ -66,9 +66,29 @@ export default function App() {
   const tabSyncRef = useRef(null);
   const currentLevelRef = useRef(currentLevel);
 
+  const isFlippedRef = useRef(isFlipped);
+  const activeWordsRef = useRef([]);
+  const currentIndexRef = useRef(currentIndex);
+  const studyModeRef = useRef(studyMode);
+
   useEffect(() => {
     currentLevelRef.current = currentLevel;
   }, [currentLevel]);
+
+  // Tự động ghi nhận từ vào danh sách Đang học khi người dùng đã lật mặt sau thẻ
+  const markCurrentWordAsLearningIfNeeded = useCallback(() => {
+    if (studyModeRef.current !== 'flashcard' || !isFlippedRef.current) return;
+    const curWord = activeWordsRef.current[currentIndexRef.current];
+    if (!curWord) return;
+
+    setSrsRecords(prev => {
+      if (prev[curWord.id]) return prev;
+      const initialRec = calculateNextReview(null, 2); // Rating 2: Hard -> stage: 'hard', state: 'learning'
+      const next = { ...prev, [curWord.id]: initialRec };
+      saveSRSRecords(next, currentLevelRef.current);
+      return next;
+    });
+  }, []);
 
   // Initialize TabSyncManager for Multi-tab Conflict Prevention & Real-time Sync
   // Khởi tạo một lần duy nhất cho vòng đời của tab trình duyệt này (không hủy tạo lại khi chuyển N1, N2, N3)
@@ -138,6 +158,12 @@ export default function App() {
 
     return list;
   }, [allWords, currentUnit, isSmartSRSSort, isShuffled, shuffleSeed, srsRecords]);
+
+  // Luôn cập nhật ref đồng bộ để markCurrentWordAsLearningIfNeeded luôn có dữ liệu mới nhất
+  activeWordsRef.current = activeWords;
+  currentIndexRef.current = currentIndex;
+  isFlippedRef.current = isFlipped;
+  studyModeRef.current = studyMode;
 
   // Reset index & flip state when unit changes
   useEffect(() => {
@@ -269,6 +295,7 @@ export default function App() {
 
   // Navigation handler
   const handleNavigate = useCallback((direction) => {
+    markCurrentWordAsLearningIfNeeded();
     stopSpeech();
     setIsFlipped(false);
     setCurrentIndex(prev => {
@@ -327,6 +354,7 @@ export default function App() {
           handleRateSRS(curWord.id, Number(e.key));
         }
       } else if (e.key === 'q' || e.key === 'Q') {
+        markCurrentWordAsLearningIfNeeded();
         setStudyMode(prev => {
           const modes = ['flashcard', 'quiz', 'cloze', 'dictionary'];
           const nextIdx = (modes.indexOf(prev) + 1) % modes.length;
@@ -355,7 +383,10 @@ export default function App() {
         onSelectUnit={setCurrentUnit}
         unitSummaries={unitSummaries}
         studyMode={studyMode}
-        onSelectMode={setStudyMode}
+        onSelectMode={(mode) => {
+          markCurrentWordAsLearningIfNeeded();
+          setStudyMode(mode);
+        }}
         furiganaMode={furiganaMode}
         onToggleFurigana={handleToggleFurigana}
         soundSpeed={soundSpeed}
@@ -397,6 +428,9 @@ export default function App() {
             furiganaMode={furiganaMode}
             soundSpeed={soundSpeed}
             onQuizSRSSync={handleQuizSRSSync}
+            srsRecords={srsRecords}
+            starredSet={starredSet}
+            onSwitchToFlashcard={() => setStudyMode('flashcard')}
           />
         )}
 
@@ -408,6 +442,9 @@ export default function App() {
             furiganaMode={furiganaMode}
             soundSpeed={soundSpeed}
             onQuizSRSSync={handleQuizSRSSync}
+            srsRecords={srsRecords}
+            starredSet={starredSet}
+            onSwitchToFlashcard={() => setStudyMode('flashcard')}
           />
         )}
 

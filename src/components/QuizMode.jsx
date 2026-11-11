@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   CheckCircle2, 
   XCircle, 
@@ -11,11 +11,20 @@ import {
   HelpCircle,
   BookOpen,
   ArrowRightLeft,
-  Sparkle
+  Sparkle,
+  Target,
+  Zap,
+  Repeat,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { speakJapanese, stopSpeech } from '../utils/audio';
-import { buildQuizQuestions } from '../utils/quizHelper';
+import { 
+  buildQuizQuestions, 
+  filterWordsByStudyScope, 
+  createRetryQuestion, 
+  insertRetryQuestion 
+} from '../utils/quizHelper';
 import { formatExampleMeaning } from '../utils/text';
 
 export default function QuizMode({
@@ -24,14 +33,24 @@ export default function QuizMode({
   currentLevel = 'N1',
   furiganaMode,
   soundSpeed,
-  onQuizSRSSync
+  onQuizSRSSync,
+  srsRecords = {},
+  starredSet = new Set(),
+  onSwitchToFlashcard
 }) {
-  // 4 Chế độ trắc nghiệm chuẩn JLPT:
+  // 5 Chế độ trắc nghiệm:
   // 1. 'kanji_to_reading': Kanji -> Cách đọc Hiragana (JLPT Mondai 1)
   // 2. 'kanji_to_meaning': Từ vựng -> Nghĩa tiếng Việt (JLPT Mondai 2/3)
   // 3. 'meaning_to_kanji': Nghĩa tiếng Việt -> Từ vựng tiếng Nhật
   // 4. 'synonym_antonym': Từ đồng nghĩa / Trái nghĩa (JLPT Mondai 4 類義語・対義語)
+  // 5. 'all_angles': Tổng hợp Đa chiều (Tất cả góc hỏi cho từ đang học)
   const [direction, setDirection] = useState('kanji_to_meaning');
+
+  // Phạm vi từ vựng học: 'studied' (Đã & Đang học - Mặc định) | 'weak' (Hay quên & Cần ôn) | 'all' (Toàn bộ Unit)
+  const [studyScope, setStudyScope] = useState('studied');
+
+  // Quy mô câu hỏi mỗi phiên: 20, 30, 40, 0 (0 = Tất cả)
+  const [sessionLimit, setSessionLimit] = useState(30);
 
   const [quizPool, setQuizPool] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -42,14 +61,67 @@ export default function QuizMode({
   const [bestStreak, setBestStreak] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Khởi tạo bộ câu hỏi khi allWords, currentUnit hoặc direction thay đổi
-  useEffect(() => {
-    const filtered = currentUnit === 0 
-      ? [...allWords] 
+  // Vòng lặp sửa sai (Spaced Error Re-queue)
+  const [wrongWordsMap, setWrongWordsMap] = useState({});
+  const [retryQueuedCount, setRetryQueuedCount] = useState(0);
+  const [lastAnswerFailed, setLastAnswerFailed] = useState(false);
+
+  // Giữ ref cho srsRecords và starredSet để không kích hoạt re-init quiz khi trả lời câu hỏi
+  const srsRecordsRef = useRef(srsRecords);
+  const starredSetRef = useRef(starredSet);
+  srsRecordsRef.current = srsRecords;
+  starredSetRef.current = starredSet;
+
+  const unitPool = useMemo(() => {
+    return currentUnit === 0 
+      ? allWords 
       : allWords.filter(w => w.unit === currentUnit);
-    
-    const builtQuestions = buildQuizQuestions(filtered, allWords, direction);
-    
+  }, [allWords, currentUnit]);
+
+  // Thống kê số lượng từ theo phạm vi để hiển thị badge (cập nhật phản ứng mà không reset quiz)
+  const { scopeStats, fallbackData } = useMemo(() => {
+    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecords, starredSet, studyScope);
+    return {
+      scopeStats: filterRes.stats || { studiedInUnitCount: 0, weakInUnitCount: 0, unitTotalCount: unitPool.length },
+      fallbackData: {
+        fallbackAllStudied: filterRes.fallbackAllStudied || [],
+        fallbackAllWeak: filterRes.fallbackAllWeak || []
+      }
+    };
+  }, [unitPool, allWords, srsRecords, starredSet, studyScope]);
+
+  // Khởi tạo bộ câu hỏi dựa theo unitPool, direction, studyScope, sessionLimit
+  // TÁCH BIỆT KHỎI srsRecords để khi click đáp án đồng bộ SRS KHÔNG LÀM RESET BÀI THI
+  useEffect(() => {
+    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
+    const activePool = filterRes.words || [];
+
+    if (activePool.length === 0) {
+      setQuizPool([]);
+      setCurrentIndex(0);
+      setScore(0);
+      setStreak(0);
+      setIsCompleted(false);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setWrongWordsMap({});
+      setRetryQueuedCount(0);
+      setLastAnswerFailed(false);
+      return;
+    }
+
+    let builtQuestions = buildQuizQuestions(activePool, allWords, direction, {
+      srsRecords: srsRecordsRef.current,
+      starredSet: starredSetRef.current,
+      studyScope,
+      adaptiveRepeat: false, // Tránh tạo trùng lặp câu hỏi từ đầu
+      strictPool: studyScope !== 'all'
+    });
+
+    if (sessionLimit > 0 && builtQuestions.length > sessionLimit) {
+      builtQuestions = builtQuestions.slice(0, sessionLimit);
+    }
+
     setQuizPool(builtQuestions);
     setCurrentIndex(0);
     setScore(0);
@@ -57,15 +129,23 @@ export default function QuizMode({
     setIsCompleted(false);
     setSelectedAnswer(null);
     setIsAnswered(false);
-  }, [allWords, currentUnit, direction]);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
+  }, [unitPool, allWords, direction, studyScope, sessionLimit]);
 
   const currentQ = quizPool[currentIndex];
+
+  // Góc hỏi hiện tại (nếu ở chế độ 'all_angles', lấy theo từng câu hỏi)
+  const activeDirection = direction === 'all_angles' 
+    ? (currentQ?.questionAngle || currentQ?.mode || 'kanji_to_meaning') 
+    : direction;
 
   const handleSelectOption = (option) => {
     if (isAnswered || !currentQ) return;
 
     let isCorrect = false;
-    if (direction === 'synonym_antonym') {
+    if (activeDirection === 'synonym_antonym') {
       isCorrect = option.id === currentQ.correctOptionId || option.isCorrect === true;
     } else {
       isCorrect = option.id === currentQ.target.id;
@@ -82,6 +162,7 @@ export default function QuizMode({
     speakJapanese(currentQ.target.word, soundSpeed);
 
     if (isCorrect) {
+      setLastAnswerFailed(false);
       setScore(prev => prev + 1);
       setStreak(prev => {
         const next = prev + 1;
@@ -92,7 +173,20 @@ export default function QuizMode({
         return next;
       });
     } else {
+      // Khi làm SAI: Kích hoạt Vòng lặp Sửa sai (Spaced Error Re-queue)
       setStreak(0);
+      setLastAnswerFailed(true);
+      setWrongWordsMap(prev => ({
+        ...prev,
+        [currentQ.target.id]: currentQ.target
+      }));
+
+      // Chèn câu hỏi ôn lại vào sau 3-4 câu nữa trong hàng đợi (tối đa 1 lần retry cho mỗi câu để chống lặp vô tận)
+      if (!currentQ.isRetry || (currentQ.retryCount || 0) < 1) {
+        const retryQ = createRetryQuestion(currentQ, unitPool, allWords);
+        setQuizPool(prev => insertRetryQuestion(prev, currentIndex, retryQ, 4));
+        setRetryQueuedCount(prev => prev + 1);
+      }
     }
   };
 
@@ -105,6 +199,7 @@ export default function QuizMode({
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
+      setLastAnswerFailed(false);
     }
   };
 
@@ -141,10 +236,11 @@ export default function QuizMode({
 
     window.addEventListener('keydown', handleQuizKeys);
     return () => window.removeEventListener('keydown', handleQuizKeys);
-  }, [isAnswered, currentQ]);
+  }, [isAnswered, currentQ, activeDirection]);
 
   const handleRestart = () => {
-    const shuffled = [...quizPool].sort(() => Math.random() - 0.5);
+    const baseQuestions = quizPool.filter(q => !q.isRetry);
+    const shuffled = [...baseQuestions].sort(() => Math.random() - 0.5);
     setQuizPool(shuffled);
     setCurrentIndex(0);
     setScore(0);
@@ -152,24 +248,107 @@ export default function QuizMode({
     setIsCompleted(false);
     setSelectedAnswer(null);
     setIsAnswered(false);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
   };
 
-  if (!currentQ && !isCompleted) {
+  // Luyện riêng các từ đã trả lời sai trong lượt này
+  const handlePracticeWrongWords = () => {
+    const wrongList = Object.values(wrongWordsMap);
+    if (wrongList.length === 0) return;
+
+    const retryPool = buildQuizQuestions(wrongList, allWords, direction, {
+      srsRecords: srsRecordsRef.current,
+      starredSet: starredSetRef.current,
+      studyScope: 'all',
+      adaptiveRepeat: false
+    });
+
+    setQuizPool(retryPool);
+    setCurrentIndex(0);
+    setScore(0);
+    setStreak(0);
+    setIsCompleted(false);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
+  };
+
+  // =========================================================================
+  // GIAO DIỆN KHI CHƯA CÓ TỪ ĐÃ/ĐANG HỌC TRONG PHẠM VI
+  // =========================================================================
+  if (quizPool.length === 0 && !isCompleted) {
+    const unitText = currentUnit === 0 ? 'Toàn bộ cấp độ' : `Unit ${currentUnit}`;
+    const hasAnyStudiedInLevel = fallbackData.fallbackAllStudied?.length > 0;
+
     return (
-      <div className="w-full max-w-xl mx-auto p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        <Sparkles className="w-10 h-10 text-indigo-500 mx-auto animate-pulse" />
-        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-          Đang chuẩn bị câu hỏi trắc nghiệm...
-        </h3>
+      <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+        <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+            {studyScope === 'weak' 
+              ? `Chưa có từ yếu / đến hạn ôn trong ${unitText}`
+              : `Chưa có từ Đã & Đang học nào trong ${unitText}`
+            }
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Hệ thống bài tập thông minh lọc chính xác những từ bạn đã lật thẻ học trên Flashcard để tránh quá tải.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2.5 pt-2">
+          {hasAnyStudiedInLevel && (
+            <button
+              onClick={() => {
+                const built = buildQuizQuestions(fallbackData.fallbackAllStudied, allWords, direction, {
+                  srsRecords,
+                  starredSet,
+                  studyScope: 'all'
+                });
+                setQuizPool(sessionLimit > 0 ? built.slice(0, sessionLimit) : built);
+                setCurrentIndex(0);
+              }}
+              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+            >
+              Ôn tập {fallbackData.fallbackAllStudied.length} từ Đã & Đang học của toàn cấp độ {currentLevel}
+            </button>
+          )}
+
+          <button
+            onClick={() => setStudyScope('all')}
+            className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
+          >
+            Làm bài tập Toàn bộ từ của {unitText} ({scopeStats.unitTotalCount} từ)
+          </button>
+
+          {onSwitchToFlashcard && (
+            <button
+              onClick={onSwitchToFlashcard}
+              className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
+            >
+              Sang Flashcard lật học từ mới ngay →
+            </button>
+          )}
+        </div>
       </div>
     );
   }
 
+  // =========================================================================
+  // GIAO DIỆN HOÀN THÀNH
+  // =========================================================================
   if (isCompleted) {
     const accuracy = Math.round((score / quizPool.length) * 100) || 0;
     const unitText = currentUnit === 0 
       ? `tất cả các Unit (${currentLevel})` 
       : `Unit ${currentUnit} (${currentLevel})`;
+    const wrongCount = Object.keys(wrongWordsMap).length;
 
     return (
       <div className="w-full max-w-xl mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
@@ -182,7 +361,7 @@ export default function QuizMode({
             Hoàn thành bài trắc nghiệm!
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Bạn đã hoàn thành toàn bộ {quizPool.length} câu hỏi của {unitText}.
+            Bạn đã hoàn thành toàn bộ {quizPool.length} câu hỏi trắc nghiệm của {unitText}.
           </p>
         </div>
 
@@ -204,13 +383,32 @@ export default function QuizMode({
           </div>
         </div>
 
-        <button
-          onClick={handleRestart}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Luyện tập lại</span>
-        </button>
+        {retryQueuedCount > 0 && (
+          <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 flex items-center justify-center gap-2">
+            <Repeat className="w-4 h-4 shrink-0" />
+            <span>Đã tự động đưa {retryQueuedCount} câu trả lời sai vào vòng lặp ôn lại thành công!</span>
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {wrongCount > 0 && (
+            <button
+              onClick={handlePracticeWrongWords}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-lg shadow-rose-500/25 transition-all"
+            >
+              <Flame className="w-4 h-4 fill-current" />
+              <span>🔥 Luyện lại riêng các từ vừa sai ({wrongCount} từ)</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleRestart}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
+          >
+            <RotateCcw className="w-4 h-4" />
+            <span>Luyện tập lại</span>
+          </button>
+        </div>
       </div>
     );
   }
@@ -219,14 +417,80 @@ export default function QuizMode({
   const furiganaClass = furiganaMode === 'hide' ? 'furigana-hide' : furiganaMode === 'hover' ? 'furigana-hover' : '';
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-5">
+    <div className="w-full max-w-2xl mx-auto space-y-4">
       
+      {/* Scope and Controls Filter Bar */}
+      <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+        {/* Scope Selector */}
+        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl gap-1 w-full sm:w-auto">
+          <button
+            onClick={() => setStudyScope('studied')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'studied'
+                ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Target className="w-3.5 h-3.5" />
+            <span>Đã học ({scopeStats.studiedInUnitCount})</span>
+          </button>
+
+          <button
+            onClick={() => setStudyScope('weak')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'weak'
+                ? 'bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5" />
+            <span>Hay quên ({scopeStats.weakInUnitCount})</span>
+          </button>
+
+          <button
+            onClick={() => setStudyScope('all')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'all'
+                ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Toàn bộ Unit ({scopeStats.unitTotalCount})</span>
+          </button>
+        </div>
+
+        {/* Session Limit Selector */}
+        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+          <span className="font-semibold text-[11px]">Số câu:</span>
+          {[20, 30, 40, 0].map(limit => (
+            <button
+              key={limit}
+              onClick={() => setSessionLimit(limit)}
+              className={`px-2 py-0.5 rounded-md font-mono font-bold text-[11px] transition-all ${
+                sessionLimit === limit
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
+              }`}
+            >
+              {limit === 0 ? 'Hết' : limit}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Quiz Top Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
             Câu {currentIndex + 1} / {quizPool.length}
           </span>
+
+          {currentQ.isRetry && (
+            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse">
+              🔁 Ôn lại từ vừa sai (Lần {currentQ.retryCount})
+            </span>
+          )}
 
           {streak > 1 && (
             <span className="flex items-center gap-1 text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-900/60 animate-bounce">
@@ -236,8 +500,20 @@ export default function QuizMode({
           )}
         </div>
 
-        {/* 4 Mode Selector Tabs */}
+        {/* 5 Mode Selector Tabs */}
         <div className="flex flex-wrap items-center gap-1 text-xs bg-slate-200/80 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-300/60 dark:border-slate-700/60">
+          <button
+            onClick={() => setDirection('all_angles')}
+            title="Chế độ Tổng hợp Đa chiều: hỏi cả cách đọc, nghĩa, hán tự và đồng nghĩa"
+            className={`px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition-all ${
+              direction === 'all_angles'
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>⚡ Đa chiều</span>
+          </button>
           <button
             onClick={() => setDirection('kanji_to_reading')}
             title="JLPT Mondai 1: Kanji -> Cách đọc Hiragana"
@@ -290,27 +566,27 @@ export default function QuizMode({
         
         {/* Header prompt */}
         <div className="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center justify-center gap-1.5">
-          {direction === 'kanji_to_reading' && (
+          {activeDirection === 'kanji_to_reading' && (
             <span>Mondai 1: Chọn cách đọc Hiragana đúng của chữ Kanji dưới đây:</span>
           )}
-          {direction === 'kanji_to_meaning' && (
+          {activeDirection === 'kanji_to_meaning' && (
             <span>Chọn nét nghĩa tiếng Việt chính xác của từ vựng sau:</span>
           )}
-          {direction === 'meaning_to_kanji' && (
+          {activeDirection === 'meaning_to_kanji' && (
             <span>Chọn từ vựng tiếng Nhật tương ứng với nét nghĩa sau:</span>
           )}
-          {direction === 'synonym_antonym' && (
+          {activeDirection === 'synonym_antonym' && (
             <span className="flex items-center gap-1 text-purple-600 dark:text-purple-400 font-bold">
               <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">
-                {currentQ.badge}
+                {currentQ.badge || '類'}
               </span>
-              <span>Tìm {currentQ.relationLabel} của từ sau:</span>
+              <span>Tìm {currentQ.relationLabel || 'từ liên quan'} của từ sau:</span>
             </span>
           )}
         </div>
 
         {/* Question Content Display */}
-        {direction === 'kanji_to_reading' && (
+        {activeDirection === 'kanji_to_reading' && (
           <div>
             {/* Mondai 1: Luôn ẩn Furigana để người học phải tự đọc Kanji */}
             <div className="font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 furigana-hide">
@@ -324,7 +600,7 @@ export default function QuizMode({
           </div>
         )}
 
-        {direction === 'kanji_to_meaning' && (
+        {activeDirection === 'kanji_to_meaning' && (
           <div>
             <div 
               className={`font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
@@ -338,7 +614,7 @@ export default function QuizMode({
           </div>
         )}
 
-        {direction === 'meaning_to_kanji' && (
+        {activeDirection === 'meaning_to_kanji' && (
           <div className="py-3">
             <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
               {target.meanings?.join('; ')}
@@ -351,7 +627,7 @@ export default function QuizMode({
           </div>
         )}
 
-        {direction === 'synonym_antonym' && (
+        {activeDirection === 'synonym_antonym' && (
           <div>
             <div 
               className={`font-japanese text-4xl sm:text-5xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
@@ -369,7 +645,7 @@ export default function QuizMode({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {options.map((opt, idx) => {
           let isCorrect = false;
-          if (direction === 'synonym_antonym') {
+          if (activeDirection === 'synonym_antonym') {
             isCorrect = opt.id === currentQ.correctOptionId || opt.isCorrect === true;
           } else {
             isCorrect = opt.id === target.id;
@@ -406,12 +682,11 @@ export default function QuizMode({
                 </div>
 
                 {/* Nội dung đáp án tùy theo chế độ */}
-                {direction === 'kanji_to_reading' && (
+                {activeDirection === 'kanji_to_reading' && (
                   <div>
                     <div className="font-japanese text-xl font-bold font-mono">
                       {opt.reading || opt.word}
                     </div>
-                    {/* Khi đã trả lời: hiện nghĩa và Kanji của đáp án */}
                     {isAnswered && (
                       <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300">
                         <span className="font-japanese font-semibold">{opt.word}:</span> {opt.meanings?.[0]}
@@ -420,7 +695,7 @@ export default function QuizMode({
                   </div>
                 )}
 
-                {direction === 'kanji_to_meaning' && (
+                {activeDirection === 'kanji_to_meaning' && (
                   <div>
                     <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
                       {opt.meanings?.[0] || 'Nét nghĩa'}
@@ -433,13 +708,12 @@ export default function QuizMode({
                   </div>
                 )}
 
-                {direction === 'meaning_to_kanji' && (
+                {activeDirection === 'meaning_to_kanji' && (
                   <div>
                     <div 
                       className={`font-japanese text-xl font-bold ${furiganaClass}`}
                       dangerouslySetInnerHTML={{ __html: opt.wordHtml || opt.word }}
                     />
-                    {/* QUAN TRỌNG: Ẩn nghĩa trước khi chọn, chỉ hiện sau khi chọn */}
                     {isAnswered ? (
                       <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300 space-y-0.5">
                         <div className="font-mono text-slate-400">{opt.reading} {opt.hanviet ? `[${opt.hanviet}]` : ''}</div>
@@ -453,7 +727,7 @@ export default function QuizMode({
                   </div>
                 )}
 
-                {direction === 'synonym_antonym' && (
+                {activeDirection === 'synonym_antonym' && (
                   <div>
                     <div 
                       className={`font-japanese text-xl font-bold ${furiganaClass}`}
@@ -482,6 +756,17 @@ export default function QuizMode({
       {/* Answer Feedback & Explanation Card */}
       {isAnswered && (
         <div className="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3.5 animate-fadeIn">
+          
+          {/* Thông báo hàng đợi ôn lại khi trả lời sai */}
+          {lastAnswerFailed && (
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2">
+              <Repeat className="w-4 h-4 shrink-0 text-amber-600" />
+              <span>
+                🔄 Đã đưa từ <strong>"{target.word}"</strong> vào hàng đợi ôn lại sau vài câu nữa (đã đảo vị trí đáp án) để bạn khắc sâu trí nhớ!
+              </span>
+            </div>
+          )}
+
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2.5 flex-wrap">
               <span 
@@ -514,7 +799,7 @@ export default function QuizMode({
             {target.meanings?.join('; ')}
           </div>
 
-          {direction === 'synonym_antonym' && (
+          {activeDirection === 'synonym_antonym' && (
             <div className="p-3 sm:p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 space-y-1.5">
               <div className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
                 {currentQ.relationLabel}

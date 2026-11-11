@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   CheckCircle2, 
   XCircle, 
@@ -12,13 +12,21 @@ import {
   Lightbulb,
   BookOpen,
   Layers,
-  Link2
+  Link2,
+  Zap,
+  Target,
+  Repeat,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { speakJapanese, stopSpeech } from '../utils/audio';
 import { 
   buildClozeSentenceQuestions, 
-  buildClozeCollocationQuestions 
+  buildClozeCollocationQuestions,
+  buildCombinedClozeQuestions,
+  filterWordsByStudyScope,
+  createRetryQuestion,
+  insertRetryQuestion
 } from '../utils/quizHelper';
 import { formatExampleMeaning } from '../utils/text';
 
@@ -28,10 +36,23 @@ export default function ClozeQuiz({
   currentLevel = 'N1',
   furiganaMode,
   soundSpeed,
-  onQuizSRSSync
+  onQuizSRSSync,
+  srsRecords = {},
+  starredSet = new Set(),
+  onSwitchToFlashcard
 }) {
-  // Chế độ bài tập: 'sentence' (Câu ví dụ thực tế) hoặc 'collocation' (Cụm đi kèm 連語 / Từ ghép 合)
+  // 3 Chế độ bài tập điền khuyết:
+  // 1. 'sentence': Câu ví dụ thực tế (Mỗi từ 1 câu ngẫu nhiên)
+  // 2. 'collocation': Cụm đi kèm 連語 / Từ ghép 合 / Thành ngữ
+  // 3. 'combined': ⚡ Kết hợp Câu & Cụm
   const [clozeType, setClozeType] = useState('sentence');
+
+  // Phạm vi từ vựng học: 'studied' (Đã & Đang học - Mặc định) | 'weak' (Hay quên & Cần ôn) | 'all' (Toàn bộ Unit)
+  const [studyScope, setStudyScope] = useState('studied');
+
+  // Quy mô câu hỏi: 20, 30, 40, 0 (0 = Tất cả)
+  const [sessionLimit, setSessionLimit] = useState(30);
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -41,17 +62,76 @@ export default function ClozeQuiz({
   const [streak, setStreak] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Sinh danh sách câu hỏi dựa theo clozeType và currentUnit
-  useEffect(() => {
-    const unitPool = currentUnit === 0 
+  // Vòng lặp sửa sai
+  const [wrongWordsMap, setWrongWordsMap] = useState({});
+  const [retryQueuedCount, setRetryQueuedCount] = useState(0);
+  const [lastAnswerFailed, setLastAnswerFailed] = useState(false);
+
+  // Giữ ref cho srsRecords và starredSet để không kích hoạt re-init quiz khi trả lời câu hỏi
+  const srsRecordsRef = useRef(srsRecords);
+  const starredSetRef = useRef(starredSet);
+  srsRecordsRef.current = srsRecords;
+  starredSetRef.current = starredSet;
+
+  const unitPool = useMemo(() => {
+    return currentUnit === 0 
       ? allWords 
       : allWords.filter(w => w.unit === currentUnit);
+  }, [allWords, currentUnit]);
+
+  // Thống kê số lượng từ theo phạm vi để hiển thị badge (cập nhật phản ứng mà không reset quiz)
+  const { scopeStats, fallbackData } = useMemo(() => {
+    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecords, starredSet, studyScope);
+    return {
+      scopeStats: filterRes.stats || { studiedInUnitCount: 0, weakInUnitCount: 0, unitTotalCount: unitPool.length },
+      fallbackData: {
+        fallbackAllStudied: filterRes.fallbackAllStudied || [],
+        fallbackAllWeak: filterRes.fallbackAllWeak || []
+      }
+    };
+  }, [unitPool, allWords, srsRecords, starredSet, studyScope]);
+
+  // Sinh danh sách câu hỏi dựa theo unitPool, clozeType, studyScope, sessionLimit
+  // TÁCH BIỆT KHỎI srsRecords để khi click đáp án đồng bộ SRS KHÔNG LÀM RESET BÀI THI
+  useEffect(() => {
+    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
+    const activePool = filterRes.words || [];
+
+    if (activePool.length === 0) {
+      setQuestions([]);
+      setCurrentIndex(0);
+      setScore(0);
+      setStreak(0);
+      setIsCompleted(false);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setShowHint(false);
+      setWrongWordsMap({});
+      setRetryQueuedCount(0);
+      setLastAnswerFailed(false);
+      return;
+    }
 
     let builtQuestions = [];
+    const clozeOptions = {
+      expandAllExamples: false, // Mỗi từ vựng tạo đúng 1 câu hỏi khuyết để không bị lặp từ
+      srsRecords: srsRecordsRef.current,
+      starredSet: starredSetRef.current,
+      studyScope,
+      strictPool: studyScope !== 'all'
+    };
+
     if (clozeType === 'sentence') {
-      builtQuestions = buildClozeSentenceQuestions(unitPool, allWords);
+      builtQuestions = buildClozeSentenceQuestions(activePool, allWords, clozeOptions);
+    } else if (clozeType === 'collocation') {
+      builtQuestions = buildClozeCollocationQuestions(activePool, allWords, clozeOptions);
     } else {
-      builtQuestions = buildClozeCollocationQuestions(unitPool, allWords);
+      // 'combined'
+      builtQuestions = buildCombinedClozeQuestions(activePool, allWords, clozeOptions);
+    }
+
+    if (sessionLimit > 0 && builtQuestions.length > sessionLimit) {
+      builtQuestions = builtQuestions.slice(0, sessionLimit);
     }
 
     setQuestions(builtQuestions);
@@ -62,7 +142,10 @@ export default function ClozeQuiz({
     setSelectedAnswer(null);
     setIsAnswered(false);
     setShowHint(false);
-  }, [allWords, currentUnit, clozeType]);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
+  }, [unitPool, allWords, clozeType, studyScope, sessionLimit]);
 
   const currentQ = questions[currentIndex];
 
@@ -73,7 +156,7 @@ export default function ClozeQuiz({
     setSelectedAnswer(option);
     setIsAnswered(true);
 
-    // Đồng bộ SRS (nếu được truyền prop từ App, không làm thay đổi currentIndex ở Flashcard)
+    // Đồng bộ SRS (không ảnh hưởng currentIndex ở FlashcardDeck)
     if (onQuizSRSSync) {
       onQuizSRSSync(currentQ.target.id, isCorrect);
     }
@@ -85,6 +168,7 @@ export default function ClozeQuiz({
     speakJapanese(audioText, soundSpeed);
 
     if (isCorrect) {
+      setLastAnswerFailed(false);
       setScore(prev => prev + 1);
       setStreak(prev => {
         const next = prev + 1;
@@ -92,7 +176,20 @@ export default function ClozeQuiz({
         return next;
       });
     } else {
+      // Khi làm SAI: Kích hoạt Vòng lặp Sửa sai (Spaced Error Re-queue)
       setStreak(0);
+      setLastAnswerFailed(true);
+      setWrongWordsMap(prev => ({
+        ...prev,
+        [currentQ.target.id]: currentQ.target
+      }));
+
+      // Chèn câu hỏi ôn lại vào sau 3-4 câu nữa trong hàng đợi (tối đa 1 lần retry cho mỗi câu để chống lặp vô tận)
+      if (!currentQ.isRetry || (currentQ.retryCount || 0) < 1) {
+        const retryQ = createRetryQuestion(currentQ, unitPool, allWords);
+        setQuestions(prev => insertRetryQuestion(prev, currentIndex, retryQ, 4));
+        setRetryQueuedCount(prev => prev + 1);
+      }
     }
   };
 
@@ -106,6 +203,7 @@ export default function ClozeQuiz({
       setSelectedAnswer(null);
       setIsAnswered(false);
       setShowHint(false);
+      setLastAnswerFailed(false);
     }
   };
 
@@ -148,7 +246,8 @@ export default function ClozeQuiz({
   }, [isAnswered, currentQ]);
 
   const handleRestart = () => {
-    const reshuffled = [...questions].sort(() => Math.random() - 0.5);
+    const baseQuestions = questions.filter(q => !q.isRetry);
+    const reshuffled = [...baseQuestions].sort(() => Math.random() - 0.5);
     setQuestions(reshuffled);
     setCurrentIndex(0);
     setScore(0);
@@ -157,30 +256,111 @@ export default function ClozeQuiz({
     setSelectedAnswer(null);
     setIsAnswered(false);
     setShowHint(false);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
   };
 
-  if (questions.length === 0) {
+  // Luyện riêng các từ đã trả lời sai trong lượt này
+  const handlePracticeWrongWords = () => {
+    const wrongList = Object.values(wrongWordsMap);
+    if (wrongList.length === 0) return;
+
+    let retryPool = [];
+    if (clozeType === 'sentence') {
+      retryPool = buildClozeSentenceQuestions(wrongList, allWords, { expandAllExamples: true });
+    } else if (clozeType === 'collocation') {
+      retryPool = buildClozeCollocationQuestions(wrongList, allWords, { strictPool: true });
+    } else {
+      retryPool = buildCombinedClozeQuestions(wrongList, allWords, { expandAllExamples: true, strictPool: true });
+    }
+
+    if (retryPool.length === 0) {
+      retryPool = buildClozeSentenceQuestions(wrongList, allWords, { expandAllExamples: true });
+    }
+
+    setQuestions(retryPool);
+    setCurrentIndex(0);
+    setScore(0);
+    setStreak(0);
+    setIsCompleted(false);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setShowHint(false);
+    setWrongWordsMap({});
+    setRetryQueuedCount(0);
+    setLastAnswerFailed(false);
+  };
+
+  // =========================================================================
+  // GIAO DIỆN KHI CHƯA CÓ CÂU HỎI TRONG PHẠM VI
+  // =========================================================================
+  if (questions.length === 0 && !isCompleted) {
+    const unitText = currentUnit === 0 ? 'Toàn bộ cấp độ' : `Unit ${currentUnit}`;
+    const hasAnyStudiedInLevel = fallbackData.fallbackAllStudied?.length > 0;
+
     return (
-      <div className="w-full max-w-xl mx-auto p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        <Sparkles className="w-10 h-10 text-indigo-500 mx-auto animate-pulse" />
-        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-          Chưa có câu hỏi cho chế độ này trong Unit hiện tại
-        </h3>
-        <p className="text-sm text-slate-500">
-          Unit này không chứa cụm từ ghép đặc thù. Bạn có thể chuyển sang chế độ "Điền vào Câu ví dụ" hoặc chọn "Tất cả Unit".
-        </p>
-        <button
-          onClick={() => setClozeType('sentence')}
-          className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition-all shadow-md"
-        >
-          Chuyển sang Điền vào Câu ví dụ
-        </button>
+      <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+        <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+            {studyScope === 'weak' 
+              ? `Chưa có từ yếu / đến hạn ôn trong ${unitText}`
+              : `Chưa có từ Đã & Đang học nào trong ${unitText}`
+            }
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Hệ thống bài tập điền khuyết tự động điều chỉnh theo các từ bạn đã lật thẻ học trên Flashcard.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2.5 pt-2">
+          {hasAnyStudiedInLevel && (
+            <button
+              onClick={() => {
+                const built = buildClozeSentenceQuestions(fallbackData.fallbackAllStudied, allWords, {
+                  expandAllExamples: true,
+                  studyScope: 'all'
+                });
+                setQuestions(sessionLimit > 0 ? built.slice(0, sessionLimit) : built);
+                setCurrentIndex(0);
+              }}
+              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+            >
+              Ôn tập {fallbackData.fallbackAllStudied.length} từ Đã & Đang học của toàn cấp độ {currentLevel}
+            </button>
+          )}
+
+          <button
+            onClick={() => setStudyScope('all')}
+            className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
+          >
+            Làm bài tập Toàn bộ từ của {unitText} ({scopeStats.unitTotalCount} từ)
+          </button>
+
+          {onSwitchToFlashcard && (
+            <button
+              onClick={onSwitchToFlashcard}
+              className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
+            >
+              Sang Flashcard lật học từ mới ngay →
+            </button>
+          )}
+        </div>
       </div>
     );
   }
 
+  // =========================================================================
+  // GIAO DIỆN HOÀN THÀNH
+  // =========================================================================
   if (isCompleted) {
     const accuracy = Math.round((score / questions.length) * 100) || 0;
+    const wrongCount = Object.keys(wrongWordsMap).length;
+
     return (
       <div className="w-full max-w-xl mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
         <div className="w-20 h-20 mx-auto rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
@@ -192,7 +372,7 @@ export default function ClozeQuiz({
             Hoàn thành bài tập điền khuyết!
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Bạn đã luyện tập toàn bộ {questions.length} câu {clozeType === 'sentence' ? 'ví dụ' : 'cụm từ liên ngữ'} của Mimikara {currentLevel}.
+            Bạn đã luyện tập toàn bộ {questions.length} câu của Mimikara {currentLevel}.
           </p>
         </div>
 
@@ -207,13 +387,32 @@ export default function ClozeQuiz({
           </div>
         </div>
 
-        <button
-          onClick={handleRestart}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Làm lại bộ câu hỏi này</span>
-        </button>
+        {retryQueuedCount > 0 && (
+          <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 flex items-center justify-center gap-2">
+            <Repeat className="w-4 h-4 shrink-0" />
+            <span>Đã tự động đưa {retryQueuedCount} câu trả lời sai vào vòng lặp ôn lại thành công!</span>
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {wrongCount > 0 && (
+            <button
+              onClick={handlePracticeWrongWords}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-lg shadow-rose-500/25 transition-all"
+            >
+              <Flame className="w-4 h-4 fill-current" />
+              <span>🔥 Luyện lại riêng các từ vừa sai ({wrongCount} từ)</span>
+            </button>
+          )}
+
+          <button
+            onClick={handleRestart}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
+          >
+            <RotateCcw className="w-4 h-4" />
+            <span>Làm lại bộ câu hỏi này</span>
+          </button>
+        </div>
       </div>
     );
   }
@@ -223,14 +422,81 @@ export default function ClozeQuiz({
   const furiganaClass = furiganaMode === 'hide' ? 'furigana-hide' : furiganaMode === 'hover' ? 'furigana-hover' : '';
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-5">
+    <div className="w-full max-w-2xl mx-auto space-y-4">
       
+      {/* Scope and Limit Filter Bar */}
+      <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+        {/* Scope Selector */}
+        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl gap-1 w-full sm:w-auto">
+          <button
+            onClick={() => setStudyScope('studied')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'studied'
+                ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Target className="w-3.5 h-3.5" />
+            <span>Đã học ({scopeStats.studiedInUnitCount})</span>
+          </button>
+
+          <button
+            onClick={() => setStudyScope('weak')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'weak'
+                ? 'bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5" />
+            <span>Hay quên ({scopeStats.weakInUnitCount})</span>
+          </button>
+
+          <button
+            onClick={() => setStudyScope('all')}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              studyScope === 'all'
+                ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm'
+                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Toàn bộ Unit ({scopeStats.unitTotalCount})</span>
+          </button>
+        </div>
+
+        {/* Session Limit Selector */}
+        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+          <span className="font-semibold text-[11px]">Số câu:</span>
+          {[20, 30, 40, 0].map(limit => (
+            <button
+              key={limit}
+              onClick={() => setSessionLimit(limit)}
+              className={`px-2 py-0.5 rounded-md font-mono font-bold text-[11px] transition-all ${
+                sessionLimit === limit
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
+              }`}
+            >
+              {limit === 0 ? 'Hết' : limit}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Top Mode Bar & Switcher */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
             Câu {currentIndex + 1} / {questions.length}
           </span>
+
+          {currentQ.isRetry && (
+            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse">
+              🔁 Ôn lại từ vừa sai (Lần {currentQ.retryCount})
+            </span>
+          )}
+
           {streak > 1 && (
             <span className="flex items-center gap-1 text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-900/60 animate-bounce">
               <Flame className="w-3.5 h-3.5 fill-current" />
@@ -239,8 +505,19 @@ export default function ClozeQuiz({
           )}
         </div>
 
-        {/* Cloze Mode Switcher: Câu ví dụ vs Cụm đi kèm / Từ ghép */}
+        {/* Cloze Mode Switcher: Câu ví dụ vs Cụm đi kèm vs Kết hợp */}
         <div className="flex items-center bg-slate-200/80 dark:bg-slate-800/80 p-0.5 rounded-xl border border-slate-300/60 dark:border-slate-700/60 text-xs font-bold">
+          <button
+            onClick={() => setClozeType('combined')}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+              clozeType === 'combined'
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>⚡ Kết hợp Câu & Cụm</span>
+          </button>
           <button
             onClick={() => setClozeType('sentence')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
@@ -273,7 +550,7 @@ export default function ClozeQuiz({
           <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400">
             <FileQuestion className="w-4 h-4" />
             <span>
-              {clozeType === 'sentence' ? 'Điền từ vựng đúng vào câu ví dụ:' : 'Điền từ vựng phù hợp vào cụm liên ngữ / từ ghép:'}
+              {type === 'sentence' ? 'Điền từ vựng đúng vào câu ví dụ:' : 'Điền từ vựng phù hợp vào cụm liên ngữ / từ ghép:'}
             </span>
           </div>
 
@@ -398,42 +675,54 @@ export default function ClozeQuiz({
 
       {/* Answer Feedback & Next Action Bar */}
       {isAnswered && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 animate-fadeIn">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                const audioText = type === 'sentence' 
-                  ? (currentQ.example?.japanese || target.word)
-                  : (currentQ.originalText || target.word);
-                speakJapanese(audioText, soundSpeed);
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 text-xs font-semibold shrink-0"
-            >
-              <Volume2 className="w-4 h-4" />
-              <span>Nghe đọc</span>
-            </button>
-            <div className="flex items-center gap-2 flex-wrap text-sm text-slate-600 dark:text-slate-300">
-              <span className="font-semibold text-slate-700 dark:text-slate-200">Đáp án:</span>
-              <span 
-                className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400 ${furiganaClass}`}
-                dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
-              />
-              <span className="font-mono text-xs text-slate-400">
-                ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                - {target.meanings?.[0]}
+        <div className="space-y-3 p-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 animate-fadeIn">
+          {/* Thông báo hàng đợi ôn lại khi trả lời sai */}
+          {lastAnswerFailed && (
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2">
+              <Repeat className="w-4 h-4 shrink-0 text-amber-600" />
+              <span>
+                🔄 Đã đưa từ <strong>"{target.word}"</strong> vào hàng đợi ôn lại sau vài câu nữa (đã đảo vị trí đáp án) để bạn khắc sâu trí nhớ!
               </span>
             </div>
-          </div>
+          )}
 
-          <button
-            onClick={handleNext}
-            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 shrink-0"
-          >
-            <span>Câu tiếp theo (Enter / Space)</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const audioText = type === 'sentence' 
+                    ? (currentQ.example?.japanese || target.word)
+                    : (currentQ.originalText || target.word);
+                  speakJapanese(audioText, soundSpeed);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 text-xs font-semibold shrink-0"
+              >
+                <Volume2 className="w-4 h-4" />
+                <span>Nghe đọc</span>
+              </button>
+              <div className="flex items-center gap-2 flex-wrap text-sm text-slate-600 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-slate-200">Đáp án:</span>
+                <span 
+                  className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-indigo-600 dark:text-indigo-400 ${furiganaClass}`}
+                  dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+                />
+                <span className="font-mono text-xs text-slate-400">
+                  ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  - {target.meanings?.[0]}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={handleNext}
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 shrink-0"
+            >
+              <span>Câu tiếp theo (Enter / Space)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
 
