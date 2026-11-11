@@ -14,7 +14,7 @@ import {
   Sparkle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { speakJapanese } from '../utils/audio';
+import { speakJapanese, stopSpeech } from '../utils/audio';
 import { buildQuizQuestions } from '../utils/quizHelper';
 import { formatExampleMeaning } from '../utils/text';
 
@@ -97,6 +97,7 @@ export default function QuizMode({
   };
 
   const handleNext = () => {
+    stopSpeech();
     if (currentIndex + 1 >= quizPool.length) {
       setIsCompleted(true);
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -106,6 +107,13 @@ export default function QuizMode({
       setIsAnswered(false);
     }
   };
+
+  // Dọn dẹp âm thanh khi component unmount
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   // Keyboard navigation inside Quiz Mode (1-4, A-D, Enter, Space)
   useEffect(() => {

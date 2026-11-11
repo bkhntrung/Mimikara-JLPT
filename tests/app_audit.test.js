@@ -497,4 +497,109 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(clozeContent.includes('target.wordHtml || target.word'), 'ClozeQuiz phải render target.wordHtml với Furigana');
   });
 
+  test('Test 5.9: Kiểm toán chống lộ đáp án âm thanh khi lật mặt sau và chuyển thẻ (Audio Answer Leak Prevention)', () => {
+    // 1. Kiểm tra FlashcardDeck.jsx: Đã import useRef và stopSpeech
+    const flashcardPath = path.resolve('src/components/FlashcardDeck.jsx');
+    const flashcardContent = fs.readFileSync(flashcardPath, 'utf8');
+    assert.ok(flashcardContent.includes('useRef'), 'FlashcardDeck phải import useRef');
+    assert.ok(flashcardContent.includes('stopSpeech'), 'FlashcardDeck phải import stopSpeech');
+    assert.ok(flashcardContent.includes('prevFlippedRef'), 'FlashcardDeck phải dùng prevFlippedRef để theo dõi trạng thái lật');
+    assert.ok(flashcardContent.includes('prevWordIdRef'), 'FlashcardDeck phải dùng prevWordIdRef để phát hiện chuyển từ');
+    assert.ok(flashcardContent.includes('if (!isSameWord)'), 'FlashcardDeck phải chặn phát âm khi chuyển sang từ mới');
+    assert.ok(flashcardContent.includes('wasFlippedToBack'), 'FlashcardDeck chỉ phát âm khi chuyển từ false sang true trên cùng một từ');
+
+    // 2. Kiểm tra App.jsx: Đã gọi stopSpeech() và setIsFlipped(false) đồng bộ khi chuyển thẻ
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+    assert.ok(appContent.includes('stopSpeech'), 'App.jsx phải import stopSpeech');
+    
+    // handleNavigate phải reset flip và dừng audio ngay lập tức
+    const handleNavigateMatch = appContent.match(/handleNavigate\s*=\s*useCallback\(\s*\(direction\)\s*=>\s*\{([\s\S]*?)\},\s*\[activeWords\.length\]\)/);
+    assert.ok(handleNavigateMatch, 'App.jsx phải có handleNavigate');
+    assert.ok(handleNavigateMatch[1].includes('stopSpeech()'), 'handleNavigate phải gọi stopSpeech()');
+    assert.ok(handleNavigateMatch[1].includes('setIsFlipped(false)'), 'handleNavigate phải gọi setIsFlipped(false) đồng bộ');
+
+    // handleRateSRS phải reset flip và dừng audio ngay lập tức
+    const handleRateSRSMatch = appContent.match(/handleRateSRS\s*=\s*useCallback\(\s*\(wordId,\s*rating\)\s*=>\s*\{([\s\S]*?)\},\s*\[activeWords\.length,\s*currentLevel\]\)/);
+    assert.ok(handleRateSRSMatch, 'App.jsx phải có handleRateSRS');
+    assert.ok(handleRateSRSMatch[1].includes('stopSpeech()'), 'handleRateSRS phải gọi stopSpeech()');
+    assert.ok(handleRateSRSMatch[1].includes('setIsFlipped(false)'), 'handleRateSRS phải gọi setIsFlipped(false) đồng bộ');
+
+    // 3. Kiểm thử mô phỏng máy trạng thái âm thanh (Audio State Machine Simulation)
+    let speechPlayedCount = 0;
+    let speechStoppedCount = 0;
+    let lastSpokenWord = null;
+
+    const mockSpeak = (word) => {
+      speechPlayedCount++;
+      lastSpokenWord = word;
+    };
+    const mockStop = () => {
+      speechStoppedCount++;
+    };
+
+    class SimulatedAudioController {
+      constructor() {
+        this.prevFlipped = false;
+        this.prevWordId = null;
+        this.autoPlayAudio = true;
+      }
+
+      onStateUpdate(currentWord, isFlipped) {
+        const isSameWord = this.prevWordId === currentWord?.id;
+        const wasFlippedToBack = !this.prevFlipped && isFlipped;
+
+        this.prevFlipped = isFlipped;
+        this.prevWordId = currentWord?.id;
+
+        if (!isSameWord) {
+          mockStop();
+          return;
+        }
+
+        if (!isFlipped) {
+          mockStop();
+          return;
+        }
+
+        if (wasFlippedToBack && this.autoPlayAudio && currentWord) {
+          mockSpeak(currentWord.word);
+        }
+      }
+    }
+
+    const controller = new SimulatedAudioController();
+    const wordA = { id: 101, word: '日本語' };
+    const wordB = { id: 102, word: '勉強' };
+
+    // Bước 1: Khởi tạo ở mặt trước từ A (isFlipped = false)
+    controller.onStateUpdate(wordA, false);
+    assert.equal(speechPlayedCount, 0, 'Mặt trước thẻ A ban đầu tuyệt đối không được phát âm');
+
+    // Bước 2: Người dùng lật sang mặt sau từ A (isFlipped = true)
+    controller.onStateUpdate(wordA, true);
+    assert.equal(speechPlayedCount, 1, 'Khi lật sang mặt sau từ A thì phải phát âm từ A');
+    assert.equal(lastSpokenWord, '日本語', 'Từ được phát âm phải là từ A');
+
+    // Bước 3: Người dùng bấm Next chuyển sang từ B (Trong khi từ A đang ở mặt sau!)
+    // Ngay cả khi xảy ra render bất đồng bộ nơi isFlipped vẫn đang là true:
+    controller.onStateUpdate(wordB, true);
+    assert.equal(speechPlayedCount, 1, 'Chuyển sang từ B TUYỆT ĐỐI KHÔNG được phát âm từ B (không lộ đáp án)');
+    assert.ok(speechStoppedCount >= 1, 'Phải gọi mockStop để ngắt âm thanh từ A');
+
+    // Bước 4: Thẻ B hoàn tất reset về mặt trước (isFlipped = false)
+    controller.onStateUpdate(wordB, false);
+    assert.equal(speechPlayedCount, 1, 'Mặt trước từ B vẫn giữ im lặng');
+
+    // Bước 5: Người dùng quyết định lật mặt sau từ B (isFlipped = true)
+    controller.onStateUpdate(wordB, true);
+    assert.equal(speechPlayedCount, 2, 'Khi chủ động lật sang mặt sau từ B thì mới được phát âm từ B');
+    assert.equal(lastSpokenWord, '勉強', 'Từ được phát âm phải là từ B');
+
+    // Bước 6: Người dùng lật ngược lại mặt trước từ B (isFlipped = false)
+    controller.onStateUpdate(wordB, false);
+    assert.equal(speechPlayedCount, 2, 'Không phát âm thêm khi lật lại mặt trước');
+    assert.ok(speechStoppedCount >= 2, 'Phải ngắt âm thanh khi lật lại mặt trước');
+  });
+
 });

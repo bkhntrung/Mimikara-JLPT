@@ -11,7 +11,7 @@ import {
   Sparkles,
   ExternalLink
 } from 'lucide-react';
-import { speakJapanese } from '../utils/audio';
+import { speakJapanese, stopSpeech } from '../utils/audio';
 import { formatRelatedRuby, formatExampleMeaning } from '../utils/text';
 
 export default function DictionaryView({
@@ -27,6 +27,13 @@ export default function DictionaryView({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'starred', 'new', 'learning', 'mastered'
   const [expandedId, setExpandedId] = useState(null);
+
+  // Dọn dẹp âm thanh khi rời khỏi từ điển
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   // Filter words
   const filteredWords = useMemo(() => {

@@ -1,0 +1,58 @@
+================================================================================
+BÁO CÁO SỬA LỖI VÀ KIỂM THỬ: KHẮC PHỤC LỘ ĐÁP ÁN ÂM THANH KHI CHUYỂN THẺ
+Thời gian thực thi: 2026-11-11
+Hệ thống: Mimikara JLPT Flashcard & Spaced Repetition (N3 • N2 • N1)
+================================================================================
+
+1. NGUYÊN NHÂN GỐC RỄ (ROOT CAUSE ANALYSIS):
+--------------------------------------------------------------------------------
+- Hiện tượng: Khi người dùng đang ở mặt sau của thẻ A (isFlipped === true) và chuyển
+  sang thẻ B (bấm nút Tiếp/Trước, phím mũi tên Left/Right, hoặc phím SRS 1-4):
+  Từ vựng tiếng Nhật của thẻ B tự động phát âm, khiến đáp án bị lộ ngay trước khi
+  người dùng kịp tư duy suy nghĩ ở mặt trước.
+- Cơ chế lỗi:
+  1. Trong App.jsx, handleNavigate và handleRateSRS chỉ gọi setCurrentIndex(newIndex)
+     mà không reset đồng bộ setIsFlipped(false), dẫn tới 1 nhịp render bất đồng bộ
+     mà ở đó currentIndex là thẻ B nhưng isFlipped vẫn mang giá trị true.
+  2. Trong FlashcardDeck.jsx, hook useEffect phát âm tự động có dependency chứa
+     currentWord?.id:
+       useEffect(() => {
+         if (isFlipped && autoPlayAudio && currentWord) {
+           speakJapanese(currentWord.word, soundSpeed);
+         }
+       }, [isFlipped, autoPlayAudio, currentWord?.id]);
+     Khi chuyển sang thẻ B, currentWord.id thay đổi và isFlipped vẫn đang là true,
+     khiến useEffect kích hoạt đọc ngay lập tức từ vựng của thẻ B.
+  3. Âm thanh đọc của thẻ cũ không được dừng (stopSpeech), dẫn đến hiện tượng âm thanh
+     bị tràn (audio overlap/bleed) sang thẻ mới.
+
+2. CÁC BIỆN PHÁP KHẮC PHỤC TRIỆT ĐỂ (MULTI-LAYER DEFENSE):
+--------------------------------------------------------------------------------
+[x] 1. Quản lý trạng thái theo dõi transition tại FlashcardDeck.jsx:
+    - Sử dụng prevFlippedRef và prevWordIdRef để giám sát sự thay đổi.
+    - Điều kiện phát âm tự động: CHỈ phát âm khi người dùng thực hiện thao tác
+      lật thẻ từ mặt trước sang mặt sau (!prevFlipped && isFlipped) trên CÙNG MỘT TỪ
+      (prevWordId === currentWord.id).
+    - Khi chuyển sang từ mới (!isSameWord): Dừng ngay lập tức (stopSpeech()) và return.
+    - Khi lật từ sau về trước (!isFlipped): Dừng ngay lập tức (stopSpeech()) và return.
+    - Cleanup on unmount: Tự động gọi stopSpeech() khi rời component.
+
+[x] 2. Reset trạng thái đồng bộ tại App.jsx:
+    - Tại handleNavigate và handleRateSRS: Gọi stopSpeech() và setIsFlipped(false)
+      đồng bộ ngay khi thay đổi currentIndex.
+    - Tại handleShuffle, handleToggleSmartSRS, handleSelectLevel, và effect chuyển unit / studyMode:
+      Tự động dừng âm thanh và reset flip state.
+
+[x] 3. Bảo vệ toàn diện các chế độ khác (QuizMode, ClozeQuiz, DictionaryView):
+    - Ngắt âm thanh (stopSpeech) khi chuyển câu hỏi và khi rời khỏi chế độ (unmount).
+
+3. KẾT QUẢ KIỂM THỬ TỰ ĐỘNG (NODE TEST SUITE):
+--------------------------------------------------------------------------------
+Lệnh kiểm thử: npm test
+- Test Suite 1: Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập (21/21 tests PASS)
+  + Thêm mới Test 5.9: Kiểm toán chống lộ đáp án âm thanh khi lật mặt sau và chuyển thẻ.
+  + Mô phỏng State Machine: Chuyển từ A sang B không phát âm từ B; Lật từ A sang mặt sau thì phát âm; Lật về trước thì dừng âm.
+- Test Suite 2: Hybrid FSRS-SM2 Spaced Repetition Engine (25/25 tests PASS)
+- Tổng cộng: 46/46 tests PASS (100% XANH).
+- Đóng gói Vite Build: npm run build thành công không lỗi.
+================================================================================

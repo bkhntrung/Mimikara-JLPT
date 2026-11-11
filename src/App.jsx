@@ -18,7 +18,7 @@ import {
   calculateNextReview,
   getSmartStudyQueue
 } from './utils/srs';
-import { speakJapanese } from './utils/audio';
+import { speakJapanese, stopSpeech } from './utils/audio';
 import { TabSyncManager } from './utils/tabSync';
 
 const DATASETS = {
@@ -107,6 +107,7 @@ export default function App() {
   // Level change handler
   const handleSelectLevel = useCallback((lvl) => {
     if (lvl === currentLevel) return;
+    stopSpeech();
     setCurrentLevel(lvl);
     localStorage.setItem('mimikara_level', lvl);
     setCurrentUnit(1);
@@ -140,9 +141,15 @@ export default function App() {
 
   // Reset index & flip state when unit changes
   useEffect(() => {
+    stopSpeech();
     setCurrentIndex(0);
     setIsFlipped(false);
   }, [currentUnit]);
+
+  // Dừng âm thanh khi chuyển chế độ học
+  useEffect(() => {
+    stopSpeech();
+  }, [studyMode]);
 
   // Reset flip state when navigating word
   useEffect(() => {
@@ -154,6 +161,7 @@ export default function App() {
   }, []);
 
   const handleShuffle = useCallback(() => {
+    stopSpeech();
     setIsShuffled(true);
     setIsSmartSRSSort(false);
     setShuffleSeed(Date.now());
@@ -162,6 +170,7 @@ export default function App() {
   }, []);
 
   const handleToggleSmartSRS = useCallback(() => {
+    stopSpeech();
     setIsSmartSRSSort(prev => {
       const next = !prev;
       if (next) {
@@ -186,6 +195,8 @@ export default function App() {
 
   // SRS Rating handler
   const handleRateSRS = useCallback((wordId, rating) => {
+    stopSpeech();
+    setIsFlipped(false);
     setSrsRecords(prev => {
       const currentRecord = prev[wordId];
       const updated = calculateNextReview(currentRecord, rating);
@@ -258,6 +269,8 @@ export default function App() {
 
   // Navigation handler
   const handleNavigate = useCallback((direction) => {
+    stopSpeech();
+    setIsFlipped(false);
     setCurrentIndex(prev => {
       const next = prev + direction;
       if (next >= 0 && next < activeWords.length) return next;

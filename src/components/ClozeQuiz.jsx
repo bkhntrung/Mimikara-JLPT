@@ -15,7 +15,7 @@ import {
   Link2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { speakJapanese } from '../utils/audio';
+import { speakJapanese, stopSpeech } from '../utils/audio';
 import { 
   buildClozeSentenceQuestions, 
   buildClozeCollocationQuestions 
@@ -97,6 +97,7 @@ export default function ClozeQuiz({
   };
 
   const handleNext = () => {
+    stopSpeech();
     if (currentIndex + 1 >= questions.length) {
       setIsCompleted(true);
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -107,6 +108,13 @@ export default function ClozeQuiz({
       setShowHint(false);
     }
   };
+
+  // Dọn dẹp âm thanh khi component unmount
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   // Keyboard navigation for Cloze Quiz (1-4, A-D, Enter, Space, H for hint)
   useEffect(() => {

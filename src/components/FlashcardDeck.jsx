@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { 
   Volume2, 
   RotateCw, 
@@ -19,7 +19,7 @@ import {
   Flame,
   ArrowRight
 } from 'lucide-react';
-import { speakJapanese } from '../utils/audio';
+import { speakJapanese, stopSpeech } from '../utils/audio';
 import { 
   previewNextIntervals, 
   getRetrievability, 
@@ -129,12 +129,44 @@ export default function FlashcardDeck({
     setShowHint(false);
   }, [currentIndex, currentWord?.id]);
 
-  // Tự động phát âm thanh khi lật sang mặt sau (nếu bật autoPlayAudio)
+  // Refs lưu trữ trạng thái lật và ID của từ ở lần render trước đó
+  const prevFlippedRef = useRef(isFlipped);
+  const prevWordIdRef = useRef(currentWord?.id);
+
+  // Tự động phát âm thanh CHỈ KHI lật từ mặt trước sang mặt sau của CÙNG MỘT TỪ
+  // Tuyệt đối không phát âm thanh khi chuyển sang từ mới để tránh làm lộ đáp án!
   useEffect(() => {
-    if (isFlipped && autoPlayAudio && currentWord) {
+    const isSameWord = prevWordIdRef.current === currentWord?.id;
+    const wasFlippedToBack = !prevFlippedRef.current && isFlipped;
+
+    // Lưu lại trạng thái hiện tại cho lần render tiếp theo
+    prevFlippedRef.current = isFlipped;
+    prevWordIdRef.current = currentWord?.id;
+
+    // 1. Khi chuyển sang từ khác: Ngắt ngay lập tức mọi âm thanh đang đọc của từ cũ
+    if (!isSameWord) {
+      stopSpeech();
+      return;
+    }
+
+    // 2. Khi lật ngược lại từ mặt sau về mặt trước: Dừng âm thanh đang đọc
+    if (!isFlipped) {
+      stopSpeech();
+      return;
+    }
+
+    // 3. Chỉ tự động phát âm khi người dùng THỰC SỰ LẬT từ trước ra sau của CÙNG MỘT TỪ
+    if (wasFlippedToBack && autoPlayAudio && currentWord) {
       speakJapanese(currentWord.word, soundSpeed);
     }
-  }, [isFlipped, autoPlayAudio, currentWord?.id]);
+  }, [isFlipped, currentWord?.id, autoPlayAudio, soundSpeed]);
+
+  // Dọn dẹp âm thanh khi component unmount
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   // Phím tắt C để đổi chế độ thẻ, H để bật gợi ý
   useEffect(() => {
