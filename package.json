@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "export:anki": "node scripts/export_anki.js",
     "test": "node --test tests/srs.test.js tests/app_audit.test.js"
   },
   "dependencies": {

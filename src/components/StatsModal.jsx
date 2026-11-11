@@ -23,6 +23,7 @@ import {
   importAllUserData, 
   getAllUserDataSummary 
 } from '../utils/srs';
+import { downloadAnkiTSV } from '../utils/ankiExport';
 
 export default function StatsModal({
   isOpen,
@@ -140,6 +141,25 @@ export default function StatsModal({
         message: 'Có lỗi xảy ra khi tạo file sao lưu!'
       });
       setTimeout(() => setBackupStatus(null), 4000);
+    }
+  };
+
+  // Export thẻ từ vựng sang Anki (.tsv)
+  const handleExportAnkiCurrentLevel = () => {
+    try {
+      downloadAnkiTSV(allWords, currentLevel);
+      setBackupStatus({
+        type: 'success',
+        message: `Đã xuất thành công file thẻ Anki mimikara_${currentLevel.toLowerCase()}_anki.tsv (${allWords.length} từ vựng)!`
+      });
+      setTimeout(() => setBackupStatus(null), 5000);
+    } catch (err) {
+      console.error('Anki export error:', err);
+      setBackupStatus({
+        type: 'error',
+        message: 'Có lỗi xảy ra khi xuất thẻ Anki: ' + err.message
+      });
+      setTimeout(() => setBackupStatus(null), 5000);
     }
   };
 
@@ -595,6 +615,21 @@ export default function StatsModal({
             >
               Hoặc chỉ xuất riêng file sao lưu cho cấp độ {currentLevel} (.json)
             </button>
+          </div>
+
+          {/* Anki Deck Export */}
+          <div className="pt-3 border-t border-slate-200/80 dark:border-slate-700/80 space-y-2">
+            <button
+              type="button"
+              onClick={handleExportAnkiCurrentLevel}
+              className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white text-xs font-semibold shadow-md transition-all hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-sky-400" />
+              <span>🃏 Xuất Thẻ Sang Anki Cấp Độ {currentLevel} ({allWords.length} từ .tsv)</span>
+            </button>
+            <p className="text-[11px] text-center text-slate-500 dark:text-slate-400">
+              Định dạng chuẩn Anki với đầy đủ chữ Hán, Furigana Ruby, Hán Việt, Nghĩa, Ví dụ và Tag phân cấp Unit.
+            </p>
           </div>
         </div>
 

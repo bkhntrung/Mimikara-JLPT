@@ -908,4 +908,27 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     }
   });
 
+  test('Test 5.16: Kiểm toán Bộ chuyển đổi và xuất thẻ Anki TSV (Anki Export Suite)', async () => {
+    const { generateAnkiTSV } = await import('../src/utils/ankiExport.js');
+    const sampleWords = mimikaraN1.vocabulary.slice(0, 5);
+    const tsvOutput = generateAnkiTSV(sampleWords, 'N1');
+
+    const lines = tsvOutput.split('\n');
+    assert.equal(lines[0], '#separator:tab', 'Anki TSV phải bắt đầu bằng #separator:tab');
+    assert.equal(lines[1], '#html:true', 'Anki TSV phải có #html:true để hiển thị Ruby và HTML');
+    assert.equal(lines[2], '#tags column:9', 'Anki TSV phải chỉ định cột tag là cột 9');
+    assert.equal(lines[3], 'Word\tReading\tFurigana\tHanViet\tMeaning\tExamples\tRelated\tLevel_Unit\tTags', 'Header cột phải chính xác 9 trường');
+
+    // Kiểm tra số dòng: 4 dòng header + 5 dòng từ vựng = 9 dòng
+    assert.equal(lines.length, 9, 'Số dòng xuất ra phải đúng 4 header + 5 từ vựng');
+
+    // Kiểm tra dòng dữ liệu từ vựng đầu tiên
+    const firstFields = lines[4].split('\t');
+    assert.equal(firstFields.length, 9, 'Mỗi dòng dữ liệu phải có đủ 9 trường phân tách bằng TAB');
+    assert.equal(firstFields[0], sampleWords[0].word);
+    assert.equal(firstFields[1], sampleWords[0].reading);
+    assert.ok(firstFields[7].startsWith('N1 - Unit'), 'Level_Unit phải có tiền tố cấp độ và unit');
+    assert.ok(firstFields[8].includes('Mimikara::N1'), 'Tag phân cấp Anki phải chứa Mimikara::N1');
+  });
+
 });
