@@ -20,10 +20,7 @@ import {
 import confetti from 'canvas-confetti';
 import { speakJapanese, stopSpeech } from '../utils/audio';
 import { 
-  buildQuizQuestions, 
-  filterWordsByStudyScope, 
-  createRetryQuestion, 
-  insertRetryQuestion 
+  buildQuizQuestions 
 } from '../utils/quizHelper';
 import { formatExampleMeaning } from '../utils/text';
 
@@ -47,12 +44,6 @@ export default function QuizMode({
   // 5. 'all_angles': Tổng hợp Đa chiều (Tất cả góc hỏi cho từ đang học)
   const [direction, setDirection] = useState('kanji_to_meaning');
 
-  // Phạm vi từ vựng học: 'studied' (Đã & Đang học - Mặc định) | 'weak' (Hay quên & Cần ôn) | 'all' (Toàn bộ Unit)
-  const [studyScope, setStudyScope] = useState('studied');
-
-  // Quy mô câu hỏi mỗi phiên: 20, 30, 40, 0 (0 = Tất cả)
-  const [sessionLimit, setSessionLimit] = useState(30);
-
   const [quizPool, setQuizPool] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -62,10 +53,8 @@ export default function QuizMode({
   const [bestStreak, setBestStreak] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Vòng lặp sửa sai (Spaced Error Re-queue)
+  // Danh sách các từ làm sai để luyện lại ở cuối phiên
   const [wrongWordsMap, setWrongWordsMap] = useState({});
-  const [retryQueuedCount, setRetryQueuedCount] = useState(0);
-  const [lastAnswerFailed, setLastAnswerFailed] = useState(false);
 
   // Giữ ref cho srsRecords và starredSet để không kích hoạt re-init quiz khi trả lời câu hỏi
   const srsRecordsRef = useRef(srsRecords);
@@ -76,9 +65,7 @@ export default function QuizMode({
   // Refs theo dõi trạng thái trước đó để bảo lưu từ đang làm khi chuyển dạng bài tập (chống nhảy câu)
   const currentWordIdRef = useRef(null);
   const prevDirectionRef = useRef(direction);
-  const prevScopeRef = useRef(studyScope);
   const prevUnitRef = useRef(currentUnit);
-  const prevLimitRef = useRef(sessionLimit);
   const currentIndexRef = useRef(currentIndex);
   currentIndexRef.current = currentIndex;
 
@@ -88,43 +75,22 @@ export default function QuizMode({
       : allWords.filter(w => w.unit === currentUnit);
   }, [allWords, currentUnit]);
 
-  // Thống kê số lượng từ theo phạm vi để hiển thị badge (cập nhật phản ứng mà không reset quiz)
-  const { scopeStats, fallbackData } = useMemo(() => {
-    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecords, starredSet, studyScope);
-    return {
-      scopeStats: filterRes.stats || { studiedInUnitCount: 0, weakInUnitCount: 0, unitTotalCount: unitPool.length },
-      fallbackData: {
-        fallbackAllStudied: filterRes.fallbackAllStudied || [],
-        fallbackAllWeak: filterRes.fallbackAllWeak || []
-      }
-    };
-  }, [unitPool, allWords, srsRecords, starredSet, studyScope]);
-
-  // Kiểm tra xem trong phạm vi từ hiện tại có từ nào có từ đồng nghĩa/trái nghĩa không
+  // Kiểm tra xem trong unit hiện tại có từ nào có từ đồng nghĩa/trái nghĩa không
   const hasSynonymsInPool = useMemo(() => {
-    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
-    const pool = filterRes.words || [];
-    return pool.some(w => (w.related?.synonyms?.length > 0) || (w.related?.antonyms?.length > 0));
-  }, [unitPool, allWords, studyScope]);
+    return unitPool.some(w => (w.related?.synonyms?.length > 0) || (w.related?.antonyms?.length > 0));
+  }, [unitPool]);
 
-  // Khởi tạo bộ câu hỏi dựa theo unitPool, direction, studyScope, sessionLimit
+  // Khởi tạo bộ 100 câu hỏi chuẩn theo unitPool và direction
   // TÁCH BIỆT KHỎI srsRecords để khi click đáp án đồng bộ SRS KHÔNG LÀM RESET BÀI THI
   useEffect(() => {
     const isDirectionOnlyChange = 
       prevDirectionRef.current !== direction &&
-      prevScopeRef.current === studyScope &&
-      prevUnitRef.current === currentUnit &&
-      prevLimitRef.current === sessionLimit;
+      prevUnitRef.current === currentUnit;
 
     prevDirectionRef.current = direction;
-    prevScopeRef.current = studyScope;
     prevUnitRef.current = currentUnit;
-    prevLimitRef.current = sessionLimit;
 
-    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
-    const activePool = filterRes.words || [];
-
-    if (activePool.length === 0) {
+    if (unitPool.length === 0) {
       setQuizPool([]);
       setCurrentIndex(0);
       setScore(0);
@@ -133,22 +99,15 @@ export default function QuizMode({
       setSelectedAnswer(null);
       setIsAnswered(false);
       setWrongWordsMap({});
-      setRetryQueuedCount(0);
-      setLastAnswerFailed(false);
       return;
     }
 
-    let builtQuestions = buildQuizQuestions(activePool, allWords, direction, {
+    const builtQuestions = buildQuizQuestions(unitPool, allWords, direction, {
       srsRecords: srsRecordsRef.current,
       starredSet: starredSetRef.current,
-      studyScope,
-      adaptiveRepeat: false, // Tránh tạo trùng lặp câu hỏi từ đầu
-      strictPool: studyScope !== 'all'
+      studyScope: 'all',
+      adaptiveRepeat: false
     });
-
-    if (sessionLimit > 0 && builtQuestions.length > sessionLimit) {
-      builtQuestions = builtQuestions.slice(0, sessionLimit);
-    }
 
     setQuizPool(builtQuestions);
 
@@ -169,7 +128,6 @@ export default function QuizMode({
       setCurrentIndex(nextIndex);
       setSelectedAnswer(null);
       setIsAnswered(false);
-      setLastAnswerFailed(false);
     } else {
       setCurrentIndex(0);
       setScore(0);
@@ -178,10 +136,8 @@ export default function QuizMode({
       setSelectedAnswer(null);
       setIsAnswered(false);
       setWrongWordsMap({});
-      setRetryQueuedCount(0);
-      setLastAnswerFailed(false);
     }
-  }, [unitPool, allWords, direction, studyScope, sessionLimit]);
+  }, [unitPool, allWords, direction]);
 
   const currentQ = quizPool[currentIndex];
 
@@ -217,7 +173,6 @@ export default function QuizMode({
     speakJapanese(currentQ.target.word, soundSpeed);
 
     if (isCorrect) {
-      setLastAnswerFailed(false);
       setScore(prev => prev + 1);
       setStreak(prev => {
         const next = prev + 1;
@@ -228,20 +183,11 @@ export default function QuizMode({
         return next;
       });
     } else {
-      // Khi làm SAI: Kích hoạt Vòng lặp Sửa sai (Spaced Error Re-queue)
       setStreak(0);
-      setLastAnswerFailed(true);
       setWrongWordsMap(prev => ({
         ...prev,
         [currentQ.target.id]: currentQ.target
       }));
-
-      // Chèn câu hỏi ôn lại vào sau 3-4 câu nữa trong hàng đợi (tối đa 1 lần retry cho mỗi câu để chống lặp vô tận)
-      if (!currentQ.isRetry || (currentQ.retryCount || 0) < 1) {
-        const retryQ = createRetryQuestion(currentQ, unitPool, allWords);
-        setQuizPool(prev => insertRetryQuestion(prev, currentIndex, retryQ, 4));
-        setRetryQueuedCount(prev => prev + 1);
-      }
     }
   };
 
@@ -254,7 +200,6 @@ export default function QuizMode({
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
-      setLastAnswerFailed(false);
     }
   };
 
@@ -294,9 +239,13 @@ export default function QuizMode({
   }, [isAnswered, currentQ, activeDirection]);
 
   const handleRestart = () => {
-    const baseQuestions = quizPool.filter(q => !q.isRetry);
-    const shuffled = [...baseQuestions].sort(() => Math.random() - 0.5);
-    setQuizPool(shuffled);
+    const fresh = buildQuizQuestions(unitPool, allWords, direction, {
+      srsRecords: srsRecordsRef.current,
+      starredSet: starredSetRef.current,
+      studyScope: 'all',
+      adaptiveRepeat: false
+    });
+    setQuizPool(fresh);
     setCurrentIndex(0);
     setScore(0);
     setStreak(0);
@@ -304,8 +253,6 @@ export default function QuizMode({
     setSelectedAnswer(null);
     setIsAnswered(false);
     setWrongWordsMap({});
-    setRetryQueuedCount(0);
-    setLastAnswerFailed(false);
   };
 
   // Luyện riêng các từ đã trả lời sai trong lượt này
@@ -328,103 +275,17 @@ export default function QuizMode({
     setSelectedAnswer(null);
     setIsAnswered(false);
     setWrongWordsMap({});
-    setRetryQueuedCount(0);
-    setLastAnswerFailed(false);
   };
 
   const target = currentQ?.target;
   const options = currentQ?.options || [];
   const furiganaClass = furiganaMode === 'hide' ? 'furigana-hide' : furiganaMode === 'hover' ? 'furigana-hover' : '';
-
   const unitText = currentUnit === 0 ? 'Toàn bộ cấp độ' : `Unit ${currentUnit}`;
-  const hasAnyStudiedInLevel = fallbackData.fallbackAllStudied?.length > 0;
-  const hasAnyWeakInLevel = fallbackData.fallbackAllWeak?.length > 0;
-
-  // Kiểm tra xem lỗi rỗng câu hỏi là do phạm vi rỗng hay do dạng bài tập không có câu hỏi (ví dụ Mondai 4 không có từ đồng/trái)
-  const isFormatEmpty = quizPool.length === 0 && (
-    (studyScope === 'weak' && scopeStats.weakInUnitCount > 0) ||
-    (studyScope === 'studied' && scopeStats.studiedInUnitCount > 0) ||
-    (studyScope === 'all' && scopeStats.unitTotalCount > 0)
-  );
-
-  let emptyTitle = '';
-  let emptyDesc = '';
-  if (isFormatEmpty) {
-    emptyTitle = `Chưa có câu hỏi ${direction === 'synonym_antonym' ? 'Đồng nghĩa / Trái nghĩa' : 'cho dạng này'} trong các từ đang chọn`;
-    emptyDesc = `Trong các từ ${studyScope === 'weak' ? 'hay quên' : 'đã học'} của ${unitText} chưa có dữ liệu từ đồng/trái nghĩa trong giáo trình. Bạn có thể chọn dạng bài tập khác hoặc mở rộng phạm vi.`;
-  } else if (studyScope === 'weak') {
-    emptyTitle = `Chưa có từ yếu / đến hạn ôn trong ${unitText}`;
-    emptyDesc = `Tất cả các từ bạn đã học trong ${unitText} đều đang có mức độ ghi nhớ tốt! 🎉 Hệ thống lọc chính xác để bạn không bị quá tải.`;
-  } else {
-    emptyTitle = `Chưa có từ Đã & Đang học nào trong ${unitText}`;
-    emptyDesc = `Hệ thống bài tập thông minh lọc chính xác những từ bạn đã lật thẻ học trên Flashcard để tránh quá tải.`;
-  }
-
   const accuracy = quizPool.length > 0 ? Math.round((score / quizPool.length) * 100) : 0;
   const wrongCount = Object.keys(wrongWordsMap).length;
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4">
-      
-      {/* Scope and Controls Filter Bar - LUÔN HIỂN THỊ ĐỂ NGƯỜI DÙNG KHÔNG BỊ KẸT BẢNG */}
-      <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
-        {/* Scope Selector */}
-        <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl gap-1 w-full sm:w-auto">
-          <button
-            onClick={() => setStudyScope('studied')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
-              studyScope === 'studied'
-                ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            <Target className="w-3.5 h-3.5" />
-            <span>Đã học ({scopeStats.studiedInUnitCount})</span>
-          </button>
-
-          <button
-            onClick={() => setStudyScope('weak')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
-              studyScope === 'weak'
-                ? 'bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5" />
-            <span>Hay quên ({scopeStats.weakInUnitCount})</span>
-          </button>
-
-          <button
-            onClick={() => setStudyScope('all')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg font-bold transition-all ${
-              studyScope === 'all'
-                ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Toàn bộ Unit ({scopeStats.unitTotalCount})</span>
-          </button>
-        </div>
-
-        {/* Session Limit Selector */}
-        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-          <span className="font-semibold text-[11px]">Số câu:</span>
-          {[20, 30, 40, 0].map(limit => (
-            <button
-              key={limit}
-              onClick={() => setSessionLimit(limit)}
-              className={`px-2 py-0.5 rounded-md font-mono font-bold text-[11px] transition-all ${
-                sessionLimit === limit
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
-              }`}
-            >
-              {limit === 0 ? 'Hết' : limit}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Quiz Top Bar - LUÔN HIỂN THỊ CÁC DẠNG BÀI TẬP ĐỂ CHUYỂN ĐỔI TỨC THÌ */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
@@ -432,12 +293,6 @@ export default function QuizMode({
           <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
             Câu {quizPool.length === 0 ? 0 : currentIndex + 1} / {quizPool.length}
           </span>
-
-          {currentQ?.isRetry && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse">
-              🔁 Ôn lại từ vừa sai (Lần {currentQ.retryCount})
-            </span>
-          )}
 
           {streak > 1 && (
             <span className="flex items-center gap-1 text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-900/60 animate-bounce">
@@ -513,94 +368,33 @@ export default function QuizMode({
 
       {/* Main Content Area */}
       {quizPool.length === 0 && !isCompleted ? (
-        <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+        <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
           <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
             <AlertCircle className="w-8 h-8" />
           </div>
 
           <div>
             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-              {emptyTitle}
+              Chưa có câu hỏi Đồng/Trái nghĩa trong {unitText}
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-              {emptyDesc}
+              Trong giáo trình của {unitText} chưa có dữ liệu từ đồng nghĩa hoặc trái nghĩa. Vui lòng chọn dạng bài tập khác ở thanh trên.
             </p>
           </div>
 
-          <div className="flex flex-col gap-2.5 pt-2">
-            {isFormatEmpty ? (
-              <>
-                <button
-                  onClick={() => setStudyScope('all')}
-                  className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
-                >
-                  Làm dạng này với Toàn bộ {unitText} ({scopeStats.unitTotalCount} từ)
-                </button>
-                <button
-                  onClick={() => setDirection('kanji_to_meaning')}
-                  className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
-                >
-                  Chuyển sang dạng Từ → Nghĩa
-                </button>
-                <button
-                  onClick={() => setDirection('kanji_to_reading')}
-                  className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
-                >
-                  Chuyển sang dạng Mondai 1: Cách đọc
-                </button>
-              </>
-            ) : (
-              <>
-                {studyScope === 'weak' && hasAnyWeakInLevel && (
-                  <button
-                    onClick={() => {
-                      if (onSelectUnit) onSelectUnit(0);
-                      setStudyScope('weak');
-                    }}
-                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
-                  >
-                    Ôn tập {fallbackData.fallbackAllWeak.length} từ Hay quên của toàn cấp độ {currentLevel}
-                  </button>
-                )}
-
-                {studyScope !== 'weak' && hasAnyStudiedInLevel && (
-                  <button
-                    onClick={() => {
-                      if (onSelectUnit) onSelectUnit(0);
-                      setStudyScope('studied');
-                    }}
-                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
-                  >
-                    Ôn tập {fallbackData.fallbackAllStudied.length} từ Đã & Đang học của toàn cấp độ {currentLevel}
-                  </button>
-                )}
-
-                {studyScope === 'weak' && scopeStats.studiedInUnitCount > 0 && (
-                  <button
-                    onClick={() => setStudyScope('studied')}
-                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
-                  >
-                    Làm bài tập {scopeStats.studiedInUnitCount} từ Đã học của {unitText}
-                  </button>
-                )}
-
-                <button
-                  onClick={() => setStudyScope('all')}
-                  className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
-                >
-                  Làm bài tập Toàn bộ từ của {unitText} ({scopeStats.unitTotalCount} từ)
-                </button>
-
-                {onSwitchToFlashcard && (
-                  <button
-                    onClick={onSwitchToFlashcard}
-                    className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
-                  >
-                    Sang Flashcard lật học từ mới ngay →
-                  </button>
-                )}
-              </>
-            )}
+          <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
+            <button
+              onClick={() => setDirection('kanji_to_meaning')}
+              className="py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all"
+            >
+              Chuyển sang Từ → Nghĩa
+            </button>
+            <button
+              onClick={() => setDirection('kanji_to_reading')}
+              className="py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs transition-all"
+            >
+              Chuyển sang Mondai 1: Cách đọc
+            </button>
           </div>
         </div>
       ) : isCompleted ? (
@@ -636,13 +430,6 @@ export default function QuizMode({
             </div>
           </div>
 
-          {retryQueuedCount > 0 && (
-            <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 flex items-center justify-center gap-2">
-              <Repeat className="w-4 h-4 shrink-0" />
-              <span>Đã tự động đưa {retryQueuedCount} câu trả lời sai vào vòng lặp ôn lại thành công!</span>
-            </div>
-          )}
-
           <div className="flex flex-wrap items-center justify-center gap-3">
             {wrongCount > 0 && (
               <button
@@ -665,295 +452,283 @@ export default function QuizMode({
         </div>
       ) : currentQ && target ? (
         <>
-
-      {/* Question Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-lg text-center space-y-4">
-        
-        {/* Header prompt */}
-        <div className="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center justify-center gap-1.5">
-          {activeDirection === 'kanji_to_reading' && (
-            <span>Mondai 1: Chọn cách đọc Hiragana đúng của chữ Kanji dưới đây:</span>
-          )}
-          {activeDirection === 'kanji_to_meaning' && (
-            <span>Chọn nét nghĩa tiếng Việt chính xác của từ vựng sau:</span>
-          )}
-          {activeDirection === 'meaning_to_kanji' && (
-            <span>Chọn từ vựng tiếng Nhật tương ứng với nét nghĩa sau:</span>
-          )}
-          {activeDirection === 'synonym_antonym' && (
-            <span className="flex items-center gap-1 text-purple-600 dark:text-purple-400 font-bold">
-              <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">
-                {currentQ.badge || '類'}
-              </span>
-              <span>Tìm {currentQ.relationLabel || 'từ liên quan'} của từ sau:</span>
-            </span>
-          )}
-        </div>
-
-        {/* Question Content Display */}
-        {activeDirection === 'kanji_to_reading' && (
-          <div>
-            {/* Mondai 1: Luôn ẩn Furigana để người học phải tự đọc Kanji */}
-            <div className="font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 furigana-hide">
-              {target.word}
-            </div>
-            {target.hanviet && (
-              <div className="mt-3 inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs tracking-wider">
-                HÁN VIỆT: {target.hanviet}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeDirection === 'kanji_to_meaning' && (
-          <div>
-            <div 
-              className={`font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
-              dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
-            />
-            {target.hanviet && (
-              <div className="mt-3 inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs tracking-wider">
-                HÁN VIỆT: {target.hanviet}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeDirection === 'meaning_to_kanji' && (
-          <div className="py-3">
-            <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-              {target.meanings?.join('; ')}
-            </div>
-            {target.hanviet && (
-              <div className="mt-2 text-xs text-slate-400 font-mono">
-                Âm Hán Việt gợi ý: {target.hanviet}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeDirection === 'synonym_antonym' && (
-          <div>
-            <div 
-              className={`font-japanese text-4xl sm:text-5xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
-              dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
-            />
-            <div className="mt-2 text-sm text-slate-500 italic">
-              "{target.meanings?.[0]}"
-            </div>
-          </div>
-        )}
-
-      </div>
-
-      {/* 4 Choices Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {options.map((opt, idx) => {
-          let isCorrect = false;
-          if (activeDirection === 'synonym_antonym') {
-            isCorrect = opt.id === currentQ.correctOptionId || opt.isCorrect === true;
-          } else {
-            isCorrect = opt.id === target.id;
-          }
-
-          const isSelected = selectedAnswer?.id === opt.id;
-
-          let btnStyle = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-600";
-          
-          if (isAnswered) {
-            if (isCorrect) {
-              btnStyle = "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-800 dark:text-emerald-200 font-bold shadow-md shadow-emerald-500/10";
-            } else if (isSelected) {
-              btnStyle = "bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-800 dark:text-rose-200 font-bold shadow-md shadow-rose-500/10";
-            } else {
-              btnStyle = "bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 opacity-60";
-            }
-          }
-
-          const optKey = String.fromCharCode(65 + idx);
-
-          return (
-            <button
-              key={opt.id}
-              onClick={() => handleSelectOption(opt)}
-              disabled={isAnswered}
-              className={`p-4 rounded-2xl border text-left transition-all duration-200 flex items-center justify-between gap-3 shadow-sm hover:scale-[1.01] active:scale-[0.99] ${btnStyle}`}
-            >
-              <div className="w-full">
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono font-bold mb-1">
-                  <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                    {optKey} / {idx + 1}
+          {/* Question Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-lg text-center space-y-4">
+            
+            {/* Header prompt */}
+            <div className="text-xs font-semibold text-slate-400 tracking-wider uppercase flex items-center justify-center gap-1.5">
+              {activeDirection === 'kanji_to_reading' && (
+                <span>Mondai 1: Chọn cách đọc Hiragana đúng của chữ Kanji dưới đây:</span>
+              )}
+              {activeDirection === 'kanji_to_meaning' && (
+                <span>Chọn nét nghĩa tiếng Việt chính xác của từ vựng sau:</span>
+              )}
+              {activeDirection === 'meaning_to_kanji' && (
+                <span>Chọn từ vựng tiếng Nhật tương ứng với nét nghĩa sau:</span>
+              )}
+              {activeDirection === 'synonym_antonym' && (
+                <span className="flex items-center gap-1 text-purple-600 dark:text-purple-400 font-bold">
+                  <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:purple-950 text-purple-700 dark:text-purple-300">
+                    {currentQ.badge || '類'}
                   </span>
+                  <span>Tìm {currentQ.relationLabel || 'từ liên quan'} của từ sau:</span>
+                </span>
+              )}
+            </div>
+
+            {/* Question Content Display */}
+            {activeDirection === 'kanji_to_reading' && (
+              <div>
+                {/* Mondai 1: Luôn ẩn Furigana để người học phải tự đọc Kanji */}
+                <div className="font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 furigana-hide">
+                  {target.word}
+                </div>
+                {target.hanviet && (
+                  <div className="mt-3 inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs tracking-wider">
+                    HÁN VIỆT: {target.hanviet}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeDirection === 'kanji_to_meaning' && (
+              <div>
+                <div 
+                  className={`font-japanese text-5xl sm:text-6xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
+                  dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+                />
+                {target.hanviet && (
+                  <div className="mt-3 inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs tracking-wider">
+                    HÁN VIỆT: {target.hanviet}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeDirection === 'meaning_to_kanji' && (
+              <div className="py-3">
+                <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+                  {target.meanings?.join('; ')}
+                </div>
+                {target.hanviet && (
+                  <div className="mt-2 text-xs text-slate-400 font-mono">
+                    Âm Hán Việt gợi ý: {target.hanviet}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeDirection === 'synonym_antonym' && (
+              <div>
+                <div 
+                  className={`font-japanese text-4xl sm:text-5xl font-bold text-slate-800 dark:text-slate-100 ${furiganaClass}`}
+                  dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+                />
+                <div className="mt-2 text-sm text-slate-500 italic">
+                  "{target.meanings?.[0]}"
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* 4 Choices Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {options.map((opt, idx) => {
+              let isCorrect = false;
+              if (activeDirection === 'synonym_antonym') {
+                isCorrect = opt.id === currentQ.correctOptionId || opt.isCorrect === true;
+              } else {
+                isCorrect = opt.id === target.id;
+              }
+
+              const isSelected = selectedAnswer?.id === opt.id;
+
+              let btnStyle = "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-600";
+              
+              if (isAnswered) {
+                if (isCorrect) {
+                  btnStyle = "bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-800 dark:text-emerald-200 font-bold shadow-md shadow-emerald-500/10";
+                } else if (isSelected) {
+                  btnStyle = "bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-800 dark:text-rose-200 font-bold shadow-md shadow-rose-500/10";
+                } else {
+                  btnStyle = "bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 opacity-60";
+                }
+              }
+
+              const optKey = String.fromCharCode(65 + idx);
+
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => handleSelectOption(opt)}
+                  disabled={isAnswered}
+                  className={`p-4 rounded-2xl border text-left transition-all duration-200 flex items-center justify-between gap-3 shadow-sm hover:scale-[1.01] active:scale-[0.99] ${btnStyle}`}
+                >
+                  <div className="w-full">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 font-mono font-bold mb-1">
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                        {optKey} / {idx + 1}
+                      </span>
+                    </div>
+
+                    {/* Nội dung đáp án tùy theo chế độ */}
+                    {activeDirection === 'kanji_to_reading' && (
+                      <div>
+                        <div className="font-japanese text-xl font-bold font-mono">
+                          {opt.reading || opt.word}
+                        </div>
+                        {isAnswered && (
+                          <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300">
+                            <span className="font-japanese font-semibold">{opt.word}:</span> {opt.meanings?.[0]}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {activeDirection === 'kanji_to_meaning' && (
+                      <div>
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
+                          {opt.meanings?.[0] || 'Nét nghĩa'}
+                        </div>
+                        {isAnswered && (
+                          <div className="mt-1 text-xs text-slate-400 font-japanese">
+                            {opt.word} ({opt.reading})
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {activeDirection === 'meaning_to_kanji' && (
+                      <div>
+                        <div 
+                          className={`font-japanese text-xl font-bold ${furiganaClass}`}
+                          dangerouslySetInnerHTML={{ __html: opt.wordHtml || opt.word }}
+                        />
+                        {isAnswered ? (
+                          <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300 space-y-0.5">
+                            <div className="font-mono text-slate-400">{opt.reading} {opt.hanviet ? `[${opt.hanviet}]` : ''}</div>
+                            <div>{opt.meanings?.[0]}</div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-slate-400 font-mono mt-0.5">
+                            {opt.reading}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {activeDirection === 'synonym_antonym' && (
+                      <div>
+                        <div 
+                          className={`font-japanese text-xl font-bold ${furiganaClass}`}
+                          dangerouslySetInnerHTML={{ __html: opt.wordHtml || opt.word }}
+                        />
+                        {isAnswered && (
+                          <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300">
+                            {opt.meanings?.[0]}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {isAnswered && isCorrect && (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 ml-2" />
+                  )}
+                  {isAnswered && isSelected && !isCorrect && (
+                    <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 ml-2" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Answer Feedback & Explanation Card */}
+          {isAnswered && (
+            <div className="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3.5 animate-fadeIn">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <span 
+                    className={`jp-sentence font-japanese font-bold text-xl sm:text-2xl text-slate-800 dark:text-slate-100 ${furiganaClass}`}
+                    dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
+                  />
+                  <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
+                    ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
+                  </span>
+                  <button
+                    onClick={() => speakJapanese(target.word, soundSpeed)}
+                    className="p-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
+                    title="Nghe phát âm từ vựng"
+                  >
+                    <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
                 </div>
 
-                {/* Nội dung đáp án tùy theo chế độ */}
-                {activeDirection === 'kanji_to_reading' && (
-                  <div>
-                    <div className="font-japanese text-xl font-bold font-mono">
-                      {opt.reading || opt.word}
-                    </div>
-                    {isAnswered && (
-                      <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300">
-                        <span className="font-japanese font-semibold">{opt.word}:</span> {opt.meanings?.[0]}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeDirection === 'kanji_to_meaning' && (
-                  <div>
-                    <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                      {opt.meanings?.[0] || 'Nét nghĩa'}
-                    </div>
-                    {isAnswered && (
-                      <div className="mt-1 text-xs text-slate-400 font-japanese">
-                        {opt.word} ({opt.reading})
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeDirection === 'meaning_to_kanji' && (
-                  <div>
-                    <div 
-                      className={`font-japanese text-xl font-bold ${furiganaClass}`}
-                      dangerouslySetInnerHTML={{ __html: opt.wordHtml || opt.word }}
-                    />
-                    {isAnswered ? (
-                      <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300 space-y-0.5">
-                        <div className="font-mono text-slate-400">{opt.reading} {opt.hanviet ? `[${opt.hanviet}]` : ''}</div>
-                        <div>{opt.meanings?.[0]}</div>
-                      </div>
-                    ) : (
-                      <div className="text-xs text-slate-400 font-mono mt-0.5">
-                        {opt.reading}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeDirection === 'synonym_antonym' && (
-                  <div>
-                    <div 
-                      className={`font-japanese text-xl font-bold ${furiganaClass}`}
-                      dangerouslySetInnerHTML={{ __html: opt.wordHtml || opt.word }}
-                    />
-                    {isAnswered && (
-                      <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-xs text-slate-600 dark:text-slate-300">
-                        {opt.meanings?.[0]}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {isAnswered && isCorrect && (
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 ml-2" />
-              )}
-              {isAnswered && isSelected && !isCorrect && (
-                <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 ml-2" />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Answer Feedback & Explanation Card */}
-      {isAnswered && (
-        <div className="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3.5 animate-fadeIn">
-          
-          {/* Thông báo hàng đợi ôn lại khi trả lời sai */}
-          {lastAnswerFailed && (
-            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2">
-              <Repeat className="w-4 h-4 shrink-0 text-amber-600" />
-              <span>
-                🔄 Đã đưa từ <strong>"{target.word}"</strong> vào hàng đợi ôn lại sau vài câu nữa (đã đảo vị trí đáp án) để bạn khắc sâu trí nhớ!
-              </span>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between gap-3 flex-wrap">
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <span 
-                className={`jp-sentence font-japanese font-bold text-xl sm:text-2xl text-slate-800 dark:text-slate-100 ${furiganaClass}`}
-                dangerouslySetInnerHTML={{ __html: target.wordHtml || target.word }}
-              />
-              <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
-                ({target.reading}) {target.hanviet ? `[${target.hanviet}]` : ''}
-              </span>
-              <button
-                onClick={() => speakJapanese(target.word, soundSpeed)}
-                className="p-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
-                title="Nghe phát âm từ vựng"
-              >
-                <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
-
-            <button
-              onClick={handleNext}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 shrink-0"
-            >
-              <span>Câu kế tiếp (Enter / Space)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="text-sm text-slate-700 dark:text-slate-200">
-            <span className="font-semibold text-slate-500 dark:text-slate-400">Ý nghĩa: </span>
-            {target.meanings?.join('; ')}
-          </div>
-
-          {activeDirection === 'synonym_antonym' && (
-            <div className="p-3 sm:p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 space-y-1.5">
-              <div className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
-                {currentQ.relationLabel}
-              </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span 
-                  className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-purple-900 dark:text-purple-100 ${furiganaClass}`}
-                  dangerouslySetInnerHTML={{ __html: currentQ.correctRubyHtml || currentQ.correctAnswer }}
-                />
                 <button
-                  type="button"
-                  onClick={() => speakJapanese(currentQ.correctAnswer, soundSpeed)}
-                  title="Nghe phát âm đáp án"
-                  className="p-1 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-lg transition-colors"
+                  onClick={handleNext}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 shrink-0"
                 >
-                  <Volume2 className="w-4 h-4" />
-                </button>
-                {currentQ.relationMeaning && (
-                  <span className="text-sm text-purple-700 dark:text-purple-300">
-                    - {currentQ.relationMeaning}
-                  </span>
-                )}
-              </div>
-            </div>
-          )}
-
-          {target.examples?.length > 0 && (
-            <div className="space-y-1.5 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 shadow-sm">
-              <div className="flex items-start justify-between gap-3">
-                <div 
-                  className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`}
-                  dangerouslySetInnerHTML={{ __html: target.examples[0].rubyHtml || target.examples[0].japanese }}
-                />
-                <button
-                  type="button"
-                  onClick={() => speakJapanese(target.examples[0].japanese, soundSpeed)}
-                  title="Nghe phát âm câu ví dụ"
-                  className="p-1.5 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 rounded-lg transition-colors flex-shrink-0"
-                >
-                  <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>Câu kế tiếp (Enter / Space)</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-              <div className="text-sm text-slate-600 dark:text-slate-300 italic mt-1.5">
-                {formatExampleMeaning(target.examples[0].meaning)}
+
+              <div className="text-sm text-slate-700 dark:text-slate-200">
+                <span className="font-semibold text-slate-500 dark:text-slate-400">Ý nghĩa: </span>
+                {target.meanings?.join('; ')}
               </div>
+
+              {activeDirection === 'synonym_antonym' && (
+                <div className="p-3 sm:p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 space-y-1.5">
+                  <div className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
+                    {currentQ.relationLabel}
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span 
+                      className={`jp-sentence font-japanese text-base sm:text-lg font-bold text-purple-900 dark:text-purple-100 ${furiganaClass}`}
+                      dangerouslySetInnerHTML={{ __html: currentQ.correctRubyHtml || currentQ.correctAnswer }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => speakJapanese(currentQ.correctAnswer, soundSpeed)}
+                      title="Nghe phát âm đáp án"
+                      className="p-1 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-lg transition-colors"
+                    >
+                      <Volume2 className="w-4 h-4" />
+                    </button>
+                    {currentQ.relationMeaning && (
+                      <span className="text-sm text-purple-700 dark:text-purple-300">
+                        - {currentQ.relationMeaning}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {target.examples?.length > 0 && (
+                <div className="space-y-1.5 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-700/60 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div 
+                      className={`jp-sentence font-japanese text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed ${furiganaClass}`}
+                      dangerouslySetInnerHTML={{ __html: target.examples[0].rubyHtml || target.examples[0].japanese }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => speakJapanese(target.examples[0].japanese, soundSpeed)}
+                      title="Nghe phát âm câu ví dụ"
+                      className="p-1.5 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 rounded-lg transition-colors flex-shrink-0"
+                    >
+                      <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 italic mt-1.5">
+                    {formatExampleMeaning(target.examples[0].meaning)}
+                  </div>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
         </>
       ) : null}
 

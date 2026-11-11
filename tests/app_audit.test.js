@@ -931,4 +931,47 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(firstFields[8].includes('Mimikara::N1'), 'Tag phân cấp Anki phải chứa Mimikara::N1');
   });
 
+  test('Test 5.17: Kiểm toán Định dạng Bài tập Tiêu chuẩn 100 Câu / Unit (Standard 100-Question Unit Format & Fixed Pool Audit)', async () => {
+    // 1. Kiểm tra tĩnh QuizMode.jsx: Đã loại bỏ hoàn toàn bộ lọc phạm vi scope và giới hạn số câu
+    const quizPath = path.resolve('src/components/QuizMode.jsx');
+    const quizContent = fs.readFileSync(quizPath, 'utf8');
+
+    assert.ok(!quizContent.includes('const [studyScope'), 'QuizMode không được có state studyScope gây hạn chế số câu');
+    assert.ok(!quizContent.includes('const [sessionLimit'), 'QuizMode không được có state sessionLimit cắt giảm số câu');
+    assert.ok(!quizContent.includes('insertRetryQuestion'), 'QuizMode không được tự ý chèn câu hỏi kéo dài tổng số câu');
+    assert.ok(!quizContent.includes('Chưa có từ yếu / đến hạn ôn'), 'QuizMode không được hiển thị bảng chặn rỗng câu hỏi');
+
+    // 2. Kiểm tra tĩnh ClozeQuiz.jsx: Đã loại bỏ hoàn toàn bộ lọc phạm vi scope và giới hạn số câu
+    const clozePath = path.resolve('src/components/ClozeQuiz.jsx');
+    const clozeContent = fs.readFileSync(clozePath, 'utf8');
+
+    assert.ok(!clozeContent.includes('const [studyScope'), 'ClozeQuiz không được có state studyScope');
+    assert.ok(!clozeContent.includes('const [sessionLimit'), 'ClozeQuiz không được có state sessionLimit');
+    assert.ok(!clozeContent.includes('insertRetryQuestion'), 'ClozeQuiz không được tự ý chèn câu hỏi kéo dài tổng số câu');
+    assert.ok(!clozeContent.includes('Chưa có từ yếu / đến hạn ôn'), 'ClozeQuiz không được hiển thị bảng chặn rỗng câu hỏi');
+
+    // 3. Kiểm tra tính toán thực tế: Unit 1 của Mimikara N1 có đúng 100 từ -> sinh ĐÚNG 100 câu
+    const { buildQuizQuestions, buildClozeSentenceQuestions, buildCombinedClozeQuestions } = await import('../src/utils/quizHelper.js');
+    const unit1Words = mimikaraN1.vocabulary.filter(w => w.unit === 1);
+    assert.equal(unit1Words.length, 100, 'Unit 1 N1 chuẩn phải có đúng 100 từ vựng');
+
+    const reading100 = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'kanji_to_reading');
+    assert.equal(reading100.length, 100, 'Mondai 1: Cách đọc của Unit 1 phải có đúng 100 câu hỏi');
+
+    const meaning100 = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'kanji_to_meaning');
+    assert.equal(meaning100.length, 100, 'Từ -> Nghĩa của Unit 1 phải có đúng 100 câu hỏi');
+
+    const kanji100 = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'meaning_to_kanji');
+    assert.equal(kanji100.length, 100, 'Nghĩa -> Từ của Unit 1 phải có đúng 100 câu hỏi');
+
+    const allAngles100 = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'all_angles');
+    assert.equal(allAngles100.length, 100, 'Đa chiều của Unit 1 phải có đúng 100 câu hỏi');
+
+    const clozeSentence100 = buildClozeSentenceQuestions(unit1Words, mimikaraN1.vocabulary, { expandAllExamples: false });
+    assert.equal(clozeSentence100.length, 100, 'Điền câu ví dụ của Unit 1 phải có đúng 100 câu hỏi');
+
+    const clozeCombined100 = buildCombinedClozeQuestions(unit1Words, mimikaraN1.vocabulary, { expandAllExamples: false });
+    assert.equal(clozeCombined100.length, 100, 'Điền kết hợp câu & cụm của Unit 1 phải có đúng 100 câu hỏi');
+  });
+
 });
