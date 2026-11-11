@@ -17,7 +17,10 @@ import {
   BrainCircuit,
   MessageSquareQuote,
   Flame,
-  ArrowRight
+  ArrowRight,
+  Trophy,
+  RotateCcw,
+  CheckCircle2
 } from 'lucide-react';
 import { speakJapanese, stopSpeech } from '../utils/audio';
 import { 
@@ -98,7 +101,11 @@ export default function FlashcardDeck({
   onToggleFlip,
   onShuffle,
   isSmartSRSSort = false,
-  onToggleSmartSRS
+  onToggleSmartSRS,
+  isSessionCompleted = false,
+  onRestartSession,
+  onSwitchToQuiz,
+  onSwitchToCloze
 }) {
   // Chế độ thẻ: 'context' (Thẻ Ngữ Cảnh / Cloze - Khuyên dùng) hoặc 'vocab' (Thẻ Chữ Hán / Kanji Focus)
   const [cardMode, setCardMode] = useState(() => {
@@ -112,6 +119,16 @@ export default function FlashcardDeck({
 
   const [showHint, setShowHint] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isRatingPending, setIsRatingPending] = useState(false);
+
+  const handleRate = (rating) => {
+    if (isRatingPending || !currentWord) return;
+    setIsRatingPending(true);
+    onRateSRS(currentWord.id, rating);
+    setTimeout(() => {
+      setIsRatingPending(false);
+    }, 300);
+  };
 
   const currentWord = words[currentIndex];
 
@@ -246,6 +263,45 @@ export default function FlashcardDeck({
     (related.relatedWords?.length || 0) +
     (related.idioms?.length || 0) +
     (related.notes?.length || 0) > 0;
+
+  if (isSessionCompleted && words.length > 0) {
+    return (
+      <div className="w-full max-w-xl mx-auto p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6 animate-fadeIn my-auto">
+        <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/30">
+          <Trophy className="w-10 h-10" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+            🎉 Hoàn thành phiên ôn tập!
+          </h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Bạn đã ôn tập xong toàn bộ <b>{words.length} từ</b> trong phiên học này. Chu kỳ ghi nhớ đã được cập nhật thành công!
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          {onRestartSession && (
+            <button
+              onClick={onRestartSession}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-500/25 active:scale-95 transition-all"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Ôn lại từ đầu</span>
+            </button>
+          )}
+          {onSwitchToQuiz && (
+            <button
+              onClick={onSwitchToQuiz}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>Làm bài Trắc nghiệm</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
@@ -793,8 +849,9 @@ export default function FlashcardDeck({
       {/* SRS Rating Actions (Phím 1, 2, 3, 4) */}
       <div className="w-full mt-4 flex items-center justify-center gap-2 sm:gap-3">
         <button
-          onClick={() => onRateSRS(currentWord.id, 1)}
-          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm"
+          onClick={() => handleRate(1)}
+          disabled={isRatingPending}
+          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="text-[10px] opacity-75 font-mono">[1]</span>
           <span>Chưa nhớ</span>
@@ -802,8 +859,9 @@ export default function FlashcardDeck({
         </button>
 
         <button
-          onClick={() => onRateSRS(currentWord.id, 2)}
-          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm"
+          onClick={() => handleRate(2)}
+          disabled={isRatingPending}
+          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="text-[10px] opacity-75 font-mono">[2]</span>
           <span>Hơi khó</span>
@@ -811,8 +869,9 @@ export default function FlashcardDeck({
         </button>
 
         <button
-          onClick={() => onRateSRS(currentWord.id, 3)}
-          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm"
+          onClick={() => handleRate(3)}
+          disabled={isRatingPending}
+          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="text-[10px] opacity-75 font-mono">[3]</span>
           <span>Nhớ tốt</span>
@@ -820,8 +879,9 @@ export default function FlashcardDeck({
         </button>
 
         <button
-          onClick={() => onRateSRS(currentWord.id, 4)}
-          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-900/60 hover:bg-sky-100 dark:hover:bg-sky-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm"
+          onClick={() => handleRate(4)}
+          disabled={isRatingPending}
+          className="flex-1 max-w-[130px] flex flex-col items-center py-2 px-2 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-900/60 hover:bg-sky-100 dark:hover:bg-sky-900/60 font-semibold text-xs transition-all hover:scale-105 active:scale-95 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="text-[10px] opacity-75 font-mono">[4]</span>
           <span>Rất vững</span>

@@ -826,4 +826,50 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.equal(baseWords[normalIndex].id, viewedWord.id, 'Thẻ từ hiển thị sau khi tắt SRS phải giữ nguyên đúng từ vựng');
   });
 
+  test('Test 5.14: Kiểm toán Chống Spam Chu kỳ SRS & Chống Lặp Thẻ Khi Đánh Giá (Anti-Spam Rating & Queue Stabilization)', async () => {
+    // 1. Kiểm tra tĩnh App.jsx: Chống spam và ổn định hàng đợi phiên học
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+
+    assert.ok(appContent.includes('sessionInitialRecordsRef = useRef({})'), 'App.jsx phải có sessionInitialRecordsRef để lưu snapshot ban đầu chống spam');
+    assert.ok(appContent.includes('isRatingLockedRef = useRef(false)'), 'App.jsx phải có isRatingLockedRef debounce chống click đúp spam');
+    assert.ok(appContent.includes('isSessionCompleted'), 'App.jsx phải quản lý trạng thái isSessionCompleted khi học hết danh sách');
+    assert.ok(appContent.includes('sessionInitialRecordsRef.current[wordId]'), 'handleRateSRS phải tham chiếu bản ghi gốc ban đầu của phiên');
+
+    // 2. Mô phỏng hành vi: Người dùng spam bấm phím 4 (Rất vững) liên tục 10 lần trong 1 phiên
+    const { calculateNextReview } = await import('../src/utils/srs.js');
+    const testWordId = 999;
+    const sessionInitialMock = {};
+    let currentSrsState = {};
+
+    const simulateRateInSession = (wordId, rating) => {
+      // Logic chống spam chu kỳ giống hệt trong App.jsx
+      if (sessionInitialMock[wordId] === undefined) {
+        sessionInitialMock[wordId] = currentSrsState[wordId] || null;
+      }
+      const baseRecord = sessionInitialMock[wordId];
+      const updated = calculateNextReview(baseRecord, rating);
+      currentSrsState[wordId] = updated;
+      return updated;
+    };
+
+    // Bấm lần 1: Rất vững (Rating 4) -> chu kỳ ban đầu 4 ngày
+    const rec1 = simulateRateInSession(testWordId, 4);
+    assert.equal(rec1.interval, 4, 'Lần 1 bấm Rất vững phải có chu kỳ 4 ngày');
+
+    // Bấm tiếp lần 2, 3, 4 ... 10 liên tục (Spam)
+    for (let i = 2; i <= 10; i++) {
+      const spamRec = simulateRateInSession(testWordId, 4);
+      assert.equal(spamRec.interval, 4, `Lần ${i} spam bấm phím 4 TUYỆT ĐỐI KHÔNG được kéo dài chu kỳ lên (vẫn phải là 4 ngày)`);
+      assert.equal(spamRec.repetitions, 1, `Lần ${i} số lần lặp repetitions không được tăng lũy kế vô tận`);
+    }
+
+    // 3. Kiểm tra FlashcardDeck.jsx: Có cơ chế debounce và màn hình hoàn thành phiên học
+    const deckPath = path.resolve('src/components/FlashcardDeck.jsx');
+    const deckContent = fs.readFileSync(deckPath, 'utf8');
+    assert.ok(deckContent.includes('isRatingPending'), 'FlashcardDeck phải có state isRatingPending debounce nút bấm');
+    assert.ok(deckContent.includes('isSessionCompleted'), 'FlashcardDeck phải hỗ trợ prop isSessionCompleted');
+    assert.ok(deckContent.includes('Hoàn thành phiên ôn tập'), 'FlashcardDeck phải hiển thị màn hình chúc mừng hoàn thành phiên');
+  });
+
 });

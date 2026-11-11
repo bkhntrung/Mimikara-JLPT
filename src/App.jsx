@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import confetti from 'canvas-confetti';
 import mimikaraN1 from './data/mimikara_n1.json';
 import mimikaraN2 from './data/mimikara_n2.json';
 import mimikaraN3 from './data/mimikara_n3.json';
@@ -71,6 +72,14 @@ export default function App() {
   const currentIndexRef = useRef(currentIndex);
   const studyModeRef = useRef(studyMode);
 
+  // Phiên học SRS & chống spam chu kỳ
+  const [isSessionCompleted, setIsSessionCompleted] = useState(false);
+  const [srsQueueVersion, setSrsQueueVersion] = useState(0);
+  const sessionInitialRecordsRef = useRef({});
+  const isRatingLockedRef = useRef(false);
+  const srsRecordsRef = useRef(srsRecords);
+  srsRecordsRef.current = srsRecords;
+
   useEffect(() => {
     currentLevelRef.current = currentLevel;
   }, [currentLevel]);
@@ -135,18 +144,21 @@ export default function App() {
     setIsFlipped(false);
     setIsShuffled(false);
     setIsSmartSRSSort(false);
+    setIsSessionCompleted(false);
+    sessionInitialRecordsRef.current = {};
+    setSrsQueueVersion(v => v + 1);
     setSrsRecords(loadSRSRecords(lvl));
     setStarredSet(loadStarredWords(lvl));
   }, [currentLevel]);
 
-  // Filter words for current unit
+  // Filter words for current unit (TÁCH BIỆT srsRecords để danh sách trong phiên học ổn định, không bị xáo trộn giữa chừng)
   const activeWords = useMemo(() => {
     let list = currentUnit === 0 
       ? [...allWords] 
       : allWords.filter(w => w.unit === currentUnit);
     
     if (isSmartSRSSort) {
-      list = getSmartStudyQueue(list, srsRecords);
+      list = getSmartStudyQueue(list, srsRecordsRef.current);
     } else if (isShuffled) {
       // Deterministic shuffle with seed
       list = [...list].sort((a, b) => {
@@ -157,7 +169,7 @@ export default function App() {
     }
 
     return list;
-  }, [allWords, currentUnit, isSmartSRSSort, isShuffled, shuffleSeed, srsRecords]);
+  }, [allWords, currentUnit, isSmartSRSSort, isShuffled, shuffleSeed, srsQueueVersion]);
 
   // Luôn cập nhật ref đồng bộ để markCurrentWordAsLearningIfNeeded luôn có dữ liệu mới nhất
   activeWordsRef.current = activeWords;
@@ -170,6 +182,9 @@ export default function App() {
     stopSpeech();
     setCurrentIndex(0);
     setIsFlipped(false);
+    setIsSessionCompleted(false);
+    sessionInitialRecordsRef.current = {};
+    setSrsQueueVersion(v => v + 1);
   }, [currentUnit]);
 
   // Dừng âm thanh khi chuyển chế độ học
@@ -188,16 +203,22 @@ export default function App() {
 
   const handleShuffle = useCallback(() => {
     stopSpeech();
+    markCurrentWordAsLearningIfNeeded();
     setIsShuffled(true);
     setIsSmartSRSSort(false);
     setShuffleSeed(Date.now());
     setCurrentIndex(0);
     setIsFlipped(false);
-  }, []);
+    setIsSessionCompleted(false);
+    sessionInitialRecordsRef.current = {};
+  }, [markCurrentWordAsLearningIfNeeded]);
 
   const handleToggleSmartSRS = useCallback(() => {
     stopSpeech();
     markCurrentWordAsLearningIfNeeded();
+    setIsSessionCompleted(false);
+    sessionInitialRecordsRef.current = {};
+
     const curWord = activeWordsRef.current[currentIndexRef.current];
     const nextSmartSRS = !isSmartSRSSort;
 
@@ -207,7 +228,7 @@ export default function App() {
       : allWords.filter(w => w.unit === currentUnit);
 
     const nextList = nextSmartSRS 
-      ? getSmartStudyQueue(baseList, srsRecords)
+      ? getSmartStudyQueue(baseList, srsRecordsRef.current)
       : baseList;
 
     // Tìm lại vị trí mới của đúng từ vựng hiện tại đang xem để giữ nguyên trên màn hình
@@ -226,8 +247,18 @@ export default function App() {
       setIsShuffled(false);
     }
     setIsSmartSRSSort(nextSmartSRS);
+    setSrsQueueVersion(v => v + 1);
     setIsFlipped(false);
-  }, [allWords, currentUnit, isSmartSRSSort, markCurrentWordAsLearningIfNeeded, srsRecords]);
+  }, [allWords, currentUnit, isSmartSRSSort, markCurrentWordAsLearningIfNeeded]);
+
+  const handleRestartSession = useCallback(() => {
+    stopSpeech();
+    setCurrentIndex(0);
+    setIsFlipped(false);
+    setIsSessionCompleted(false);
+    sessionInitialRecordsRef.current = {};
+    setSrsQueueVersion(v => v + 1);
+  }, []);
 
   // Starred toggle handler
   const handleToggleStar = useCallback((wordId) => {
@@ -242,18 +273,38 @@ export default function App() {
 
   // SRS Rating handler
   const handleRateSRS = useCallback((wordId, rating) => {
+    if (isRatingLockedRef.current) return;
+    isRatingLockedRef.current = true;
+    setTimeout(() => {
+      isRatingLockedRef.current = false;
+    }, 300);
+
     stopSpeech();
     setIsFlipped(false);
+
     setSrsRecords(prev => {
-      const currentRecord = prev[wordId];
-      const updated = calculateNextReview(currentRecord, rating);
+      // CHỐNG SPAM CHU KỲ:
+      // Lưu lại bản ghi gốc trước khi bắt đầu phiên học (nếu bấm nhiều lần trên cùng 1 từ, dùng lại bản ghi gốc)
+      // để không bị nhân dồn chu kỳ liên tục khi bấm mãi nút Rất vững!
+      if (sessionInitialRecordsRef.current[wordId] === undefined) {
+        sessionInitialRecordsRef.current[wordId] = prev[wordId] || null;
+      }
+      const baseRecord = sessionInitialRecordsRef.current[wordId];
+      const updated = calculateNextReview(baseRecord, rating);
       const next = { ...prev, [wordId]: updated };
-      saveSRSRecords(next, currentLevel);
+      saveSRSRecords(next, currentLevelRef.current);
       return next;
     });
 
-    // Advance to next word
-    setCurrentIndex(prev => Math.min(activeWords.length - 1, prev + 1));
+    // Advance to next word or mark session complete
+    setCurrentIndex(prev => {
+      if (prev >= activeWords.length - 1) {
+        setIsSessionCompleted(true);
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+        return prev;
+      }
+      return prev + 1;
+    });
   }, [activeWords.length, currentLevel]);
 
   // Quiz / Cloze SRS Synchronization handler (chỉ cập nhật SRS, KHÔNG làm nhảy currentIndex của FlashcardDeck)
@@ -319,6 +370,7 @@ export default function App() {
     markCurrentWordAsLearningIfNeeded();
     stopSpeech();
     setIsFlipped(false);
+    setIsSessionCompleted(false);
     setCurrentIndex(prev => {
       const next = prev + direction;
       if (next >= 0 && next < activeWords.length) return next;
@@ -371,7 +423,7 @@ export default function App() {
         if (curWord) speakJapanese(curWord.word, soundSpeed);
       } else if (['1', '2', '3', '4'].includes(e.key)) {
         const curWord = activeWords[currentIndex];
-        if (curWord && studyMode === 'flashcard') {
+        if (curWord && studyMode === 'flashcard' && !isSessionCompleted) {
           handleRateSRS(curWord.id, Number(e.key));
         }
       } else if (e.key === 'q' || e.key === 'Q') {
@@ -386,7 +438,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeWords, currentIndex, soundSpeed, studyMode, isTabLocked, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS]);
+  }, [activeWords, currentIndex, soundSpeed, studyMode, isTabLocked, isSessionCompleted, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS]);
 
   // Learned count
   const learnedCount = useMemo(() => {
@@ -438,6 +490,10 @@ export default function App() {
             onShuffle={handleShuffle}
             isSmartSRSSort={isSmartSRSSort}
             onToggleSmartSRS={handleToggleSmartSRS}
+            isSessionCompleted={isSessionCompleted}
+            onRestartSession={handleRestartSession}
+            onSwitchToQuiz={() => setStudyMode('quiz')}
+            onSwitchToCloze={() => setStudyMode('cloze')}
           />
         )}
 
