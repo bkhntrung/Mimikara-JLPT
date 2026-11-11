@@ -197,16 +197,37 @@ export default function App() {
 
   const handleToggleSmartSRS = useCallback(() => {
     stopSpeech();
-    setIsSmartSRSSort(prev => {
-      const next = !prev;
-      if (next) {
-        setIsShuffled(false);
+    markCurrentWordAsLearningIfNeeded();
+    const curWord = activeWordsRef.current[currentIndexRef.current];
+    const nextSmartSRS = !isSmartSRSSort;
+
+    // Tính toán trước danh sách từ mới sau khi bật/tắt SRS
+    const baseList = currentUnit === 0 
+      ? [...allWords] 
+      : allWords.filter(w => w.unit === currentUnit);
+
+    const nextList = nextSmartSRS 
+      ? getSmartStudyQueue(baseList, srsRecords)
+      : baseList;
+
+    // Tìm lại vị trí mới của đúng từ vựng hiện tại đang xem để giữ nguyên trên màn hình
+    if (curWord) {
+      const newIdx = nextList.findIndex(w => w.id === curWord.id);
+      if (newIdx !== -1) {
+        setCurrentIndex(newIdx);
+      } else {
+        setCurrentIndex(0);
       }
+    } else {
       setCurrentIndex(0);
-      setIsFlipped(false);
-      return next;
-    });
-  }, []);
+    }
+
+    if (nextSmartSRS) {
+      setIsShuffled(false);
+    }
+    setIsSmartSRSSort(nextSmartSRS);
+    setIsFlipped(false);
+  }, [allWords, currentUnit, isSmartSRSSort, markCurrentWordAsLearningIfNeeded, srsRecords]);
 
   // Starred toggle handler
   const handleToggleStar = useCallback((wordId) => {

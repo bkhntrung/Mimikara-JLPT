@@ -8,6 +8,7 @@ const mimikaraN2 = JSON.parse(fs.readFileSync(path.resolve('src/data/mimikara_n2
 const mimikaraN3 = JSON.parse(fs.readFileSync(path.resolve('src/data/mimikara_n3.json'), 'utf8'));
 
 import { formatRelatedRuby, makeRubyCloze } from '../src/utils/text.js';
+import { getSmartStudyQueue } from '../src/utils/srs.js';
 import { 
   getSmartDistractors,
   buildClozeSentenceQuestions, 
@@ -791,6 +792,38 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     const allAngleWordIds = allAngles.map(q => q.target.id);
     const allAngleUniqueIds = new Set(allAngleWordIds);
     assert.equal(allAngleWordIds.length, allAngleUniqueIds.size, 'All Angles Quiz không được có từ vựng bị lặp lại trong cùng phiên');
+  });
+
+  test('Test 5.13: Kiểm toán Bảo lưu Vị trí Từ vựng khi Bật/Tắt Sắp xếp Thông minh SRS (Smart SRS Index Preservation)', () => {
+    // 1. Kiểm tra tĩnh App.jsx: handleToggleSmartSRS phải tìm lại vị trí từ hiện tại
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+
+    assert.ok(appContent.includes('const curWord = activeWordsRef.current[currentIndexRef.current];'), 'handleToggleSmartSRS phải lấy từ hiện tại từ ref');
+    assert.ok(appContent.includes('nextList.findIndex(w => w.id === curWord.id)'), 'handleToggleSmartSRS phải tìm lại index của từ hiện tại trong danh sách mới');
+    assert.ok(appContent.includes('setCurrentIndex(newIdx)'), 'handleToggleSmartSRS phải đặt currentIndex tới vị trí mới của từ');
+
+    // 2. Mô phỏng hành vi bảo lưu từ vựng khi Bật và Tắt SRS
+    const baseWords = mimikaraN1.vocabulary.filter(w => w.unit === 1);
+    const mockSrs = {
+      [baseWords[25].id]: { state: 'learning', stage: 'again', nextReview: new Date(Date.now() - 3600000).toISOString() }, // Overdue
+      [baseWords[5].id]: { state: 'review', stage: 'good', nextReview: new Date(Date.now() + 86400000).toISOString() }
+    };
+
+    // Người dùng đang ở từ thứ 15 trong danh sách thông thường
+    const initialIndex = 14;
+    const viewedWord = baseWords[initialIndex];
+
+    // BƯỚC 1: Bật SRS -> Danh sách được sắp xếp lại theo getSmartStudyQueue
+    const smartQueue = getSmartStudyQueue(baseWords, mockSrs);
+    const smartIndex = smartQueue.findIndex(w => w.id === viewedWord.id);
+    assert.ok(smartIndex !== -1, 'Từ hiện tại phải tồn tại trong hàng đợi thông minh SRS');
+    assert.equal(smartQueue[smartIndex].id, viewedWord.id, 'Thẻ từ hiển thị sau khi bật SRS phải giữ nguyên đúng từ vựng');
+
+    // BƯỚC 2: Tắt SRS -> Danh sách quay trở lại thứ tự gốc
+    const normalIndex = baseWords.findIndex(w => w.id === smartQueue[smartIndex].id);
+    assert.equal(normalIndex, initialIndex, 'Sau khi tắt SRS, vị trí phải quay về đúng vị trí ban đầu trong sách');
+    assert.equal(baseWords[normalIndex].id, viewedWord.id, 'Thẻ từ hiển thị sau khi tắt SRS phải giữ nguyên đúng từ vựng');
   });
 
 });
