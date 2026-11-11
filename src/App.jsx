@@ -508,6 +508,7 @@ export default function App() {
             srsRecords={srsRecords}
             starredSet={starredSet}
             onSwitchToFlashcard={() => setStudyMode('flashcard')}
+            onSelectUnit={setCurrentUnit}
           />
         )}
 
@@ -522,6 +523,7 @@ export default function App() {
             srsRecords={srsRecords}
             starredSet={starredSet}
             onSwitchToFlashcard={() => setStudyMode('flashcard')}
+            onSelectUnit={setCurrentUnit}
           />
         )}
 

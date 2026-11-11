@@ -39,7 +39,8 @@ export default function ClozeQuiz({
   onQuizSRSSync,
   srsRecords = {},
   starredSet = new Set(),
-  onSwitchToFlashcard
+  onSwitchToFlashcard,
+  onSelectUnit
 }) {
   // 3 Chế độ bài tập điền khuyết:
   // 1. 'sentence': Câu ví dụ thực tế (Mỗi từ 1 câu ngẫu nhiên)
@@ -73,6 +74,15 @@ export default function ClozeQuiz({
   srsRecordsRef.current = srsRecords;
   starredSetRef.current = starredSet;
 
+  // Refs theo dõi trạng thái trước đó để bảo lưu từ đang làm khi chuyển dạng bài tập (chống nhảy câu)
+  const currentWordIdRef = useRef(null);
+  const prevClozeTypeRef = useRef(clozeType);
+  const prevScopeRef = useRef(studyScope);
+  const prevUnitRef = useRef(currentUnit);
+  const prevLimitRef = useRef(sessionLimit);
+  const currentIndexRef = useRef(currentIndex);
+  currentIndexRef.current = currentIndex;
+
   const unitPool = useMemo(() => {
     return currentUnit === 0 
       ? allWords 
@@ -91,9 +101,27 @@ export default function ClozeQuiz({
     };
   }, [unitPool, allWords, srsRecords, starredSet, studyScope]);
 
+  // Kiểm tra xem trong phạm vi từ hiện tại có từ nào có cụm từ đi kèm (compounds / collocations) không
+  const hasCollocationsInPool = useMemo(() => {
+    const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
+    const pool = filterRes.words || [];
+    return pool.some(w => (w.related?.compounds?.length > 0) || (w.related?.collocations?.length > 0));
+  }, [unitPool, allWords, studyScope]);
+
   // Sinh danh sách câu hỏi dựa theo unitPool, clozeType, studyScope, sessionLimit
   // TÁCH BIỆT KHỎI srsRecords để khi click đáp án đồng bộ SRS KHÔNG LÀM RESET BÀI THI
   useEffect(() => {
+    const isTypeOnlyChange = 
+      prevClozeTypeRef.current !== clozeType &&
+      prevScopeRef.current === studyScope &&
+      prevUnitRef.current === currentUnit &&
+      prevLimitRef.current === sessionLimit;
+
+    prevClozeTypeRef.current = clozeType;
+    prevScopeRef.current = studyScope;
+    prevUnitRef.current = currentUnit;
+    prevLimitRef.current = sessionLimit;
+
     const filterRes = filterWordsByStudyScope(unitPool, allWords, srsRecordsRef.current, starredSetRef.current, studyScope);
     const activePool = filterRes.words || [];
 
@@ -135,19 +163,45 @@ export default function ClozeQuiz({
     }
 
     setQuestions(builtQuestions);
-    setCurrentIndex(0);
-    setScore(0);
-    setStreak(0);
-    setIsCompleted(false);
-    setSelectedAnswer(null);
-    setIsAnswered(false);
-    setShowHint(false);
-    setWrongWordsMap({});
-    setRetryQueuedCount(0);
-    setLastAnswerFailed(false);
+
+    if (isTypeOnlyChange) {
+      // Khi chỉ đổi dạng bài tập điền khuyết: Giữ nguyên từ vựng đang làm, CHỐNG NHẢY CÂU
+      const targetId = currentWordIdRef.current;
+      let nextIndex = 0;
+      if (targetId && builtQuestions.length > 0) {
+        const found = builtQuestions.findIndex(q => q.target?.id === targetId);
+        if (found !== -1) {
+          nextIndex = found;
+        } else {
+          nextIndex = Math.min(currentIndexRef.current, Math.max(0, builtQuestions.length - 1));
+        }
+      }
+      setCurrentIndex(nextIndex);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setShowHint(false);
+      setLastAnswerFailed(false);
+    } else {
+      setCurrentIndex(0);
+      setScore(0);
+      setStreak(0);
+      setIsCompleted(false);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setShowHint(false);
+      setWrongWordsMap({});
+      setRetryQueuedCount(0);
+      setLastAnswerFailed(false);
+    }
   }, [unitPool, allWords, clozeType, studyScope, sessionLimit]);
 
   const currentQ = questions[currentIndex];
+
+  useEffect(() => {
+    if (currentQ?.target?.id) {
+      currentWordIdRef.current = currentQ.target.id;
+    }
+  }, [currentQ]);
 
   const handleSelectOption = (option) => {
     if (isAnswered || !currentQ) return;
@@ -292,139 +346,44 @@ export default function ClozeQuiz({
     setLastAnswerFailed(false);
   };
 
-  // =========================================================================
-  // GIAO DIỆN KHI CHƯA CÓ CÂU HỎI TRONG PHẠM VI
-  // =========================================================================
-  if (questions.length === 0 && !isCompleted) {
-    const unitText = currentUnit === 0 ? 'Toàn bộ cấp độ' : `Unit ${currentUnit}`;
-    const hasAnyStudiedInLevel = fallbackData.fallbackAllStudied?.length > 0;
-
-    return (
-      <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-          <AlertCircle className="w-8 h-8" />
-        </div>
-
-        <div>
-          <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-            {studyScope === 'weak' 
-              ? `Chưa có từ yếu / đến hạn ôn trong ${unitText}`
-              : `Chưa có từ Đã & Đang học nào trong ${unitText}`
-            }
-          </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-            Hệ thống bài tập điền khuyết tự động điều chỉnh theo các từ bạn đã lật thẻ học trên Flashcard.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-2.5 pt-2">
-          {hasAnyStudiedInLevel && (
-            <button
-              onClick={() => {
-                const built = buildClozeSentenceQuestions(fallbackData.fallbackAllStudied, allWords, {
-                  expandAllExamples: true,
-                  studyScope: 'all'
-                });
-                setQuestions(sessionLimit > 0 ? built.slice(0, sessionLimit) : built);
-                setCurrentIndex(0);
-              }}
-              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
-            >
-              Ôn tập {fallbackData.fallbackAllStudied.length} từ Đã & Đang học của toàn cấp độ {currentLevel}
-            </button>
-          )}
-
-          <button
-            onClick={() => setStudyScope('all')}
-            className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
-          >
-            Làm bài tập Toàn bộ từ của {unitText} ({scopeStats.unitTotalCount} từ)
-          </button>
-
-          {onSwitchToFlashcard && (
-            <button
-              onClick={onSwitchToFlashcard}
-              className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
-            >
-              Sang Flashcard lật học từ mới ngay →
-            </button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // =========================================================================
-  // GIAO DIỆN HOÀN THÀNH
-  // =========================================================================
-  if (isCompleted) {
-    const accuracy = Math.round((score / questions.length) * 100) || 0;
-    const wrongCount = Object.keys(wrongWordsMap).length;
-
-    return (
-      <div className="w-full max-w-xl mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
-        <div className="w-20 h-20 mx-auto rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-          <Trophy className="w-10 h-10" />
-        </div>
-        
-        <div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-            Hoàn thành bài tập điền khuyết!
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Bạn đã luyện tập toàn bộ {questions.length} câu của Mimikara {currentLevel}.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
-          <div>
-            <div className="text-3xl font-black text-indigo-600 dark:text-indigo-400">{score}/{questions.length}</div>
-            <div className="text-xs text-slate-500">Câu trả lời đúng</div>
-          </div>
-          <div>
-            <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400">{accuracy}%</div>
-            <div className="text-xs text-slate-500">Độ chính xác</div>
-          </div>
-        </div>
-
-        {retryQueuedCount > 0 && (
-          <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 flex items-center justify-center gap-2">
-            <Repeat className="w-4 h-4 shrink-0" />
-            <span>Đã tự động đưa {retryQueuedCount} câu trả lời sai vào vòng lặp ôn lại thành công!</span>
-          </div>
-        )}
-
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          {wrongCount > 0 && (
-            <button
-              onClick={handlePracticeWrongWords}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-lg shadow-rose-500/25 transition-all"
-            >
-              <Flame className="w-4 h-4 fill-current" />
-              <span>🔥 Luyện lại riêng các từ vừa sai ({wrongCount} từ)</span>
-            </button>
-          )}
-
-          <button
-            onClick={handleRestart}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>Làm lại bộ câu hỏi này</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const { target, clozeText, options, type } = currentQ;
-  const sentenceMeaning = type === 'sentence' ? currentQ.example?.meaning : currentQ.meaning;
+  const target = currentQ?.target;
+  const options = currentQ?.options || [];
+  const clozeText = currentQ?.clozeText;
+  const type = currentQ?.type;
+  const sentenceMeaning = type === 'sentence' ? currentQ?.example?.meaning : currentQ?.meaning;
   const furiganaClass = furiganaMode === 'hide' ? 'furigana-hide' : furiganaMode === 'hover' ? 'furigana-hover' : '';
+
+  const unitText = currentUnit === 0 ? 'Toàn bộ cấp độ' : `Unit ${currentUnit}`;
+  const hasAnyStudiedInLevel = fallbackData.fallbackAllStudied?.length > 0;
+  const hasAnyWeakInLevel = fallbackData.fallbackAllWeak?.length > 0;
+
+  // Kiểm tra lỗi rỗng câu hỏi do định dạng (ví dụ chọn Cụm liên ngữ nhưng các từ trong scope không có collocation)
+  const isFormatEmpty = questions.length === 0 && (
+    (studyScope === 'weak' && scopeStats.weakInUnitCount > 0) ||
+    (studyScope === 'studied' && scopeStats.studiedInUnitCount > 0) ||
+    (studyScope === 'all' && scopeStats.unitTotalCount > 0)
+  );
+
+  let emptyTitle = '';
+  let emptyDesc = '';
+  if (isFormatEmpty) {
+    emptyTitle = `Chưa có cụm từ liên ngữ trong các từ đang chọn`;
+    emptyDesc = `Trong các từ ${studyScope === 'weak' ? 'hay quên' : 'đã học'} của ${unitText} chưa có dữ liệu cụm từ liên kết tương ứng trong giáo trình. Bạn có thể chọn dạng Điền câu ví dụ hoặc mở rộng phạm vi.`;
+  } else if (studyScope === 'weak') {
+    emptyTitle = `Chưa có từ yếu / đến hạn ôn trong ${unitText}`;
+    emptyDesc = `Tất cả các từ bạn đã học trong ${unitText} đều đang có mức độ ghi nhớ tốt! 🎉 Hệ thống lọc chính xác để bạn không bị quá tải.`;
+  } else {
+    emptyTitle = `Chưa có từ Đã & Đang học nào trong ${unitText}`;
+    emptyDesc = `Hệ thống bài tập điền khuyết tự động điều chỉnh theo các từ bạn đã lật thẻ học trên Flashcard.`;
+  }
+
+  const accuracy = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
+  const wrongCount = Object.keys(wrongWordsMap).length;
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4">
       
-      {/* Scope and Limit Filter Bar */}
+      {/* Scope and Limit Filter Bar - LUÔN HIỂN THỊ ĐỂ NGƯỜI DÙNG KHÔNG BỊ KẸT BẢNG */}
       <div className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
         {/* Scope Selector */}
         <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl gap-1 w-full sm:w-auto">
@@ -488,10 +447,10 @@ export default function ClozeQuiz({
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
-            Câu {currentIndex + 1} / {questions.length}
+            Câu {questions.length === 0 ? 0 : currentIndex + 1} / {questions.length}
           </span>
 
-          {currentQ.isRetry && (
+          {currentQ?.isRetry && (
             <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-700 animate-pulse">
               🔁 Ôn lại từ vừa sai (Lần {currentQ.retryCount})
             </span>
@@ -539,9 +498,154 @@ export default function ClozeQuiz({
           >
             <Link2 className="w-3.5 h-3.5" />
             <span>Cụm liên ngữ & Từ ghép</span>
+            {!hasCollocationsInPool && (
+              <span className="text-[10px] opacity-60 font-mono">(0)</span>
+            )}
           </button>
         </div>
       </div>
+
+      {/* Main Content Area */}
+      {questions.length === 0 && !isCompleted ? (
+        <div className="w-full max-w-xl mx-auto p-8 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+            <AlertCircle className="w-8 h-8" />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+              {emptyTitle}
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+              {emptyDesc}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2.5 pt-2">
+            {isFormatEmpty ? (
+              <>
+                <button
+                  onClick={() => setClozeType('sentence')}
+                  className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+                >
+                  Chuyển sang dạng Điền Câu ví dụ
+                </button>
+                <button
+                  onClick={() => setStudyScope('all')}
+                  className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
+                >
+                  Làm dạng Cụm từ với Toàn bộ {unitText} ({scopeStats.unitTotalCount} từ)
+                </button>
+              </>
+            ) : (
+              <>
+                {studyScope === 'weak' && hasAnyWeakInLevel && (
+                  <button
+                    onClick={() => {
+                      if (onSelectUnit) onSelectUnit(0);
+                      setStudyScope('weak');
+                    }}
+                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+                  >
+                    Ôn tập {fallbackData.fallbackAllWeak.length} từ Hay quên của toàn cấp độ {currentLevel}
+                  </button>
+                )}
+
+                {studyScope !== 'weak' && hasAnyStudiedInLevel && (
+                  <button
+                    onClick={() => {
+                      if (onSelectUnit) onSelectUnit(0);
+                      setStudyScope('studied');
+                    }}
+                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+                  >
+                    Ôn tập {fallbackData.fallbackAllStudied.length} từ Đã & Đang học của toàn cấp độ {currentLevel}
+                  </button>
+                )}
+
+                {studyScope === 'weak' && scopeStats.studiedInUnitCount > 0 && (
+                  <button
+                    onClick={() => setStudyScope('studied')}
+                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-500/20"
+                  >
+                    Làm bài tập {scopeStats.studiedInUnitCount} từ Đã học của {unitText}
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setStudyScope('all')}
+                  className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-all"
+                >
+                  Làm bài tập Toàn bộ từ của {unitText} ({scopeStats.unitTotalCount} từ)
+                </button>
+
+                {onSwitchToFlashcard && (
+                  <button
+                    onClick={onSwitchToFlashcard}
+                    className="w-full py-2.5 px-4 rounded-xl text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 font-semibold text-xs transition-colors"
+                  >
+                    Sang Flashcard lật học từ mới ngay →
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      ) : isCompleted ? (
+        <div className="w-full max-w-xl mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6">
+          <div className="w-20 h-20 mx-auto rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+            <Trophy className="w-10 h-10" />
+          </div>
+          
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+              Hoàn thành bài tập điền khuyết!
+            </h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Bạn đã luyện tập toàn bộ {questions.length} câu của Mimikara {currentLevel}.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
+            <div>
+              <div className="text-3xl font-black text-indigo-600 dark:text-indigo-400">{score}/{questions.length}</div>
+              <div className="text-xs text-slate-500">Câu trả lời đúng</div>
+            </div>
+            <div>
+              <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400">{accuracy}%</div>
+              <div className="text-xs text-slate-500">Độ chính xác</div>
+            </div>
+          </div>
+
+          {retryQueuedCount > 0 && (
+            <div className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 flex items-center justify-center gap-2">
+              <Repeat className="w-4 h-4 shrink-0" />
+              <span>Đã tự động đưa {retryQueuedCount} câu trả lời sai vào vòng lặp ôn lại thành công!</span>
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {wrongCount > 0 && (
+              <button
+                onClick={handlePracticeWrongWords}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm shadow-lg shadow-rose-500/25 transition-all"
+              >
+                <Flame className="w-4 h-4 fill-current" />
+                <span>🔥 Luyện lại riêng các từ vừa sai ({wrongCount} từ)</span>
+              </button>
+            )}
+
+            <button
+              onClick={handleRestart}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 transition-all"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Làm lại bộ câu hỏi này</span>
+            </button>
+          </div>
+        </div>
+      ) : currentQ && target ? (
+        <>
 
       {/* Cloze Question Card */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-lg text-center space-y-4">
@@ -725,6 +829,8 @@ export default function ClozeQuiz({
           </div>
         </div>
       )}
+        </>
+      ) : null}
 
     </div>
   );

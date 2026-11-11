@@ -164,13 +164,17 @@ export function interleaveQuestionsByTarget(questions = []) {
     groupMap.get(tid).push(q);
   }
 
-  // 2. Chuyển thành danh sách các nhóm và xáo trộn nội bộ mỗi nhóm
-  const groups = Array.from(groupMap.values()).map(items => {
-    return [...items].sort(() => Math.random() - 0.5);
-  });
+  // 2. Chuyển thành danh sách các nhóm theo đúng thứ tự xuất hiện (không xáo trộn ngẫu nhiên nhóm)
+  const groups = Array.from(groupMap.values());
 
-  // Xáo trộn thứ tự các nhóm
-  groups.sort(() => Math.random() - 0.5);
+  // Nếu mỗi nhóm chỉ có 1 câu hỏi, giữ nguyên 100% thứ tự ban đầu để đảm bảo tính đồng bộ & không nhảy câu
+  let maxPerGroup = 0;
+  for (const list of groups) {
+    if (list.length > maxPerGroup) maxPerGroup = list.length;
+  }
+  if (maxPerGroup <= 1) {
+    return questions;
+  }
 
   // 3. Round-Robin rút dần từng câu hỏi từ mỗi nhóm để không 2 câu cùng từ nào nằm sát nhau
   const result = [];
@@ -282,8 +286,8 @@ export function buildClozeSentenceQuestions(unitWords, allWords, options = {}) {
       }
 
       if (matches.length > 0) {
-        // Chọn ngẫu nhiên 1 câu ví dụ cho từ này để mỗi lần luyện tập có câu ví dụ mới lạ
-        const chosen = matches[Math.floor(Math.random() * matches.length)];
+        // Lấy câu ví dụ đầu tiên có match để bộ câu hỏi ổn định, không bị xáo trộn vị trí khi chuyển chế độ
+        const chosen = matches[0];
         eligible.push(chosen);
       } else if (w.examples.length > 0) {
         const first = w.examples[0];
@@ -408,8 +412,8 @@ export function buildClozeCollocationQuestions(unitWords, allWords, options = {}
 
     if (matchedForWord.length > 0) {
       if (!expandAllExamples) {
-        // Mỗi từ lấy đúng 1 cụm liên ngữ ngẫu nhiên để không bị lặp từ
-        const chosen = matchedForWord[Math.floor(Math.random() * matchedForWord.length)];
+        // Mỗi từ lấy đúng 1 cụm liên ngữ đầu tiên để bộ câu hỏi ổn định, không bị xáo trộn vị trí
+        const chosen = matchedForWord[0];
         eligible.push(chosen);
       } else {
         eligible.push(...matchedForWord);
@@ -587,7 +591,8 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
       }
     });
 
-    return interleaveQuestionsByTarget(questions);
+    // Giữ nguyên thứ tự tuần tự của unitWords để câu hỏi đồng bộ hoàn toàn với các góc hỏi khác
+    return questions;
   }
 
   // =========================================================================
@@ -635,9 +640,8 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
       return buildQuizQuestions(allWords, allWords, 'synonym_antonym', options);
     }
 
-    const shuffledEligible = [...eligible].sort(() => Math.random() - 0.5);
-
-    const questions = shuffledEligible.map((qItem, idx) => {
+    // Giữ nguyên thứ tự từ vựng của unitWords để không bị nhảy câu khi chuyển chế độ
+    const questions = eligible.map((qItem, idx) => {
       const target = qItem.target;
       const otherWords = allWords.filter(w => w.id !== target.id && w.word !== qItem.correctAnswer);
       const distractors = [...otherWords].sort(() => Math.random() - 0.5).slice(0, 3);
@@ -679,7 +683,8 @@ export function buildQuizQuestions(unitWords, allWords, mode = 'kanji_to_meaning
       };
     });
 
-    return interleaveQuestionsByTarget(questions);
+    // Giữ nguyên thứ tự tuần tự của unitWords để câu hỏi đồng bộ hoàn toàn với các góc hỏi khác
+    return questions;
   }
 
   // =========================================================================

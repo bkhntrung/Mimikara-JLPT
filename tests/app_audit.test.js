@@ -872,4 +872,40 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.ok(deckContent.includes('Hoàn thành phiên ôn tập'), 'FlashcardDeck phải hiển thị màn hình chúc mừng hoàn thành phiên');
   });
 
+  test('Test 5.15: Kiểm toán Chống Kẹt Bảng khi Bấm Hay Quên & Chống Nhảy Câu Trắc Nghiệm khi Đổi Dạng Bài Tập', async () => {
+    // 1. Kiểm tra tĩnh QuizMode.jsx và ClozeQuiz.jsx: Thanh điều khiển luôn được hiển thị ở trên cùng
+    const quizPath = path.resolve('src/components/QuizMode.jsx');
+    const quizContent = fs.readFileSync(quizPath, 'utf8');
+
+    assert.ok(quizContent.includes('isDirectionOnlyChange'), 'QuizMode phải có cờ isDirectionOnlyChange để nhận diện chỉ đổi dạng bài tập');
+    assert.ok(quizContent.includes('currentWordIdRef'), 'QuizMode phải có currentWordIdRef để lưu ID từ vựng đang làm');
+    assert.ok(quizContent.includes('builtQuestions.findIndex(q => q.target?.id === targetId)'), 'QuizMode phải tìm lại câu hỏi của đúng từ vựng đó khi đổi dạng bài tập');
+    assert.ok(!quizContent.includes('if (quizPool.length === 0 && !isCompleted) {\n    const unitText'), 'QuizMode không được return sớm che khuất thanh chọn dạng bài tập và thanh scope');
+
+    const clozePath = path.resolve('src/components/ClozeQuiz.jsx');
+    const clozeContent = fs.readFileSync(clozePath, 'utf8');
+    assert.ok(clozeContent.includes('isTypeOnlyChange'), 'ClozeQuiz phải có cờ isTypeOnlyChange để nhận diện chỉ đổi dạng bài tập');
+    assert.ok(clozeContent.includes('currentWordIdRef'), 'ClozeQuiz phải có currentWordIdRef');
+    assert.ok(!clozeContent.includes('if (questions.length === 0 && !isCompleted) {\n    const unitText'), 'ClozeQuiz không được return sớm che khuất thanh chọn dạng bài tập và thanh scope');
+
+    // 2. Kiểm toán tính Đồng bộ Thứ tự Câu hỏi giữa các dạng bài tập trong quizHelper.js
+    const { buildQuizQuestions } = await import('../src/utils/quizHelper.js');
+    const unit1Words = mimikaraN1.vocabulary.filter(w => w.unit === 1);
+
+    const readingQuestions = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'kanji_to_reading');
+    const meaningQuestions = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'kanji_to_meaning');
+    const kanjiQuestions = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'meaning_to_kanji');
+    const allAnglesQuestions = buildQuizQuestions(unit1Words, mimikaraN1.vocabulary, 'all_angles');
+
+    // Kiểm tra tính nhất quán 100% giữa các dạng câu hỏi:
+    // Câu thứ i ở chế độ Cách đọc, Từ -> Nghĩa, Nghĩa -> Từ, Đa chiều PHẢI CÙNG LÀ TỪ ĐÍCH ĐÓ!
+    for (let i = 0; i < unit1Words.length; i++) {
+      const targetId = unit1Words[i].id;
+      assert.equal(readingQuestions[i].target.id, targetId, `Câu ${i} ở dạng Cách đọc phải tương ứng với từ vựng thứ ${i}`);
+      assert.equal(meaningQuestions[i].target.id, targetId, `Câu ${i} ở dạng Từ -> Nghĩa phải tương ứng với từ vựng thứ ${i}`);
+      assert.equal(kanjiQuestions[i].target.id, targetId, `Câu ${i} ở dạng Nghĩa -> Từ phải tương ứng với từ vựng thứ ${i}`);
+      assert.equal(allAnglesQuestions[i].target.id, targetId, `Câu ${i} ở dạng Đa chiều phải tương ứng với từ vựng thứ ${i}`);
+    }
+  });
+
 });
