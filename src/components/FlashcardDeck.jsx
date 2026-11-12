@@ -105,7 +105,9 @@ export default function FlashcardDeck({
   isSessionCompleted = false,
   onRestartSession,
   onSwitchToQuiz,
-  onSwitchToCloze
+  onSwitchToCloze,
+  onUndo,
+  canUndo = false
 }) {
   // Chế độ thẻ: 'context' (Thẻ Ngữ Cảnh / Cloze - Khuyên dùng) hoặc 'vocab' (Thẻ Chữ Hán / Kanji Focus)
   const [cardMode, setCardMode] = useState(() => {
@@ -280,6 +282,15 @@ export default function FlashcardDeck({
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          {onUndo && canUndo && (
+            <button
+              onClick={onUndo}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-semibold text-sm shadow-md active:scale-95 transition-all"
+            >
+              <RotateCcw className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>Hoàn tác câu vừa rồi (Z)</span>
+            </button>
+          )}
           {onRestartSession && (
             <button
               onClick={onRestartSession}
@@ -404,6 +415,23 @@ export default function FlashcardDeck({
             <Shuffle className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Trộn thẻ</span>
           </button>
+
+          {onUndo && (
+            <button
+              onClick={onUndo}
+              disabled={!canUndo}
+              title="Hoàn tác thao tác vừa rồi (Ctrl+Z hoặc Z)"
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                canUndo
+                  ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 border border-indigo-200/60 dark:border-indigo-800/60 shadow-sm active:scale-95'
+                  : 'text-slate-400 dark:text-slate-600 opacity-40 cursor-not-allowed border border-transparent'
+              }`}
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Hoàn tác</span>
+              <span className="text-[10px] px-1 rounded bg-slate-200/60 dark:bg-slate-800 text-slate-500 font-mono">Z</span>
+            </button>
+          )}
 
           <span className="font-mono">{currentIndex + 1} / {words.length}</span>
 

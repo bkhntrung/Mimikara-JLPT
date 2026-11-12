@@ -13,6 +13,7 @@ export default function ShortcutModal({ isOpen, onClose }) {
     { key: '2', desc: 'Đánh giá: Hơi khó (+1 ngày)' },
     { key: '3', desc: 'Đánh giá: Nhớ tốt (+3 ngày)' },
     { key: '4', desc: 'Đánh giá: Rất vững (+6 ngày)' },
+    { key: 'Ctrl + Z / Z', desc: 'Hoàn tác thao tác trước (Đánh giá SRS, gắn sao)' },
     { key: 'A', desc: 'Phát âm tiếng Nhật (Nghe giọng đọc chuẩn)' },
     { key: 'F', desc: 'Bật / Tắt hiển thị Furigana trên Kanji' },
     { key: 'S', desc: 'Lưu / Bỏ lưu từ vào danh sách Yêu thích (Star)' },

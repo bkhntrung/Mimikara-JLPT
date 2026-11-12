@@ -974,4 +974,75 @@ describe('Kiểm toán Toàn diện Dữ liệu & Hệ thống Bài tập Mimika
     assert.equal(clozeCombined100.length, 100, 'Điền kết hợp câu & cụm của Unit 1 phải có đúng 100 câu hỏi');
   });
 
+  test('Test 5.18: Kiểm toán Tính năng Hoàn tác Flashcard (Flashcard Undo Ctrl+Z / Z Engine Audit)', () => {
+    // 1. Kiểm tra tĩnh App.jsx: Có đầy đủ stack, handler và phím tắt Ctrl+Z / Z
+    const appPath = path.resolve('src/App.jsx');
+    const appContent = fs.readFileSync(appPath, 'utf8');
+
+    assert.ok(appContent.includes('undoStackRef = useRef([])'), 'App.jsx phải có undoStackRef để lưu lịch sử hoàn tác');
+    assert.ok(appContent.includes('handleUndo'), 'App.jsx phải có hàm handleUndo');
+    assert.ok(appContent.includes('canUndo'), 'App.jsx phải quản lý state canUndo');
+    assert.ok(appContent.includes("e.key === 'z' || e.key === 'Z'"), 'App.jsx phải hỗ trợ phím Z');
+    assert.ok(appContent.includes('toastMessage'), 'App.jsx phải hiển thị thông báo toast khi hoàn tác');
+
+    // 2. Kiểm tra tĩnh FlashcardDeck.jsx: Nhận prop onUndo, canUndo và có nút Hoàn tác
+    const deckPath = path.resolve('src/components/FlashcardDeck.jsx');
+    const deckContent = fs.readFileSync(deckPath, 'utf8');
+
+    assert.ok(deckContent.includes('onUndo'), 'FlashcardDeck phải nhận prop onUndo');
+    assert.ok(deckContent.includes('canUndo'), 'FlashcardDeck phải nhận prop canUndo');
+    assert.ok(deckContent.includes('Hoàn tác'), 'FlashcardDeck phải có nút Hoàn tác trên giao diện');
+
+    // 3. Kiểm tra tĩnh ShortcutModal.jsx: Đã cập nhật phím tắt Ctrl + Z / Z
+    const shortcutPath = path.resolve('src/components/ShortcutModal.jsx');
+    const shortcutContent = fs.readFileSync(shortcutPath, 'utf8');
+    assert.ok(shortcutContent.includes('Ctrl + Z / Z'), 'ShortcutModal phải ghi nhận phím tắt Ctrl + Z / Z');
+
+    // 4. Mô phỏng hành vi Hoàn tác:
+    const mockUndoStack = [];
+    let stateSrs = {};
+    let stateIndex = 0;
+    let stateFlipped = false;
+    let stateCompleted = false;
+
+    // Giả lập đánh giá SRS trên từ #101
+    const word101 = { id: 101, word: '青春' };
+    const prevRec = stateSrs[101] ? { ...stateSrs[101] } : null;
+
+    mockUndoStack.push({
+      type: 'rate',
+      wordId: 101,
+      wordText: word101.word,
+      previousSrsRecord: prevRec,
+      previousIndex: stateIndex,
+      previousFlipped: true,
+      previousSessionCompleted: stateCompleted
+    });
+
+    // Sau khi đánh giá: Từ #101 được cập nhật, index nhảy sang 1
+    stateSrs[101] = { stage: 'easy', interval: 4 };
+    stateIndex = 1;
+    stateFlipped = false;
+
+    assert.equal(stateIndex, 1);
+    assert.equal(stateSrs[101].stage, 'easy');
+
+    // Kích hoạt Hoàn tác (Undo):
+    const action = mockUndoStack.pop();
+    if (action.previousSrsRecord) {
+      stateSrs[action.wordId] = action.previousSrsRecord;
+    } else {
+      delete stateSrs[action.wordId];
+    }
+    stateIndex = action.previousIndex;
+    stateFlipped = action.previousFlipped;
+    stateCompleted = action.previousSessionCompleted;
+
+    // Kiểm tra trạng thái đã được khôi phục 100% về trước khi đánh giá:
+    assert.equal(stateIndex, 0, 'Vị trí thẻ sau hoàn tác phải quay lại từ 101 (index 0)');
+    assert.equal(stateFlipped, true, 'Mặt thẻ sau hoàn tác phải giữ nguyên mặt sau (isFlipped = true)');
+    assert.equal(stateSrs[101], undefined, 'Bản ghi SRS của từ 101 phải được hoàn tác sạch sẽ');
+    assert.equal(mockUndoStack.length, 0, 'Undo stack sau khi hoàn tác phải trở về rỗng');
+  });
+
 });

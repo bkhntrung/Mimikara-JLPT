@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import mimikaraN1 from './data/mimikara_n1.json';
 import mimikaraN2 from './data/mimikara_n2.json';
@@ -80,6 +81,26 @@ export default function App() {
   const srsRecordsRef = useRef(srsRecords);
   srsRecordsRef.current = srsRecords;
 
+  const isSessionCompletedRef = useRef(isSessionCompleted);
+  isSessionCompletedRef.current = isSessionCompleted;
+
+  const starredSetRef = useRef(starredSet);
+  starredSetRef.current = starredSet;
+
+  // Lịch sử hoàn tác (Undo Stack cho Flashcard)
+  const undoStackRef = useRef([]);
+  const [canUndo, setCanUndo] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+  const toastTimerRef = useRef(null);
+
+  const showToast = useCallback((msg) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToastMessage(msg);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 2500);
+  }, []);
+
   useEffect(() => {
     currentLevelRef.current = currentLevel;
   }, [currentLevel]);
@@ -146,6 +167,8 @@ export default function App() {
     setIsSmartSRSSort(false);
     setIsSessionCompleted(false);
     sessionInitialRecordsRef.current = {};
+    undoStackRef.current = [];
+    setCanUndo(false);
     setSrsQueueVersion(v => v + 1);
     setSrsRecords(loadSRSRecords(lvl));
     setStarredSet(loadStarredWords(lvl));
@@ -184,6 +207,8 @@ export default function App() {
     setIsFlipped(false);
     setIsSessionCompleted(false);
     sessionInitialRecordsRef.current = {};
+    undoStackRef.current = [];
+    setCanUndo(false);
     setSrsQueueVersion(v => v + 1);
   }, [currentUnit]);
 
@@ -262,6 +287,20 @@ export default function App() {
 
   // Starred toggle handler
   const handleToggleStar = useCallback((wordId) => {
+    const curWord = activeWordsRef.current.find(w => w.id === wordId);
+    const wasStarred = starredSetRef.current.has(wordId);
+
+    undoStackRef.current.push({
+      type: 'star',
+      wordId,
+      wordText: curWord?.word || '',
+      previousStarred: wasStarred
+    });
+    if (undoStackRef.current.length > 25) {
+      undoStackRef.current.shift();
+    }
+    setCanUndo(true);
+
     setStarredSet(prev => {
       const next = new Set(prev);
       if (next.has(wordId)) next.delete(wordId);
@@ -280,6 +319,27 @@ export default function App() {
     }, 300);
 
     stopSpeech();
+
+    // Lưu snapshot vào undoStack trước khi thay đổi trạng thái
+    const curWord = activeWordsRef.current[currentIndexRef.current];
+    const prevRecord = srsRecordsRef.current[wordId] ? { ...srsRecordsRef.current[wordId] } : null;
+    const prevInitial = sessionInitialRecordsRef.current[wordId];
+
+    undoStackRef.current.push({
+      type: 'rate',
+      wordId,
+      wordText: curWord?.word || '',
+      previousSrsRecord: prevRecord,
+      previousIndex: currentIndexRef.current,
+      previousFlipped: isFlippedRef.current,
+      previousSessionCompleted: isSessionCompletedRef.current,
+      previousSessionInitialRecord: prevInitial
+    });
+    if (undoStackRef.current.length > 25) {
+      undoStackRef.current.shift();
+    }
+    setCanUndo(true);
+
     setIsFlipped(false);
 
     setSrsRecords(prev => {
@@ -306,6 +366,70 @@ export default function App() {
       return prev + 1;
     });
   }, [activeWords.length, currentLevel]);
+
+  // Hoàn tác thao tác vừa rồi trên Flashcard (Ctrl+Z / Z)
+  const handleUndo = useCallback(() => {
+    if (undoStackRef.current.length === 0) {
+      showToast('Không có thao tác nào để hoàn tác');
+      return;
+    }
+
+    const lastAction = undoStackRef.current.pop();
+    setCanUndo(undoStackRef.current.length > 0);
+
+    stopSpeech();
+
+    if (lastAction.type === 'rate') {
+      const {
+        wordId,
+        wordText,
+        previousSrsRecord,
+        previousIndex,
+        previousFlipped,
+        previousSessionCompleted,
+        previousSessionInitialRecord
+      } = lastAction;
+
+      // 1. Khôi phục bản ghi SRS
+      setSrsRecords(prev => {
+        const next = { ...prev };
+        if (previousSrsRecord) {
+          next[wordId] = previousSrsRecord;
+        } else {
+          delete next[wordId];
+        }
+        saveSRSRecords(next, currentLevelRef.current);
+        return next;
+      });
+
+      // 2. Khôi phục sessionInitialRecordsRef
+      if (previousSessionInitialRecord !== undefined) {
+        sessionInitialRecordsRef.current[wordId] = previousSessionInitialRecord;
+      } else {
+        delete sessionInitialRecordsRef.current[wordId];
+      }
+
+      // 3. Khôi phục vị trí thẻ và trạng thái lật
+      setCurrentIndex(previousIndex);
+      setIsFlipped(previousFlipped);
+      setIsSessionCompleted(previousSessionCompleted);
+
+      showToast(`Đã hoàn tác đánh giá từ "${wordText}"`);
+    } else if (lastAction.type === 'star') {
+      const { wordId, wordText, previousStarred } = lastAction;
+      setStarredSet(prev => {
+        const next = new Set(prev);
+        if (previousStarred) {
+          next.add(wordId);
+        } else {
+          next.delete(wordId);
+        }
+        saveStarredWords(next, currentLevelRef.current);
+        return next;
+      });
+      showToast(`Đã hoàn tác gắn sao từ "${wordText}"`);
+    }
+  }, [showToast]);
 
   // Quiz / Cloze SRS Synchronization handler (chỉ cập nhật SRS, KHÔNG làm nhảy currentIndex của FlashcardDeck)
   const handleQuizSRSSync = useCallback((wordId, isCorrect) => {
@@ -396,7 +520,18 @@ export default function App() {
       // Ignore if user is typing in an input
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
 
-      if (e.key === ' ' || e.code === 'Space') {
+      // Hoàn tác (Undo): Ctrl + Z / Cmd + Z hoặc phím Z đơn ở chế độ Flashcard
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        if (studyMode === 'flashcard') {
+          handleUndo();
+        }
+      } else if (!e.ctrlKey && !e.altKey && !e.metaKey && (e.key === 'z' || e.key === 'Z')) {
+        if (studyMode === 'flashcard') {
+          e.preventDefault();
+          handleUndo();
+        }
+      } else if (e.key === ' ' || e.code === 'Space') {
         e.preventDefault(); // Prevent page scroll down!
         if (studyMode === 'flashcard') {
           handleToggleFlip();
@@ -438,7 +573,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeWords, currentIndex, soundSpeed, studyMode, isTabLocked, isSessionCompleted, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS]);
+  }, [activeWords, currentIndex, soundSpeed, studyMode, isTabLocked, isSessionCompleted, handleNavigate, handleToggleFlip, handleToggleFurigana, handleToggleStar, handleRateSRS, handleUndo]);
 
   // Learned count
   const learnedCount = useMemo(() => {
@@ -494,6 +629,8 @@ export default function App() {
             onRestartSession={handleRestartSession}
             onSwitchToQuiz={() => setStudyMode('quiz')}
             onSwitchToCloze={() => setStudyMode('cloze')}
+            onUndo={handleUndo}
+            canUndo={canUndo}
           />
         )}
 
@@ -570,6 +707,14 @@ export default function App() {
           Mimikara Oboeru JLPT (N3 • N2 • N1) Flashcard App • Đang học cấp độ <strong className="text-indigo-600 dark:text-indigo-400">{currentLevel}</strong> ({allWords.length} từ vựng, {unitSummaries.length} Unit) • Nhấn <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono text-[10px]">?</kbd> xem phím tắt
         </p>
       </footer>
+
+      {/* Toast Notification cho Hoàn tác */}
+      {toastMessage && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-slate-900/95 text-white dark:bg-white dark:text-slate-900 text-xs sm:text-sm font-semibold shadow-2xl border border-slate-700/50 dark:border-slate-200/50 backdrop-blur-md flex items-center gap-2 animate-bounce">
+          <RotateCcw className="w-4 h-4 text-indigo-400 dark:text-indigo-600 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
     </div>
   );
